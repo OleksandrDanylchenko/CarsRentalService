@@ -22,13 +22,16 @@ public class ModelResource {
     @GetMapping
     public ResponseEntity<List<Model>> getModels() {
         var models = modelService.getAllModels();
-        return models.isEmpty() ? ResponseEntity.notFound().build() : ResponseEntity.ok().body(models);
+        return models.isEmpty()
+                ? new ResponseEntity<>(HttpStatus.NOT_FOUND)
+                : new ResponseEntity<>(models, HttpStatus.OK);
     }
 
     @GetMapping("/{id}")
     public ResponseEntity<Model> getModelById(@PathVariable String id) {
         var foundedModel = modelService.getModelById(id);
-        return foundedModel.map(model -> new ResponseEntity<>(model, HttpStatus.OK))
+        return foundedModel
+                .map(model -> new ResponseEntity<>(model, HttpStatus.OK))
                 .orElse(new ResponseEntity<>(HttpStatus.NOT_FOUND));
     }
 
@@ -48,6 +51,8 @@ public class ModelResource {
 
     @DeleteMapping("/{id}")
     public ResponseEntity<Void> deleteModel(@PathVariable String id) {
-        return modelService.deleteModel(id) ? ResponseEntity.noContent().build() : ResponseEntity.notFound().build();
+        return modelService.deleteModel(id)
+                ? new ResponseEntity<>(HttpStatus.NO_CONTENT)
+                : new ResponseEntity<>(HttpStatus.NOT_FOUND);
     }
 }

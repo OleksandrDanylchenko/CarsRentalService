@@ -3,10 +3,7 @@ package ua.alexd.CarRentService.domain;
 import lombok.*;
 
 import javax.persistence.*;
-import javax.validation.constraints.Max;
-import javax.validation.constraints.Min;
-import javax.validation.constraints.NotEmpty;
-import javax.validation.constraints.NotNull;
+import javax.validation.constraints.*;
 
 @Entity
 @Table(name = "models")
@@ -26,12 +23,14 @@ public class Model {
     @Column
     @NotNull(message = "Бренд не може бути відсутнім")
     @NotEmpty(message = "Бренд не може бути пустим")
+    @Size(min=1, max=150)
     private String brand;
 
     @Basic
     @Column(unique = true)
     @NotNull(message = "Модель не може бути відсутньою")
     @NotEmpty(message = "Модель не може бути пустою")
+    @Size(min=1, max=150)
     private String model;
 
     @Basic

@@ -33,7 +33,7 @@ public class ModelService {
     }
 
     public boolean addNewModel(Model newModel) {
-        return saveRecord(newModel);
+        return saveModel(newModel);
     }
 
     public boolean updateModel(@NotNull Model updModel) {
@@ -41,10 +41,10 @@ public class ModelService {
         if (modelFromDB.isEmpty())
             return false;
         BeanUtils.copyProperties(updModel, modelFromDB.get(), "id");
-        return saveRecord(modelFromDB.get());
+        return saveModel(modelFromDB.get());
     }
 
-    private boolean saveRecord(Model saveModel) {
+    private boolean saveModel(Model saveModel) {
         try {
             modelRepository.save(saveModel);
         } catch (IllegalArgumentException | DataIntegrityViolationException ignored) {
