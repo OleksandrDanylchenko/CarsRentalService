@@ -2,7 +2,7 @@
     <div>
         <b-row>
             <b-col>
-                <b-button pill variant="outline-danger" @click="openDataModal(-1)">
+                <b-button pill variant="outline-danger" @click="openModelModal(-1)">
                     <i class="fas fa-plus-circle"></i>&nbsp;Додати нову модель авто
                 </b-button>
             </b-col>
@@ -20,7 +20,7 @@
                              :busy.sync="isBusy" primary-key="id">
                         <template v-slot:table-busy>
                             <div class="text-center text-danger mt-2">
-                                <b-spinner class="align-middle"></b-spinner>
+                                <b-spinner type="grow" class="align-middle" style="width: 3rem; height: 3rem;"/>
                                 <strong>&nbsp;Завантаження...</strong>
                             </div>
                         </template>
@@ -31,7 +31,7 @@
                             <strong class="text-danger">{{ data.item.id }}</strong>
                         </template>
                         <template v-slot:cell(editModal)="data">
-                            <b-button pill variant="outline-dark" @click="openDataModal(data.item.id)">
+                            <b-button pill variant="outline-dark" @click="openModelModal(data.item.id)">
                                 <i class="fa fa-edit"></i>
                             </b-button>
                         </template>
@@ -90,32 +90,49 @@
                 ModelDataService.retrieveAllModels().then(response => {
                     this.models = response.data;
                     this.isBusy = false;
-                })
+                }).catch(error => {
+                    if (error.response.status === 404) {
+                        this.errors.push(`Таблиця моделей не містить записів`);
+                        this.isBusy = false;
+                    } else {
+                        this.errors.push(`Сталася непередбачувана помилка завантаження таблиці`);
+                    }
+                });
             },
-            openDataModal(id) {
+            openModelModal(id) {
                 this.dismissMessages();
                 this.dismissErrors();
                 this.processingId = id;
                 this.$bvModal.show("modelModal");
             },
             addModel(newModel) {
+                this.isBusy = true;
                 ModelDataService.addModel(newModel).then(() => {
                     this.messages.push(`Нову модель додано успішно`);
                     this.refreshModels();
                 }).catch(error => {
-                    console.log(error);
-                    this.errors.push(`Нову модель не було додано!`);
+                    if (error.response.status === 409) {
+                        this.errors.push(`Таблиця уже містить модель ${JSON.parse(error.response.config.data).model}`);
+                    } else {
+                        this.errors.push(`Нова модель містить інформацію, що суперечить обмеженням`);
+                    }
                 });
+                this.isBusy = false;
                 this.$bvModal.hide("modelModal");
             },
             updateModel(updateModel) {
+                this.isBusy = true;
                 ModelDataService.updateModel(updateModel).then(() => {
                     this.messages.push(`Модель №${updateModel.id} змінено успішно`);
                     this.refreshModels();
                 }).catch(error => {
-                    console.log(error);
-                    this.errors.push(`Модель №${updateModel.id} не було змінено!`);
+                    if (error.response.status === 409) {
+                        this.errors.push(`Таблиця уже містить модель ${JSON.parse(error.response.config.data).model}`);
+                    } else {
+                        this.errors.push(`Змінювана модель містить інформацію, що суперечить обмеженням`);
+                    }
                 });
+                this.isBusy = false;
                 this.$bvModal.hide("modelModal");
             },
             openDeleteModal(id) {
@@ -125,6 +142,7 @@
                 this.$bvModal.show("deleteModal");
             },
             deleteModel(id) {
+                this.isBusy = true;
                 ModelDataService.deleteModel(id).then(() => {
                     this.messages.push(`Видалення запису №${id} виконано успішно`);
                     this.refreshModels();
@@ -132,6 +150,7 @@
                     console.log(error);
                     this.errors.push(`Видалення запису №${id} не виконано!`);
                 });
+                this.isBusy = false;
                 this.$bvModal.hide("deleteModal");
             }
         },
