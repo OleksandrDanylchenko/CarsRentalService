@@ -29,9 +29,9 @@ public class ClassResource {
 
     @GetMapping("/{id}")
     public ResponseEntity<ModelClass> getClassById(@PathVariable String id) {
-        var foundedModel = modelClassService.getClassById(id);
-        return foundedModel
-                .map(model -> new ResponseEntity<>(model, HttpStatus.OK))
+        var foundedClass = modelClassService.getClassById(id);
+        return foundedClass
+                .map(type -> new ResponseEntity<>(type, HttpStatus.OK))
                 .orElse(new ResponseEntity<>(HttpStatus.NOT_FOUND));
     }
 
