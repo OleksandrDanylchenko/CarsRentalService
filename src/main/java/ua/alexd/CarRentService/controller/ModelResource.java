@@ -1,9 +1,7 @@
 package ua.alexd.CarRentService.controller;
 
-import org.jetbrains.annotations.NotNull;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.validation.Errors;
 import org.springframework.web.bind.annotation.*;
 import ua.alexd.CarRentService.domain.Model;
 import ua.alexd.CarRentService.service.ModelService;
@@ -35,17 +33,17 @@ public class ModelResource {
     }
 
     @PostMapping
-    public ResponseEntity<Model> addModel(@Valid @RequestBody Model newModel, @NotNull Errors errors) {
-        if (!errors.hasErrors() && modelService.addNewModel(newModel))
-            return new ResponseEntity<>(newModel, HttpStatus.CREATED);
-        return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+    public ResponseEntity<Model> addModel(@Valid @RequestBody Model newModel) {
+        return modelService.addNewModel(newModel)
+                ? new ResponseEntity<>(newModel, HttpStatus.CREATED)
+                : new ResponseEntity<>(HttpStatus.CONFLICT);
     }
 
     @PutMapping
-    public ResponseEntity<Model> updateModel(@Valid @RequestBody Model updModel, @NotNull Errors errors) {
-        if (!errors.hasErrors() && modelService.updateModel(updModel))
-            return new ResponseEntity<>(updModel, HttpStatus.OK);
-        return new ResponseEntity<>(HttpStatus.CONFLICT);
+    public ResponseEntity<Model> updateModel(@Valid @RequestBody Model updModel) {
+        return modelService.updateModel(updModel)
+                ? new ResponseEntity<>(updModel, HttpStatus.OK)
+                : new ResponseEntity<>(HttpStatus.CONFLICT);
     }
 
     @DeleteMapping("/{id}")
