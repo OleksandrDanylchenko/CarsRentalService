@@ -20,7 +20,7 @@ public class ModelService {
     }
 
     public List<Model> getAllModels() {
-        return modelRepository.findAll();
+        return (List<Model>) modelRepository.findAll();
     }
 
     public Optional<Model> getModelById(String id) {

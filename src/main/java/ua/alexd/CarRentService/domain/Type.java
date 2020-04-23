@@ -23,8 +23,8 @@ public class Type {
 
     @Basic
     @Column(unique = true)
-    @NotNull(message = "Назва типу не може бути відсутнім")
-    @NotEmpty(message = "Назва типу не може бути пустим")
+    @NotNull(message = "Назва типу не може бути відсутньою")
+    @NotEmpty(message = "Назва типу не може бути пустою")
     @Size(min = 1, max = 150)
     private String name;
 }

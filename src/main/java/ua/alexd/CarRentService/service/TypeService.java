@@ -20,7 +20,7 @@ public class TypeService {
     }
 
     public List<Type> getAllTypes() {
-        return typeRepository.findAll();
+        return (List<Type>) typeRepository.findAll();
     }
 
     public Optional<Type> getTypeById(String id) {

@@ -21,10 +21,12 @@ public class Specification {
 
     @Basic
     @Column
+    @NotNull(message = "Потужність двигуна не може бути відсутньою")
+    @NotEmpty(message = "Потужність двигуна не може бути пустою")
     @DecimalMin(value = "0.8", message = "Об'єм двигуна не може бути меншим ніж 0.8л.")
     @DecimalMax(value = "6.0", message = "Об'єм двигуна не може бути більшим ніж 6л.")
     @Pattern(regexp = "^[0-6][.][0-9]$", message = "Об'єм потрібно подати у вигляді 'X.X'")
-    private float engineCapacity;
+    private String engineCapacity;
 
     @Basic
     @Column
@@ -48,8 +50,10 @@ public class Specification {
 
     @Basic
     @Column
+    @NotNull(message = "Споживання пального не може бути відсутнім")
+    @NotEmpty(message = "Споживання пального не може бути пустим")
     @DecimalMin(value = "3.0", message = "Споживання пального не може бути меншим ніж 3л./100км.")
     @DecimalMax(value = "50.0", message = "Споживання пального не може бути більшим ніж 50л./100км.")
     @Pattern(regexp = "^[0-9]{1,2}[.][0-9]$", message = "Споживання пального потрібно подати у вигляді 'xX.X'")
-    private float fuelConsumption;
+    private String fuelConsumption;
 }
