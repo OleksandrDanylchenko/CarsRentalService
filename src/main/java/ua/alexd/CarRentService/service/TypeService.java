@@ -56,9 +56,10 @@ public class TypeService {
 
     public boolean deleteType(String id) {
         var deletionType = getTypeById(id);
-        if (deletionType.isEmpty())
-            return false;
-        typeRepository.delete(deletionType.get());
-        return true;
+        if (deletionType.isPresent()) {
+            typeRepository.delete(deletionType.get());
+            return true;
+        }
+        return false;
     }
 }

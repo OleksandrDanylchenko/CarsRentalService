@@ -56,9 +56,10 @@ public class SpecificationService {
 
     public boolean deleteSpecification(String id) {
         var deletionSpecification = getSpecificationById(id);
-        if (deletionSpecification.isEmpty())
-            return false;
-        specificationRepository.delete(deletionSpecification.get());
-        return true;
+        if (deletionSpecification.isPresent()) {
+            specificationRepository.delete(deletionSpecification.get());
+            return true;
+        }
+        return false;
     }
 }

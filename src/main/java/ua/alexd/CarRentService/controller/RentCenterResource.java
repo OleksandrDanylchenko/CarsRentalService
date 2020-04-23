@@ -21,17 +21,17 @@ public class RentCenterResource {
 
     @GetMapping
     public ResponseEntity<List<RentCenter>> getRentCenters() {
-        var models = rentCenterService.getAllRentCenters();
-        return models.isEmpty()
+        var rentCenters = rentCenterService.getAllRentCenters();
+        return rentCenters.isEmpty()
                 ? new ResponseEntity<>(HttpStatus.NOT_FOUND)
-                : new ResponseEntity<>(models, HttpStatus.OK);
+                : new ResponseEntity<>(rentCenters, HttpStatus.OK);
     }
 
     @GetMapping("/{id}")
     public ResponseEntity<RentCenter> getRentCenterById(@PathVariable String id) {
-        var foundedModel = rentCenterService.getRentCenterById(id);
-        return foundedModel
-                .map(model -> new ResponseEntity<>(model, HttpStatus.OK))
+        var foundedCenter = rentCenterService.getRentCenterById(id);
+        return foundedCenter
+                .map(center -> new ResponseEntity<>(center, HttpStatus.OK))
                 .orElse(new ResponseEntity<>(HttpStatus.NOT_FOUND));
     }
 

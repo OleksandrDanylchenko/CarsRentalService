@@ -56,9 +56,10 @@ public class RentCenterService {
 
     public boolean deleteRentCenter(String id) {
         var deletionRentCenter = getRentCenterById(id);
-        if (deletionRentCenter.isEmpty())
-            return false;
-        rentCenterRepository.delete(deletionRentCenter.get());
-        return true;
+        if (deletionRentCenter.isPresent()) {
+            rentCenterRepository.delete(deletionRentCenter.get());
+            return true;
+        }
+        return false;
     }
 }

@@ -21,16 +21,16 @@ public class SpecificationResource {
 
     @GetMapping
     public ResponseEntity<List<Specification>> getSpecifications() {
-        var models = specificationService.getAllSpecifications();
-        return models.isEmpty()
+        var specifications = specificationService.getAllSpecifications();
+        return specifications.isEmpty()
                 ? new ResponseEntity<>(HttpStatus.NOT_FOUND)
-                : new ResponseEntity<>(models, HttpStatus.OK);
+                : new ResponseEntity<>(specifications, HttpStatus.OK);
     }
 
     @GetMapping("/{id}")
     public ResponseEntity<Specification> getSpecificationById(@PathVariable String id) {
-        var foundedModel = specificationService.getSpecificationById(id);
-        return foundedModel
+        var foundedSpecification = specificationService.getSpecificationById(id);
+        return foundedSpecification
                 .map(specification -> new ResponseEntity<>(specification, HttpStatus.OK))
                 .orElse(new ResponseEntity<>(HttpStatus.NOT_FOUND));
     }

@@ -56,9 +56,10 @@ public class ModelClassService {
 
     public boolean deleteClass(String id) {
         var deletionClass = getClassById(id);
-        if (deletionClass.isEmpty())
-            return false;
-        modelClassRepository.delete(deletionClass.get());
-        return true;
+        if (deletionClass.isPresent()) {
+            modelClassRepository.delete(deletionClass.get());
+            return true;
+        }
+        return false;
     }
 }
