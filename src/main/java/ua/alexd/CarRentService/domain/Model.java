@@ -23,14 +23,14 @@ public class Model {
     @Column
     @NotNull(message = "Бренд не може бути відсутнім")
     @NotEmpty(message = "Бренд не може бути пустим")
-    @Size(min=1, max=150)
+    @Size(min = 1, max = 150)
     private String brand;
 
     @Basic
     @Column(unique = true)
     @NotNull(message = "Модель не може бути відсутньою")
     @NotEmpty(message = "Модель не може бути пустою")
-    @Size(min=1, max=150)
+    @Size(min = 1, max = 150)
     private String model;
 
     @Basic
