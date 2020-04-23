@@ -38,10 +38,11 @@ public class SpecificationService {
 
     public boolean updateSpecification(@NotNull Specification updSpecification) {
         var specificationFromDB = getSpecificationById(String.valueOf(updSpecification.getId()));
-        if (specificationFromDB.isEmpty())
-            return false;
-        BeanUtils.copyProperties(updSpecification, specificationFromDB.get(), "id");
-        return saveSpecification(specificationFromDB.get());
+        if (specificationFromDB.isPresent()) {
+            BeanUtils.copyProperties(updSpecification, specificationFromDB.get(), "id");
+            return saveSpecification(specificationFromDB.get());
+        }
+        return false;
     }
 
     private boolean saveSpecification(Specification newSpecification) {
@@ -54,10 +55,10 @@ public class SpecificationService {
     }
 
     public boolean deleteSpecification(String id) {
-        var deletionModel = getSpecificationById(id);
-        if (deletionModel.isEmpty())
+        var deletionSpecification = getSpecificationById(id);
+        if (deletionSpecification.isEmpty())
             return false;
-        specificationRepository.delete(deletionModel.get());
+        specificationRepository.delete(deletionSpecification.get());
         return true;
     }
 }

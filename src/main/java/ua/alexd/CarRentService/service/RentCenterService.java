@@ -38,10 +38,11 @@ public class RentCenterService {
 
     public boolean updateRentCenter(@NotNull RentCenter updRentCenter) {
         var rentCenterFromDB = getRentCenterById(String.valueOf(updRentCenter.getId()));
-        if (rentCenterFromDB.isEmpty())
-            return false;
-        BeanUtils.copyProperties(updRentCenter, rentCenterFromDB.get(), "id");
-        return saveRentCenter(rentCenterFromDB.get());
+        if (rentCenterFromDB.isPresent()) {
+            BeanUtils.copyProperties(updRentCenter, rentCenterFromDB.get(), "id");
+            return saveRentCenter(rentCenterFromDB.get());
+        }
+        return false;
     }
 
     private boolean saveRentCenter(RentCenter saveRentCenter) {
@@ -54,10 +55,10 @@ public class RentCenterService {
     }
 
     public boolean deleteRentCenter(String id) {
-        var deletionModel = getRentCenterById(id);
-        if (deletionModel.isEmpty())
+        var deletionRentCenter = getRentCenterById(id);
+        if (deletionRentCenter.isEmpty())
             return false;
-        rentCenterRepository.delete(deletionModel.get());
+        rentCenterRepository.delete(deletionRentCenter.get());
         return true;
     }
 }

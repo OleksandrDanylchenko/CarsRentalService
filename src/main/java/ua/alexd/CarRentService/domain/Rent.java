@@ -4,6 +4,7 @@ import lombok.*;
 import org.jetbrains.annotations.NotNull;
 
 import javax.persistence.*;
+import javax.validation.constraints.Future;
 import javax.validation.constraints.Min;
 import javax.validation.constraints.PastOrPresent;
 import java.time.LocalDateTime;
@@ -27,11 +28,11 @@ public class Rent {
     @NotNull
     @PastOrPresent
     private LocalDateTime rentStart;
-//    TODO Fix end before start
+
     @Basic
     @Column
     @NotNull
-    @PastOrPresent
+    @Future
     private LocalDateTime rentEnd;
 
     @Basic

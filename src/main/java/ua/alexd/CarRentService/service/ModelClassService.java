@@ -32,16 +32,17 @@ public class ModelClassService {
         }
     }
 
-    public boolean addNewClass(ModelClass newClass) {
-        return saveClass(newClass);
+    public boolean addNewClass(@NotNull ModelClass newClass) {
+        return newClass.getMinPrice() < newClass.getMaxPrice() && saveClass(newClass);
     }
 
     public boolean updateClass(@NotNull ModelClass updClass) {
         var classFromDB = getClassById(String.valueOf(updClass.getId()));
-        if (classFromDB.isEmpty())
-            return false;
-        BeanUtils.copyProperties(updClass, classFromDB.get(), "id");
-        return saveClass(classFromDB.get());
+        if (classFromDB.isPresent() && classFromDB.get().getMinPrice() > classFromDB.get().getMaxPrice()) {
+            BeanUtils.copyProperties(updClass, classFromDB.get(), "id");
+            return saveClass(classFromDB.get());
+        }
+        return false;
     }
 
     private boolean saveClass(ModelClass saveClass) {

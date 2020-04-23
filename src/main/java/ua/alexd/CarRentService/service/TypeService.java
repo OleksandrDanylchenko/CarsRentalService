@@ -38,10 +38,11 @@ public class TypeService {
 
     public boolean updateType(@NotNull Type updType) {
         var typeFromDB = getTypeById(String.valueOf(updType.getId()));
-        if (typeFromDB.isEmpty())
-            return false;
-        BeanUtils.copyProperties(updType, typeFromDB.get(), "id");
-        return saveType(typeFromDB.get());
+        if (typeFromDB.isPresent()) {
+            BeanUtils.copyProperties(updType, typeFromDB.get(), "id");
+            return saveType(typeFromDB.get());
+        }
+        return false;
     }
 
     private boolean saveType(Type saveType) {
@@ -54,10 +55,10 @@ public class TypeService {
     }
 
     public boolean deleteType(String id) {
-        var deletionModel = getTypeById(id);
-        if (deletionModel.isEmpty())
+        var deletionType = getTypeById(id);
+        if (deletionType.isEmpty())
             return false;
-        typeRepository.delete(deletionModel.get());
+        typeRepository.delete(deletionType.get());
         return true;
     }
 }

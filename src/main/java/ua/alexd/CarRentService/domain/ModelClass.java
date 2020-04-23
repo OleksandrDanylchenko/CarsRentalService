@@ -29,7 +29,7 @@ public class ModelClass {
     @Basic
     @Column
     @Min(1)
-    @Max(value = 40000)
+    @Max(40000)
     private int minPrice;
 
     @Basic

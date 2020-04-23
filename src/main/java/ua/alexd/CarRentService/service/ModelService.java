@@ -38,10 +38,11 @@ public class ModelService {
 
     public boolean updateModel(@NotNull Model updModel) {
         var modelFromDB = getModelById(String.valueOf(updModel.getId()));
-        if (modelFromDB.isEmpty())
-            return false;
-        BeanUtils.copyProperties(updModel, modelFromDB.get(), "id");
-        return saveModel(modelFromDB.get());
+        if (modelFromDB.isPresent()) {
+            BeanUtils.copyProperties(updModel, modelFromDB.get(), "id");
+            return saveModel(modelFromDB.get());
+        }
+        return false;
     }
 
     private boolean saveModel(Model saveModel) {

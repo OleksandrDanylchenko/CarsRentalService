@@ -38,7 +38,7 @@ public class Car {
 
     @Basic
     @Column
-    @Min(value = 1)
-    @Max(value = 40000)
+    @Min(1)
+    @Max(40000)
     private int dayPrice;
 }
