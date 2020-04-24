@@ -12,10 +12,10 @@ import java.util.List;
 @CrossOrigin(origins = {"http://localhost:3000", "http://localhost:4200", "http://localhost:8081"})
 @RestController
 @RequestMapping("/complain")
-public class ComplaintResource {
+public class ComplainResource {
     private final ComplainService complainService;
 
-    public ComplaintResource(ComplainService complainService) {
+    public ComplainResource(ComplainService complainService) {
         this.complainService = complainService;
     }
 

@@ -3,7 +3,10 @@ package ua.alexd.CarRentService.domain;
 import lombok.*;
 
 import javax.persistence.*;
-import javax.validation.constraints.*;
+import javax.validation.constraints.Email;
+import javax.validation.constraints.NotEmpty;
+import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Size;
 
 @Entity
 @Table(name = "users")
@@ -35,7 +38,7 @@ public class User {
 
     @Basic
     @Column
-    private boolean isActive;
+    private boolean active;
 
 //TODO Add authorities
 
