@@ -55,9 +55,9 @@ public class CarService {
     }
 
     public boolean deleteCar(String id) {
-        var deletionModel = getCarById(id);
-        if (deletionModel.isPresent()) {
-            carRepository.delete(deletionModel.get());
+        var deletionCar = getCarById(id);
+        if (deletionCar.isPresent()) {
+            carRepository.delete(deletionCar.get());
             return true;
         }
         return false;

@@ -3,7 +3,6 @@ package ua.alexd.CarRentService.domain;
 import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.*;
-import org.jetbrains.annotations.NotNull;
 
 import javax.persistence.*;
 import javax.validation.constraints.Future;
@@ -28,14 +27,12 @@ public class Rent {
 
     @Basic
     @Column
-    @NotNull
     @PastOrPresent
     @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
     private LocalDateTime rentStart;
 
     @Basic
     @Column
-    @NotNull
     @Future
     @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
     private LocalDateTime rentEnd;
