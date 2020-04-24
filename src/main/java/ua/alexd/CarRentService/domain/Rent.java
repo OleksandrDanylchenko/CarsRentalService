@@ -1,6 +1,7 @@
 package ua.alexd.CarRentService.domain;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.*;
 import org.jetbrains.annotations.NotNull;
 
@@ -55,6 +56,7 @@ public class Rent {
     @Column
     private int totalPrice;
 
+    @JsonIgnore
     @OneToMany(mappedBy = "rent")
     private List<Complain> complains = new ArrayList<>();
 }

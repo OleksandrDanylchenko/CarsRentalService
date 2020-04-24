@@ -62,4 +62,17 @@ public class ClientService {
         }
         return false;
     }
+
+    public boolean changeRidesAmount(@NotNull Client client, boolean isAdding) {
+        var rentClient = getClientById(String.valueOf(client.getId()));
+        if (rentClient.isPresent()) {
+            var ridesAmount = rentClient.get().getRidesAmount();
+            if (isAdding)
+                rentClient.get().setRidesAmount(++ridesAmount);
+            else
+                rentClient.get().setRidesAmount(--ridesAmount);
+            return saveClient(rentClient.get());
+        }
+        return false;
+    }
 }

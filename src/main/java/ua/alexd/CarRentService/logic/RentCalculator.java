@@ -58,7 +58,7 @@ public class RentCalculator {
 
     // Finds the nearest rides amount
     private Optional<Integer> getDiscount(int clientRidesAmount, @NotNull List<Discount> discounts) {
-        discounts.sort(Comparator.comparingInt(Discount::getRentsAmount));
+        discounts.sort(Comparator.comparingInt(Discount::getRentsAmount).reversed());
         for (var discount : discounts)
             if (discount.getRentsAmount() <= clientRidesAmount)
                 return Optional.of(discount.getDiscountPercents());

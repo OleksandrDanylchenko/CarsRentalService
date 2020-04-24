@@ -7,6 +7,7 @@ import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.stereotype.Service;
 import ua.alexd.CarRentService.domain.Rent;
 import ua.alexd.CarRentService.logic.RentCalculator;
+import ua.alexd.CarRentService.logic.RentTriggers;
 import ua.alexd.CarRentService.repository.RentRepository;
 
 import java.util.List;
@@ -18,10 +19,12 @@ import static java.time.temporal.ChronoUnit.DAYS;
 public class RentService {
     private final RentRepository rentRepository;
     private final RentCalculator rentCalculator;
+    private final RentTriggers rentTriggers;
 
-    public RentService(RentRepository rentRepository, RentCalculator rentCalculator) {
+    public RentService(RentRepository rentRepository, RentCalculator rentCalculator, RentTriggers rentTriggers) {
         this.rentRepository = rentRepository;
         this.rentCalculator = rentCalculator;
+        this.rentTriggers = rentTriggers;
     }
 
     public List<Rent> getAllRents() {
@@ -38,16 +41,17 @@ public class RentService {
     }
 
     public boolean addNewRent(@NotNull Rent newRent) {
-        return setDaysDelta(newRent) && setTotalPrice(newRent) && saveRent(newRent);
+        return setDaysDelta(newRent) && setTotalPrice(newRent) &&
+                rentTriggers.addClientRide(newRent) &&
+                rentTriggers.bookCar(newRent) &&
+                saveRent(newRent);
     }
 
     public boolean updateRent(@NotNull Rent updRent) {
         var rentFromDB = getRentById(String.valueOf(updRent.getId()));
-        if (rentFromDB.isPresent()) {
-            if (setDaysDelta(updRent) && setTotalPrice(updRent)) {
-                BeanUtils.copyProperties(updRent, rentFromDB.get(), "id");
-                return saveRent(rentFromDB.get());
-            }
+        if (rentFromDB.isPresent() && prepareUpdateRent(rentFromDB.get(), updRent)) {
+            BeanUtils.copyProperties(updRent, rentFromDB.get(), "id");
+            return saveRent(rentFromDB.get());
         }
         return false;
     }
@@ -88,5 +92,11 @@ public class RentService {
             return true;
         }
         return false;
+    }
+
+    private boolean prepareUpdateRent(Rent prevRent, Rent updRent) {
+        return setDaysDelta(updRent) && setTotalPrice(updRent) &&
+                rentTriggers.changeCar(prevRent, updRent) && rentTriggers.changeClients(prevRent, updRent);
+
     }
 }

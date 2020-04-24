@@ -1,5 +1,6 @@
 package ua.alexd.CarRentService.domain;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.*;
 
 import javax.persistence.*;
@@ -30,6 +31,7 @@ public class RentCenter {
     @Size(min = 1, max = 150)
     private String address;
 
+    @JsonIgnore
     @OneToMany(mappedBy = "rentCenter")
     private List<Car> centerCars = new ArrayList<>();
 }

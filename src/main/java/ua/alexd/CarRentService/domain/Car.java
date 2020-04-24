@@ -48,5 +48,5 @@ public class Car {
 
     @Basic
     @Column
-    private boolean isRentable;
+    private boolean rentable;
 }
