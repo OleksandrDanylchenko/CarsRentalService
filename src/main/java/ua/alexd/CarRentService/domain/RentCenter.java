@@ -6,6 +6,8 @@ import javax.persistence.*;
 import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
+import java.util.ArrayList;
+import java.util.List;
 
 @Entity
 @Table(name = "rent_centers")
@@ -27,4 +29,8 @@ public class RentCenter {
     @NotEmpty(message = "Адреса не може бути пустою")
     @Size(min = 1, max = 150)
     private String address;
+
+    @OneToMany(mappedBy = "rentCenter")
+    private List<Car> centerCars = new ArrayList<>();
+
 }

@@ -36,9 +36,17 @@ public class Car {
     @JoinColumn(name = "class_id")
     private ModelClass modelClass;
 
+    @ManyToOne
+    @JoinColumn(name = "center_id")
+    private RentCenter rentCenter;
+
     @Basic
     @Column
     @Min(1)
     @Max(40000)
     private int dayPrice;
+
+    @Basic
+    @Column
+    private boolean isRentable;
 }
