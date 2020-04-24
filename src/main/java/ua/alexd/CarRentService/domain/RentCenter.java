@@ -32,5 +32,4 @@ public class RentCenter {
 
     @OneToMany(mappedBy = "rentCenter")
     private List<Car> centerCars = new ArrayList<>();
-
 }

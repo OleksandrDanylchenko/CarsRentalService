@@ -6,9 +6,10 @@ import org.jetbrains.annotations.NotNull;
 
 import javax.persistence.*;
 import javax.validation.constraints.Future;
-import javax.validation.constraints.Min;
 import javax.validation.constraints.PastOrPresent;
 import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.List;
 
 @Entity
 @Table(name = "rents")
@@ -40,7 +41,6 @@ public class Rent {
 
     @Basic
     @Column
-    @Min(value = 1, message = "Машину не можна орендувати менше ніж на 1 день")
     private int daysDelta;
 
     @ManyToOne
@@ -53,6 +53,8 @@ public class Rent {
 
     @Basic
     @Column
-    @Min(value = 1)
     private int totalPrice;
+
+    @OneToMany(mappedBy = "rent")
+    private List<Complain> complains = new ArrayList<>();
 }

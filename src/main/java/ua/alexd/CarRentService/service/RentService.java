@@ -6,9 +6,7 @@ import org.springframework.beans.BeanUtils;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.stereotype.Service;
 import ua.alexd.CarRentService.domain.Rent;
-import ua.alexd.CarRentService.repository.CarRepository;
-import ua.alexd.CarRentService.repository.ClientRepository;
-import ua.alexd.CarRentService.repository.DiscountRepository;
+import ua.alexd.CarRentService.logic.RentCalculator;
 import ua.alexd.CarRentService.repository.RentRepository;
 
 import java.util.List;
@@ -19,16 +17,11 @@ import static java.time.temporal.ChronoUnit.DAYS;
 @Service
 public class RentService {
     private final RentRepository rentRepository;
-    private final ClientRepository clientRepository;
-    private final CarRepository carRepository;
-    private final DiscountRepository discountRepository;
+    private final RentCalculator rentCalculator;
 
-    public RentService(RentRepository rentRepository, ClientRepository clientRepository,
-                       CarRepository carRepository, DiscountRepository discountRepository) {
+    public RentService(RentRepository rentRepository, RentCalculator rentCalculator) {
         this.rentRepository = rentRepository;
-        this.clientRepository = clientRepository;
-        this.carRepository = carRepository;
-        this.discountRepository = discountRepository;
+        this.rentCalculator = rentCalculator;
     }
 
     public List<Rent> getAllRents() {
@@ -45,18 +38,16 @@ public class RentService {
     }
 
     public boolean addNewRent(@NotNull Rent newRent) {
-        setDaysDelta(newRent);
-        return setTotalPrice(newRent) && saveRent(newRent);
+        return setDaysDelta(newRent) && setTotalPrice(newRent) && saveRent(newRent);
     }
 
     public boolean updateRent(@NotNull Rent updRent) {
         var rentFromDB = getRentById(String.valueOf(updRent.getId()));
         if (rentFromDB.isPresent()) {
-            setDaysDelta(updRent);
-            if (!setTotalPrice(updRent))
-                return false;
-            BeanUtils.copyProperties(updRent, rentFromDB.get(), "id");
-            return saveRent(rentFromDB.get());
+            if (setDaysDelta(updRent) && setTotalPrice(updRent)) {
+                BeanUtils.copyProperties(updRent, rentFromDB.get(), "id");
+                return saveRent(rentFromDB.get());
+            }
         }
         return false;
     }
@@ -79,31 +70,23 @@ public class RentService {
         return false;
     }
 
-    private void setDaysDelta(@NotNull Rent processingRent) {
+    private boolean setDaysDelta(@NotNull Rent processingRent) {
         var rentStartDate = processingRent.getRentStart().toLocalDate();
         var rentEndDate = processingRent.getRentEnd().toLocalDate();
         var daysDelta = (int) DAYS.between(rentStartDate, rentEndDate);
-        processingRent.setDaysDelta(daysDelta);
-    }
-
-    private boolean setTotalPrice(@NotNull Rent processingRent) {
-        var carId = processingRent.getCar().getId();
-        var rentCar = carRepository.findById(carId);
-        var clientId = processingRent.getClient().getId();
-        var rentClient = clientRepository.findById(clientId);
-        if (rentCar.isPresent() && rentClient.isPresent()) {
-            var tariff = rentCar.get().getDayPrice();
-            var daysDelta = processingRent.getDaysDelta();
-            // TODO Add discount
-            var totalPrice = tariff * daysDelta;
-            processingRent.setTotalPrice(totalPrice);
+        if (daysDelta > 1) {
+            processingRent.setDaysDelta(daysDelta);
             return true;
         }
         return false;
     }
 
-    // TODO Create discount percent
-//    private int getDiscountPercent(Client rentClient) {
-//
-//    }
+    private boolean setTotalPrice(@NotNull Rent processingRent) {
+        var totalPrice = rentCalculator.calculateTotalPrice(processingRent);
+        if (totalPrice.isPresent()) {
+            processingRent.setTotalPrice(totalPrice.get());
+            return true;
+        }
+        return false;
+    }
 }
