@@ -11,7 +11,7 @@ import java.util.List;
 
 @CrossOrigin(origins = {"http://localhost:3000", "http://localhost:4200", "http://localhost:8081"})
 @RestController
-@RequestMapping("/rent_center")
+@RequestMapping("/rent_centers")
 public class RentCenterResource {
     private final RentCenterService rentCenterService;
 
