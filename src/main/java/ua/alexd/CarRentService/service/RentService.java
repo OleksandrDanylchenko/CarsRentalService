@@ -68,6 +68,7 @@ public class RentService {
     public boolean deleteRent(String id) {
         var deletionRent = getRentById(id);
         if (deletionRent.isPresent()) {
+            rentTriggers.releaseCar(deletionRent.get());
             rentRepository.delete(deletionRent.get());
             return true;
         }

@@ -18,7 +18,12 @@ public class RentTriggers {
 
     public boolean bookCar(@NotNull Rent rent) {
         var rentCar = rent.getCar();
-        return carService.toggleRentable(rentCar);
+        return carService.bookCar(rentCar);
+    }
+
+    public boolean releaseCar(@NotNull Rent rent) {
+        var rentCar = rent.getCar();
+        return carService.releaseCar(rentCar);
     }
 
     public boolean changeCar(@NotNull Rent previousRent, @NotNull Rent updateRent) {
@@ -26,7 +31,7 @@ public class RentTriggers {
             var prevCar = previousRent.getCar();
             var newCar = updateRent.getCar();
             return !prevCar.isRentable() && newCar.isRentable() &&
-                    carService.toggleRentable(prevCar) && carService.toggleRentable(newCar);
+                    carService.bookCar(prevCar) && carService.bookCar(newCar);
         }
         return true;
     }

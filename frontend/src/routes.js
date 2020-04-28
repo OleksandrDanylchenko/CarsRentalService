@@ -12,7 +12,7 @@ const router = new Router({
             component: () => import("./components/Landing"),
         },
         {
-            path: "/model",
+            path: "/models",
             name: "Models",
             component: () => import("./components/model/ModelsTable"),
         },

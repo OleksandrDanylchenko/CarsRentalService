@@ -63,10 +63,19 @@ public class CarService {
         return false;
     }
 
-    public boolean toggleRentable(@NotNull Car car) {
+    public boolean bookCar(@NotNull Car car) {
         var rentCar = getCarById(String.valueOf(car.getId()));
         if (rentCar.isPresent() && rentCar.get().isRentable()) {
             rentCar.get().setRentable(false);
+            return updateCar(rentCar.get());
+        }
+        return false;
+    }
+
+    public boolean releaseCar(@NotNull Car car) {
+        var rentCar = getCarById(String.valueOf(car.getId()));
+        if (rentCar.isPresent() && !rentCar.get().isRentable()) {
+            rentCar.get().setRentable(true);
             return updateCar(rentCar.get());
         }
         return false;

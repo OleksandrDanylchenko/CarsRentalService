@@ -3,19 +3,19 @@ import {store} from '../store'
 
 class ModelDataService {
     retrieveAllModels() {
-        return axios.get( store.state.apiUrl + `/model`);
+        return axios.get( store.state.apiUrl + `/models`);
     }
     retrieveModel(id) {
-        return axios.get( store.state.apiUrl + `/model/${id}`);
+        return axios.get( store.state.apiUrl + `/models/${id}`);
     }
     addModel(newModel) {
-        return axios.post(store.state.apiUrl + `/model`, newModel);
+        return axios.post(store.state.apiUrl + `/models`, newModel);
     }
     updateModel(updateModel) {
-        return axios.put(store.state.apiUrl + `/model`, updateModel);
+        return axios.put(store.state.apiUrl + `/models`, updateModel);
     }
     deleteModel(id) {
-        return axios.delete( store.state.apiUrl + `/model/${id}`)
+        return axios.delete( store.state.apiUrl + `/models/${id}`)
     }
 }
 
