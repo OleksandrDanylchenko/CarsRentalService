@@ -1,6 +1,7 @@
 <template>
     <div>
-        <b-modal id="modelModal" no-close-on-backdrop @show="loadValues" @hidden="resetForm">
+        <b-modal id="modelModal" no-close-on-backdrop size="lg"
+                 @show="loadValues" @hidden="resetForm">
             <template v-slot:modal-title>
                 <h3>{{ actionMessage }}</h3>
             </template>
@@ -55,17 +56,21 @@
 
                         <ValidationProvider rules="required|image" name="з фото моделі">
                             <b-form-group slot-scope="{ valid, errors }">
-                                <b-input-group prepend="Фото моделі" >
+                                <b-input-group prepend="Фото моделі">
                                     <b-form-file
-                                            v-model="modelPhoto"
+                                            v-model="modelImage"
                                             placeholder=""
                                             drop-placeholder="Перетягніть файл сюди..."
+                                            accept=".jpg, .png, .gif, .bmp, .jpeg"
                                             :state="errors[0] ? false : (valid ? true : null)"
+                                            @change="onPhotoLoad"
                                     ></b-form-file>
                                     <b-form-invalid-feedback>
                                         {{ errors[0] }}
                                     </b-form-invalid-feedback>
                                 </b-input-group>
+                                <b-img v-if="previewImage" v-bind="previewImagePattern" :src="previewImage"
+                                       rounded alt="Upload preview"></b-img>
                             </b-form-group>
                         </ValidationProvider>
                     </b-form>
@@ -97,7 +102,15 @@
                     model: null,
                     year: null
                 },
-                modelPhoto: null
+                modelImage: null,
+                previewImage: null,
+                previewImagePattern: {
+                    center: true,
+                    fluidGrow: true,
+                    width: 770,
+                    height: 570,
+                    class: 'mt-3'
+                }
             }
         },
         methods: {
@@ -120,13 +133,18 @@
                     model: null,
                     year: null
                 }
-                this.modelPhoto = null;
+                this.modelImage = null;
+                this.previewImage = null;
             },
             handleSubmit() {
                 if (this.formModel.id < 0)
-                    this.$emit('addModel', this.formModel);
+                    this.$emit('addModel', this.formModel, this.modelImage);
                 else
-                    this.$emit('updateModel', this.formModel);
+                    this.$emit('updateModel', this.formModel, this.modelImage);
+            },
+            onPhotoLoad(e) {
+                const image = e.target.files[0];
+                this.previewImage = URL.createObjectURL(image);
             }
         },
         computed: {

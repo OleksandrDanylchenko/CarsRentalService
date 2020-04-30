@@ -5,18 +5,23 @@ import org.jetbrains.annotations.NotNull;
 import org.springframework.beans.BeanUtils;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.stereotype.Service;
+import org.springframework.web.multipart.MultipartFile;
 import ua.alexd.CarRentService.domain.Model;
+import ua.alexd.CarRentService.photoService.ModelsPhotoService;
 import ua.alexd.CarRentService.repository.ModelRepository;
 
+import java.io.IOException;
 import java.util.List;
 import java.util.Optional;
 
 @Service
 public class ModelService {
     private final ModelRepository modelRepository;
+    private final ModelsPhotoService modelsImageService;
 
-    public ModelService(ModelRepository modelRepository) {
+    public ModelService(ModelRepository modelRepository, ModelsPhotoService modelsImageService) {
         this.modelRepository = modelRepository;
+        this.modelsImageService = modelsImageService;
     }
 
     public List<Model> getAllModels() {
@@ -32,17 +37,29 @@ public class ModelService {
         }
     }
 
-    public boolean addNewModel(Model newModel) {
-        return saveModel(newModel);
+    public boolean addNewModel(Model newModel, MultipartFile newModelImage) {
+        return saveImagePhoto(newModel, newModelImage) && saveModel(newModel);
     }
 
-    public boolean updateModel(@NotNull Model updModel) {
+    public boolean updateModel(@NotNull Model updModel, MultipartFile updModelImage) {
         var modelFromDB = getModelById(String.valueOf(updModel.getId()));
         if (modelFromDB.isPresent()) {
             BeanUtils.copyProperties(updModel, modelFromDB.get(), "id");
-            return saveModel(modelFromDB.get());
+            if (updModelImage == null) // image was not modified -> save only text data
+                return saveModel(modelFromDB.get());
+            return saveImagePhoto(updModel, updModelImage) && saveModel(modelFromDB.get());
         }
         return false;
+    }
+
+    private boolean saveImagePhoto(@NotNull Model model, MultipartFile image) {
+        try {
+            var modelPhotoName = modelsImageService.saveUploadingImage(image);
+            model.setImageName(modelPhotoName);
+            return true;
+        } catch (IllegalArgumentException | IOException ignored) {
+            return false;
+        }
     }
 
     private boolean saveModel(Model saveModel) {

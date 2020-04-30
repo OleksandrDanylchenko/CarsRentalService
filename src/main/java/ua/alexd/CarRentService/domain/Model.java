@@ -40,8 +40,5 @@ public class Model {
     private int year;
 
     @Basic
-    @Column(unique = true)
-    @NotNull
-    @NotEmpty
     private String imageName;
 }

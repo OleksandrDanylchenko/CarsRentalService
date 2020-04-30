@@ -22,7 +22,7 @@
                         <h1>Доступні моделі авто:</h1>
                         <b-card-group columns>
                             <div v-for="model in models" :key="model.id">
-                                <b-card :img-src="require('@/assets/modelsPhoto/' + model.imageName)"
+                                <b-card :img-src="require('@/assets/modelsPhotos/' + model.imageName)"
                                         :img-alt="model.model + ' photo'"
                                         img-top>
                                     <b-card-title class="text-center mb-0">
@@ -96,11 +96,12 @@
                 this.processingId = id;
                 this.$bvModal.show("modelModal");
             },
-            addModel(newModel) {
-                ModelDataService.addModel(newModel).then(() => {
+            addModel(newModel, newModelImage) {
+                ModelDataService.addModel(newModel, newModelImage).then(() => {
                     this.messages.push(`Нову модель додано успішно`);
                     this.refreshModels();
                 }).catch(error => {
+                    console.log(error);
                     if (error.response.status === 409) {
                         this.errors.push(`Таблиця уже містить модель ${JSON.parse(error.response.config.data).model}`);
                     } else {
@@ -109,8 +110,8 @@
                 });
                 this.$bvModal.hide("modelModal");
             },
-            updateModel(updateModel) {
-                ModelDataService.updateModel(updateModel).then(() => {
+            updateModel(updateModel, updateModelImage) {
+                ModelDataService.updateModel(updateModel, updateModelImage).then(() => {
                     this.messages.push(`Модель №${updateModel.id} змінено успішно`);
                     this.refreshModels();
                 }).catch(error => {
