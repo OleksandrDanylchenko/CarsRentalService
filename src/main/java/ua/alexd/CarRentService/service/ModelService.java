@@ -38,7 +38,7 @@ public class ModelService {
     }
 
     public boolean addNewModel(Model newModel, MultipartFile newModelImage) {
-        return saveImagePhoto(newModel, newModelImage) && saveModel(newModel);
+        return saveModelImage(newModel, newModelImage) && saveModel(newModel);
     }
 
     public boolean updateModel(@NotNull Model updModel, MultipartFile updModelImage) {
@@ -47,12 +47,12 @@ public class ModelService {
             BeanUtils.copyProperties(updModel, modelFromDB.get(), "id");
             if (updModelImage == null) // image was not modified -> save only text data
                 return saveModel(modelFromDB.get());
-            return saveImagePhoto(updModel, updModelImage) && saveModel(modelFromDB.get());
+            return saveModelImage(updModel, updModelImage) && saveModel(modelFromDB.get());
         }
         return false;
     }
 
-    private boolean saveImagePhoto(@NotNull Model model, MultipartFile image) {
+    private boolean saveModelImage(@NotNull Model model, MultipartFile image) {
         try {
             var modelPhotoName = modelsImageService.saveUploadingImage(image);
             model.setImageName(modelPhotoName);
@@ -74,6 +74,11 @@ public class ModelService {
     public boolean deleteModel(String id) {
         var deletionModel = getModelById(id);
         if (deletionModel.isPresent()) {
+            try {
+                modelsImageService.deletePhoto(deletionModel.get().getImageName());
+            } catch (IOException ioException) {
+                return false;
+            }
             modelRepository.delete(deletionModel.get());
             return true;
         }

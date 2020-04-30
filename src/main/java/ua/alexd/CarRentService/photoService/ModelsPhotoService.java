@@ -42,7 +42,14 @@ public class ModelsPhotoService {
         return uuidStr + "__" + uploadFilename;
     }
 
-    private @NotNull String createFileFullPath(String newFilename) throws IOException {
-        return modelsPhotosFolder.getCanonicalPath() + '\\' + newFilename;
+    private @NotNull String createFileFullPath(String filename) throws IOException {
+        return modelsPhotosFolder.getCanonicalPath() + '\\' + filename;
+    }
+
+    public void deletePhoto(String imageName) throws IOException {
+        var fullFilepath = createFileFullPath(imageName);
+        var deletionFile = new File(fullFilepath);
+        //noinspection ResultOfMethodCallIgnored
+        deletionFile.delete();
     }
 }
