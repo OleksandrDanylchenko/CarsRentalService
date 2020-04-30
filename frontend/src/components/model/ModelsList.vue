@@ -15,32 +15,35 @@
                                      @dismissMessages="dismissMessages" @dismissErrors="dismissErrors"/>
             <b-row>
                 <b-col>
-                    <h1>Список моделей авто:</h1>
-                    <b-table id="modelsTable" hover :items="models" :fields="fields"
-                             :busy.sync="isBusy" primary-key="id">
-                        <template v-slot:table-busy>
-                            <div class="text-center text-danger mt-2">
-                                <b-spinner type="grow" class="align-middle" style="width: 3rem; height: 3rem;"/>
-                                <strong>&nbsp;Завантаження...</strong>
+                    <h1 v-if="models.length < 1">
+                        У системі поки не представлено доступних моделей
+                    </h1>
+                    <div v-else>
+                        <h1>Доступні моделі авто:</h1>
+                        <b-card-group columns>
+                            <div v-for="model in models" :key="model.id">
+                                <b-card :img-src="require('@/assets/modelsPhoto/' + model.imageName)"
+                                        :img-alt="model.model + ' photo'"
+                                        img-top>
+                                    <b-card-title class="text-center mb-0">
+                                        <div class="h1">{{ model.brand }} {{ model.model }}</div>
+                                        <h3 class="mb-0">{{ model.year }}</h3>
+                                    </b-card-title>
+                                    <template v-slot:footer>
+                                        <div class="d-flex justify-content-center">
+                                            <b-button pill variant="outline-dark" @click="openModelModal(model.id)">
+                                                <i class="fa fa-edit"></i>
+                                            </b-button>
+                                            <b-button pill class="ml-3" variant="outline-danger"
+                                                      @click="openDeleteModal(model.id)">
+                                                <i class="fa fa-trash"></i>
+                                            </b-button>
+                                        </div>
+                                    </template>
+                                </b-card>
                             </div>
-                        </template>
-                        <template v-slot:head(id)="id_header">
-                            <strong class="text-danger">{{ id_header.label }}</strong>
-                        </template>
-                        <template v-slot:cell(id)="data">
-                            <strong class="text-danger">{{ data.item.id }}</strong>
-                        </template>
-                        <template v-slot:cell(editModal)="data">
-                            <b-button pill variant="outline-dark" @click="openModelModal(data.item.id)">
-                                <i class="fa fa-edit"></i>
-                            </b-button>
-                        </template>
-                        <template v-slot:cell(deleteModal)="data">
-                            <b-button pill variant="outline-danger" @click="openDeleteModal(data.item.id)">
-                                <i class="fa fa-trash"></i>
-                            </b-button>
-                        </template>
-                    </b-table>
+                        </b-card-group>
+                    </div>
                 </b-col>
             </b-row>
         </div>
@@ -68,16 +71,7 @@
         },
         data() {
             return {
-                fields: [
-                    {key: 'id', label: 'ID', sortable: true},
-                    {key: 'brand', label: 'Бренд', sortable: true},
-                    {key: 'model', label: 'Модель', sortable: true},
-                    {key: 'year', label: 'Рік', sortable: true},
-                    {key: 'editModal', label: 'Змінити', thClass: 'text-center', tdClass: 'text-center'},
-                    {key: 'deleteModal', label: 'Видалити', thClass: 'text-center', tdClass: 'text-center'},
-                ],
                 models: [],
-                isBusy: true,
                 processingId: Number.MIN_VALUE,
 
                 messages: [],
@@ -86,14 +80,11 @@
         },
         methods: {
             refreshModels() {
-                this.isBusy = true;
                 ModelDataService.retrieveAllModels().then(response => {
                     this.models = response.data;
-                    this.isBusy = false;
                 }).catch(error => {
                     if (error.response.status === 404) {
-                        this.errors.push(`Таблиця моделей не містить записів`);
-                        this.isBusy = false;
+                        console.log(`Таблиця моделей не містить записів`);
                     } else {
                         this.errors.push(`Сталася непередбачувана помилка завантаження таблиці`);
                     }
@@ -106,7 +97,6 @@
                 this.$bvModal.show("modelModal");
             },
             addModel(newModel) {
-                this.isBusy = true;
                 ModelDataService.addModel(newModel).then(() => {
                     this.messages.push(`Нову модель додано успішно`);
                     this.refreshModels();
@@ -117,11 +107,9 @@
                         this.errors.push(`Нова модель містить інформацію, що суперечить обмеженням`);
                     }
                 });
-                this.isBusy = false;
                 this.$bvModal.hide("modelModal");
             },
             updateModel(updateModel) {
-                this.isBusy = true;
                 ModelDataService.updateModel(updateModel).then(() => {
                     this.messages.push(`Модель №${updateModel.id} змінено успішно`);
                     this.refreshModels();
@@ -132,7 +120,6 @@
                         this.errors.push(`Змінювана модель містить інформацію, що суперечить обмеженням`);
                     }
                 });
-                this.isBusy = false;
                 this.$bvModal.hide("modelModal");
             },
             openDeleteModal(id) {
@@ -142,7 +129,6 @@
                 this.$bvModal.show("deleteModal");
             },
             deleteModel(id) {
-                this.isBusy = true;
                 ModelDataService.deleteModel(id).then(() => {
                     this.messages.push(`Видалення запису №${id} виконано успішно`);
                     this.refreshModels();
@@ -150,7 +136,6 @@
                     console.log(error);
                     this.errors.push(`Видалення запису №${id} не виконано!`);
                 });
-                this.isBusy = false;
                 this.$bvModal.hide("deleteModal");
             }
         },

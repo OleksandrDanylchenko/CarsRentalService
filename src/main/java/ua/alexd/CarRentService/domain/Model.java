@@ -38,4 +38,10 @@ public class Model {
     @Min(value = 2008, message = "Модельний ряд повинен бути пізнішим ніж 2008 рік")
     @Max(value = 2020, message = "Модельний ряд не повинен бути пізнішим ніж поточний рік")
     private int year;
+
+    @Basic
+    @Column(unique = true)
+    @NotNull
+    @NotEmpty
+    private String imageName;
 }
