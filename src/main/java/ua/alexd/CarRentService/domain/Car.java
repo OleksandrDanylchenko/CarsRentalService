@@ -25,10 +25,6 @@ public class Car {
     private Model model;
 
     @ManyToOne
-    @JoinColumn(name = "type_id")
-    private Type type;
-
-    @ManyToOne
     @JoinColumn(name = "spec_id")
     private Specification specification;
 

@@ -40,5 +40,12 @@ public class Model {
     private int year;
 
     @Basic
+    @Column
+    @NotNull(message = "Тип не може бути відсутнім")
+    @NotEmpty(message = "Тип не може бути пустим")
+    @Size(min = 1, max = 150)
+    private String type;
+
+    @Basic
     private String imageName;
 }
