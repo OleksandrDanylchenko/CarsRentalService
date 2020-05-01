@@ -38,7 +38,7 @@ public class ModelClassService {
 
     public boolean updateClass(@NotNull ModelClass updClass) {
         var classFromDB = getClassById(String.valueOf(updClass.getId()));
-        if (classFromDB.isPresent() && classFromDB.get().getMinPrice() > classFromDB.get().getMaxPrice()) {
+        if (classFromDB.isPresent() && classFromDB.get().getMinPrice() < classFromDB.get().getMaxPrice()) {
             BeanUtils.copyProperties(updClass, classFromDB.get(), "id");
             return saveClass(classFromDB.get());
         }

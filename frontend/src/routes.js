@@ -22,6 +22,11 @@ const router = new Router({
             component: () => import("./components/specification/SpecificationList"),
         },
         {
+            path: "/classes",
+            name: "Classes",
+            component: () => import("./components/class/ClassList"),
+        },
+        {
             path: "/courses",
             name: "Courses",
             component: () => import("./components/ListCoursesComponent"),

@@ -2,7 +2,7 @@
     <div>
         <b-row>
             <b-col>
-                <b-button pill variant="outline-danger" @click="openSpecificationModal(-1)">
+                <b-button pill variant="outline-danger" @click="openClassModal(-1)">
                     <i class="fas fa-plus-circle"></i>&nbsp;Додати нову конфігурацію
                 </b-button>
             </b-col>
@@ -12,8 +12,8 @@
                                      @dismissMessages="dismissMessages" @dismissErrors="dismissErrors"/>
             <b-row>
                 <b-col>
-                    <h1 class="mb-3 display-4">Список конфігурацій авто:</h1>
-                    <b-table id="specificationsTable" hover :items="specifications" :fields="fields"
+                    <h1 class="mb-3 display-4">Список класів авто:</h1>
+                    <b-table id="classesTable" hover :items="classes" :fields="fields"
                              :busy.sync="isBusy" primary-key="id">
                         <template v-slot:table-busy>
                             <div class="text-center text-danger mt-2">
@@ -22,7 +22,7 @@
                             </div>
                         </template>
                         <template v-slot:cell(editModal)="data">
-                            <b-button pill variant="outline-dark" @click="openSpecificationModal(data.item.id)">
+                            <b-button pill variant="outline-dark" @click="openClassModal(data.item.id)">
                                 <i class="fa fa-edit"></i>
                             </b-button>
                         </template>
@@ -35,92 +35,90 @@
                 </b-col>
             </b-row>
         </div>
-        <SpecificationModal :processingId="processingId" @addSpecification="addSpecification"
-                            @updateSpecification="updateSpecification" @addError="addError"/>
-        <DeleteModal :processingId="processingId" @deleteRecord="deleteSpecification"/>
+        <ClassModal :processingId="processingId"
+                    @addClass="addClass" @updateClass="updateClass" @addError="addError"/>
+        <DeleteModal :processingId="processingId" @deleteRecord="deleteClass"/>
     </div>
 </template>
 
 <script>
     import MessagesErrorsComponent from "../common/MessagesErrorsComponent";
     import {MessagesErrorsDismissMixin} from "../mixins/MessagesErrorsDismissMixin"
-    import SpecificationModal from "./SpecificationModal"
+    import ClassModal from "./ClassModal"
     import DeleteModal from "../common/DeleteModal"
     import DataService from "../../service/DataService";
 
     export default {
         mixins: [MessagesErrorsDismissMixin],
-        name: "SpecificationsList",
+        name: "ClassesList",
         components: {
             MessagesErrorsComponent,
-            SpecificationModal,
+            ClassModal,
             DeleteModal
         },
         data() {
             return {
                 fields: [
                     {key: 'id', label: 'ID', sortable: true, thClass: 'text-danger', tdClass: 'text-danger'},
-                    {key: 'engineCapacity', label: 'Об\'єм двигуна (л.)', sortable: true},
-                    {key: 'horsepowers', label: 'Кінскі сили', sortable: true},
-                    {key: 'fuelType', label: 'Тип пального', sortable: true},
-                    {key: 'fuelConsumption', label: 'Споживання пального (л./100км.)', sortable: true},
-                    {key: 'transmissionType', label: 'Тип трансмісії', sortable: true},
+                    {key: 'minPrice', label: 'Мінімальна ціна', sortable: true},
+                    {key: 'maxPrice', label: 'Максимальна ціна', sortable: true},
+                    {key: 'name', label: 'Назва класу авто', sortable: true},
                     {key: 'editModal', label: 'Змінити', thClass: 'text-center', tdClass: 'text-center'},
                     {key: 'deleteModal', label: 'Видалити', thClass: 'text-center', tdClass: 'text-center'},
                 ],
-                specifications: [],
+                classes: [],
                 isBusy: true,
                 processingId: Number.MIN_VALUE,
-                resource: 'specifications',
+                resource: 'classes',
 
                 messages: [],
                 errors: []
             }
         },
         methods: {
-            refreshSpecifications() {
+            refreshClasses() {
                 this.isBusy = true;
                 DataService.retrieveAllRecords(this.resource).then(response => {
-                    this.specifications = response.data;
+                    this.classes = response.data;
                     this.isBusy = false;
                 }).catch(error => {
                     console.log(error);
                     if (error.response.status === 404) {
-                        this.addError(`Таблиця специфікацій не містить записів`);
+                        this.addError(`Таблиця класів не містить записів`);
                     } else {
                         this.addError(`Сталася непередбачувана помилка завантаження таблиці`);
                     }
                 });
             },
-            openSpecificationModal(id) {
+            openClassModal(id) {
                 this.dismissMessages();
                 this.dismissErrors();
                 this.processingId = id;
-                this.$bvModal.show("specificationModal");
+                this.$bvModal.show("classModal");
             },
-            addSpecification(newSpecification) {
+            addClass(newClass) {
                 this.isBusy = true;
-                DataService.addRecord(this.resource, newSpecification).then(() => {
+                DataService.addRecord(this.resource, newClass).then(() => {
                     this.addMessage(`Нову модель додано успішно`);
-                    this.refreshSpecifications();
+                    this.refreshClasses();
                 }).catch(error => {
                     console.log(error);
                     this.addError(`Нова модель містить інформацію, що суперечить обмеженням`);
                 });
                 this.isBusy = false;
-                this.$bvModal.hide("specificationModal");
+                this.$bvModal.hide("classModal");
             },
-            updateSpecification(updateSpecification) {
+            updateClass(updateClass) {
                 this.isBusy = true;
-                DataService.updateRecord(this.resource, updateSpecification).then(() => {
-                    this.addMessage(`Модель №${updateSpecification.id} змінено успішно`);
-                    this.refreshSpecifications();
+                DataService.updateRecord(this.resource, updateClass).then(() => {
+                    this.addMessage(`Модель №${updateClass.id} змінено успішно`);
+                    this.refreshClasses();
                 }).catch(error => {
                     console.log(error);
                     this.addError(`Змінювана модель містить інформацію, що суперечить обмеженням`);
                 });
                 this.isBusy = false;
-                this.$bvModal.hide("specificationModal");
+                this.$bvModal.hide("classModal");
             },
             openDeleteModal(id) {
                 this.processingId = id;
@@ -128,11 +126,11 @@
                 this.dismissErrors();
                 this.$bvModal.show("deleteModal");
             },
-            deleteSpecification(id) {
+            deleteClass(id) {
                 this.isBusy = true;
                 DataService.deleteRecord(this.resource, id).then(() => {
                     this.addMessage(`Видалення запису №${id} виконано успішно`);
-                    this.refreshSpecifications();
+                    this.refreshClasses();
                 }).catch(error => {
                     console.log(error);
                     this.addError(`Видалення запису №${id} не виконано!`);
@@ -142,7 +140,7 @@
             }
         },
         created() {
-            this.refreshSpecifications();
+            this.refreshClasses();
         }
     }
 </script>

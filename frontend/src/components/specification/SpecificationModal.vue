@@ -161,9 +161,9 @@
             },
             handleSubmit() {
                 if (this.formSpecification.id < 0)
-                    this.$emit('addModel', this.formSpecification);
+                    this.$emit('addSpecification', this.formSpecification);
                 else
-                    this.$emit('updateModel', this.formSpecification);
+                    this.$emit('updateSpecification', this.formSpecification);
             }
         },
         computed: {
