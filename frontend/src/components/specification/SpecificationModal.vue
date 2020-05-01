@@ -120,14 +120,14 @@
                     {value: "Дизель", text: "Дизель"},
                     {value: "Газ/Бензин", text: "Газ/Бензин"},
                     {value: "Гібрид", text: "Гібрид"},
-                    {value: "Електро", text: "Електро"},
+                    {value: "Електро", text: "Електро"}
                 ],
                 transmissionTypes: [
                     {value: "Механіка", text: "Механіка"},
                     {value: "Автомат", text: "Автомат"},
                     {value: "Тіптронік", text: "Тіптронік"},
                     {value: "Робот", text: "Робот"},
-                    {value: "Варіатор", text: "Варіатор"},
+                    {value: "Варіатор", text: "Варіатор"}
                 ],
                 resource: "specifications"
             }

@@ -24,6 +24,7 @@
                                         <b-card-title class="text-center mb-0">
                                             <div class="h2">{{ model.brand }} {{ model.model }}</div>
                                             <h3 class="mb-0">{{ model.year }}</h3>
+                                            <h5 class="mb-0">{{ model.type }}</h5>
                                         </b-card-title>
                                         <template v-slot:footer>
                                             <div class="d-flex justify-content-center">

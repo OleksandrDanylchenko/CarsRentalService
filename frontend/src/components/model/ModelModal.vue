@@ -54,6 +54,19 @@
                             </b-form-group>
                         </ValidationProvider>
 
+                        <ValidationProvider rules="required" name="типу">
+                            <b-form-group slot-scope="{ valid, errors }">
+                                <b-input-group prepend="Тип авто">
+                                    <b-form-select v-model="formModel.type"
+                                                   :options="availableTypes"
+                                                   :state="errors[0] ? false : (valid ? true : null)"/>
+                                    <b-form-invalid-feedback>
+                                        {{ errors[0] }}
+                                    </b-form-invalid-feedback>
+                                </b-input-group>
+                            </b-form-group>
+                        </ValidationProvider>
+
                         <ValidationProvider :rules="photoUploadRules" name="з фото моделі">
                             <b-form-group slot-scope="{ valid, errors }">
                                 <b-input-group prepend="Фото моделі">
@@ -101,7 +114,8 @@
                     id: null,
                     brand: null,
                     model: null,
-                    year: null
+                    year: null,
+                    type: null
                 },
                 modelImage: null,
                 previewImage: null,
@@ -112,6 +126,17 @@
                     height: 570,
                     class: 'mt-3'
                 },
+                availableTypes: [
+                    {value: "Універсал", text: "Універсал"},
+                    {value: "Седан", text: "Седан"},
+                    {value: "Хетчбек", text: "Хетчбек"},
+                    {value: "Позашляховик/Кроссовер", text: "Позашляховик/Кроссовер"},
+                    {value: "Купе", text: "Купе"},
+                    {value: "Кабріолет", text: "Кабріолет"},
+                    {value: "Мінівен", text: "Мінівен"},
+                    {value: "Пікап", text: "Пікап"},
+                    {value: "Лімузин", text: "Лімузин"},
+                ],
                 resource: "models"
             }
         },
@@ -135,7 +160,8 @@
                     id: null,
                     brand: null,
                     model: null,
-                    year: null
+                    year: null,
+                    type: null
                 }
                 this.modelImage = null;
                 this.previewImage = null;
