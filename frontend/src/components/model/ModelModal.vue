@@ -196,5 +196,7 @@
 </script>
 
 <style lang="css">
-    @import "../../styles/uploadBadge.css";
+    .custom-file-input:lang(en) ~ .custom-file-label::after {
+        content: '↑';
+    }
 </style>

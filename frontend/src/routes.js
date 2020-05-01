@@ -37,6 +37,11 @@ const router = new Router({
             component: () => import("./components/client/ClientList"),
         },
         {
+            path: "/discounts",
+            name: "Discounts",
+            component: () => import("./components/discount/DiscountsList"),
+        },
+        {
             path: "/courses",
             name: "Courses",
             component: () => import("./components/ListCoursesComponent"),
