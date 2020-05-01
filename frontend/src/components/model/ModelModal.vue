@@ -147,6 +147,7 @@
                         this.formModel.brand = response.data.brand;
                         this.formModel.model = response.data.model;
                         this.formModel.year = response.data.year;
+                        this.formModel.type = response.data.type;
                     }).catch(error => {
                         console.log(error);
                         if (error.response.status !== 404)
