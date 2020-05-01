@@ -1,6 +1,6 @@
 <template>
     <div>
-        <b-modal id="classModal" no-close-on-backdrop
+        <b-modal id="centerModal" no-close-on-backdrop
                  @show="loadValues" @hidden="resetForm">
             <template v-slot:modal-title>
                 <h4>{{ actionMessage }}</h4>
@@ -9,45 +9,34 @@
             <template v-slot:default>
                 <ValidationObserver>
                     <b-form slot-scope="{ validate }" @submit.prevent="validate().then(handleSubmit)"
-                            id="classForm">
-                        <ValidationProvider rules="required|integer|min_value:1|max_value:40000"
-                                            name="мінімальної ціни">
+                            id="centerForm">
+                        <ValidationProvider rules="required|max:150" name="адреси">
                             <b-form-group slot-scope="{ valid, errors }">
-                                <b-input-group prepend="Мінімальна ціна">
-                                    <b-form-input
-                                            type="number"
-                                            v-model="formClass.minPrice"
-                                            :state="errors[0] ? false : (valid ? true : null)">
-                                    </b-form-input>
-                                    <b-form-invalid-feedback>
-                                        {{ errors[0] }}
-                                    </b-form-invalid-feedback>
-                                </b-input-group>
-                            </b-form-group>
-                        </ValidationProvider>
-
-                        <ValidationProvider rules="required|integer|min_value:1|max_value:40000"
-                                            name="максимальної ціни">
-                            <b-form-group slot-scope="{ valid, errors }">
-                                <b-input-group prepend="Максимальна ціна">
-                                    <b-form-input
-                                            type="number"
-                                            v-model="formClass.maxPrice"
-                                            :state="errors[0] ? false : (valid ? true : null)">
-                                    </b-form-input>
-                                    <b-form-invalid-feedback>
-                                        {{ errors[0] }}
-                                    </b-form-invalid-feedback>
-                                </b-input-group>
-                            </b-form-group>
-                        </ValidationProvider>
-
-                        <ValidationProvider rules="required|alpha_spaces|max:150" name="назви класу">
-                            <b-form-group slot-scope="{ valid, errors }">
-                                <b-input-group prepend="Назва">
+                                <b-input-group prepend="Адреса">
                                     <b-form-input
                                             type="text"
-                                            v-model="formClass.name"
+                                            v-model="formCenter.address"
+                                            :state="errors[0] ? false : (valid ? true : null)">
+                                    </b-form-input>
+                                    <b-form-invalid-feedback>
+                                        {{ errors[0] }}
+                                    </b-form-invalid-feedback>
+                                </b-input-group>
+                            </b-form-group>
+                        </ValidationProvider>
+                    </b-form>
+                </ValidationObserver>
+
+                <ValidationObserver>
+                    <b-form slot-scope="{ validate }" @submit.prevent="validate().then(handleSubmit)"
+                            id="centerForm">
+                        <ValidationProvider rules="required|regex:^\+?3?8?(0\d{9})$|max:15"
+                                            name="мобільного телефону">
+                            <b-form-group slot-scope="{ valid, errors }">
+                                <b-input-group prepend="Мобільний телефон">
+                                    <b-form-input
+                                            type="text"
+                                            v-model="formCenter.phoneNumber"
                                             :state="errors[0] ? false : (valid ? true : null)">
                                     </b-form-input>
                                     <b-form-invalid-feedback>
@@ -64,7 +53,7 @@
                 <b-button variant="dark" @click="cancel()">
                     Скасувати
                 </b-button>
-                <b-button type="submit" form="classForm" variant="danger">
+                <b-button type="submit" form="centerForm" variant="danger">
                     {{ action }}
                 </b-button>
             </template>
@@ -79,48 +68,45 @@
         props: ['processingId'],
         data() {
             return {
-                formClass: {
+                formCenter: {
                     id: null,
-                    minPrice: null,
-                    maxPrice: null,
-                    name: null
+                    address: null,
+                    phoneNumber: null
                 },
-                resource: "classes"
+                resource: "rent_centers"
             }
         },
         methods: {
             loadValues() {
                 this.$nextTick(() => {
                     DataService.retrieveRecord(this.resource, this.processingId).then(response => {
-                        this.formClass.minPrice = response.data.minPrice;
-                        this.formClass.maxPrice = response.data.maxPrice;
-                        this.formClass.name = response.data.name;
+                        this.formCenter.address = response.data.address;
+                        this.formCenter.phoneNumber = response.data.phoneNumber;
                     }).catch(error => {
                         console.log(error);
                         if (error.response.status !== 404)
                             this.$emit('addError', `Модельне вікно спричинило помилку ${error}`);
                     });
-                    this.formClass.id = this.processingId;
+                    this.formCenter.id = this.processingId;
                 })
             },
             resetForm() {
-                this.formClass = {
+                this.formCenter = {
                     id: null,
-                    minPrice: null,
-                    maxPrice: null,
-                    name: null,
+                    address: null,
+                    phoneNumber: null
                 }
             },
             handleSubmit() {
-                if (this.formClass.id < 0)
-                    this.$emit('addClass', this.formClass);
+                if (this.formCenter.id < 0)
+                    this.$emit('addCenter', this.formCenter);
                 else
-                    this.$emit('updateClass', this.formClass);
+                    this.$emit('updateCenter', this.formCenter);
             }
         },
         computed: {
             actionMessage() {
-                return this.processingId <= 0 ? 'Додайте новий клас авто' : 'Змініть клас авто';
+                return this.processingId <= 0 ? 'Додайте новий центр оренди авто' : 'Змініть центр оренди';
             },
             action() {
                 return this.processingId <= 0 ? 'Додати' : 'Змінити';

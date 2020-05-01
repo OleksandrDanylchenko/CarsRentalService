@@ -176,7 +176,3 @@
         }
     }
 </script>
-
-<style lang="css">
-    @import "../../styles/uploadBadge.css";
-</style>

@@ -19,12 +19,17 @@ const router = new Router({
         {
             path: "/specifications",
             name: "Specifications",
-            component: () => import("./components/specification/SpecificationList"),
+            component: () => import("./components/specification/SpecificationsList"),
         },
         {
             path: "/classes",
             name: "Classes",
             component: () => import("./components/class/ClassList"),
+        },
+        {
+            path: "/rent_centers",
+            name: "RentCenters",
+            component: () => import("./components/rentCenter/RentCentersList"),
         },
         {
             path: "/courses",

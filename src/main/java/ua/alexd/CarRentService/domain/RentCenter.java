@@ -6,6 +6,7 @@ import lombok.*;
 import javax.persistence.*;
 import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Pattern;
 import javax.validation.constraints.Size;
 import java.util.ArrayList;
 import java.util.List;
@@ -30,6 +31,14 @@ public class RentCenter {
     @NotEmpty(message = "Адреса не може бути пустою")
     @Size(min = 1, max = 150)
     private String address;
+
+    @Basic
+    @Column(unique = true)
+    @NotNull(message = "Мобільний телефон не може бути відсутнім")
+    @NotEmpty(message = "Мобільний телефон не може бути пустим")
+    @Pattern(regexp = "^\\+?3?8?(0\\d{9})$", message = "Телефон повинен відповідати стандартам України")
+    @Size(min = 1, max = 15)
+    private String phoneNumber;
 
     @JsonIgnore
     @OneToMany(mappedBy = "rentCenter")
