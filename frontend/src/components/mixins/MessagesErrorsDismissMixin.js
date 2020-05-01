@@ -5,6 +5,12 @@ export const MessagesErrorsDismissMixin = {
         },
         dismissErrors() {
             this.errors = [];
+        },
+        addError(error) {
+            this.errors.push(error);
+        },
+        addMessage(message) {
+            this.messages.push(message);
         }
     }
 }

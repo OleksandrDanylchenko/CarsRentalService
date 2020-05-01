@@ -58,13 +58,13 @@
                             <b-form-group slot-scope="{ valid, errors }">
                                 <b-input-group prepend="Фото моделі">
                                     <b-form-file class="text-nowrap text-truncate"
-                                            v-model="modelImage"
-                                            placeholder=""
-                                            drop-placeholder="Перетягніть файл сюди..."
-                                            accept=".jpg, .png, .gif, .bmp, .jpeg"
-                                            no-drop
-                                            :state="errors[0] ? false : (valid ? true : null)"
-                                            @change="onPhotoLoad"
+                                                 v-model="modelImage"
+                                                 placeholder=""
+                                                 drop-placeholder="Перетягніть файл сюди..."
+                                                 accept=".jpg, .png, .gif, .bmp, .jpeg"
+                                                 no-drop
+                                                 :state="errors[0] ? false : (valid ? true : null)"
+                                                 @change="onPhotoLoad"
                                     />
                                     <b-form-invalid-feedback>
                                         {{ errors[0] }}
@@ -123,7 +123,9 @@
                         this.formModel.model = response.data.model;
                         this.formModel.year = response.data.year;
                     }).catch(error => {
-                        console.log(`On editing of ${this.id} occurred ${error}`)
+                        console.log(error);
+                        if (error.response.status !== 404)
+                            this.$emit('addError', `On editing of ${this.id} occurred ${error}`);
                     });
                     this.formModel.id = this.processingId;
                 })

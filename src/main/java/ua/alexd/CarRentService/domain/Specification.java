@@ -30,7 +30,7 @@ public class Specification {
 
     @Basic
     @Column
-    @Min(value = 50, message = "Потужність двигуна не може бути меншою ніж 56к.с.")
+    @Min(value = 50, message = "Потужність двигуна не може бути меншою ніж 50к.с.")
     @Max(value = 2000, message = "Потужність двигуна не може бути більшою ніж 2000к.с.")
     private int horsepowers;
 

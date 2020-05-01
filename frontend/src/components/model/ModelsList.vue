@@ -9,13 +9,11 @@
         </b-row>
         <div class="mt-4">
             <MessagesErrorsComponent :messages="messages" :errors="errors"
-                                     @dismissMessages="dismissMessages" @dismissErrors="dismissErrors"/>
+                                     @dismissMessages="dismissMessages" @dismissErrors="dismissErrors"
+                                     @addError="addError"/>
             <b-row>
                 <b-col>
-                    <h1 v-if="models.length < 1">
-                        У системі поки не представлено доступних моделей
-                    </h1>
-                    <div v-else>
+                    <div>
                         <h1 class="mb-3 display-4">Доступні моделі авто:</h1>
                         <b-card-group columns>
                             <div v-for="model in models" :key="model.id">
@@ -46,7 +44,7 @@
                 </b-col>
             </b-row>
         </div>
-        <ModelModal :processingId="processingId" @addModel="addModel" @updateModel="updateModel"/>
+        <ModelModal :processingId="processingId" @addModel="addModel" @updateModel="updateModel" @addError="addError"/>
         <DeleteModal :processingId="processingId" @deleteRecord="deleteModel"/>
     </div>
 </template>
@@ -85,9 +83,9 @@
                 }).catch(error => {
                     console.log(error);
                     if (error.response.status === 404) {
-                        console.log(`Таблиця моделей не містить записів`);
+                        this.addError(`Таблиця моделей поки не містить записів`);
                     } else {
-                        this.errors.push(`Сталася непередбачувана помилка завантаження таблиці`);
+                        this.addError(`Сталася непередбачувана помилка завантаження таблиці`);
                     }
                 });
             },
@@ -99,28 +97,28 @@
             },
             addModel(addForm) {
                 DataService.addRecord(this.resource, addForm).then(() => {
-                    this.messages.push(`Нову модель додано успішно`);
+                    this.addMessage("Нову модель додано успішно");
                     this.refreshModels();
                 }).catch(error => {
                     console.log(error);
                     if (error.response.status === 409) {
-                        this.errors.push(`Таблиця уже містить модель ${JSON.parse(error.response.config.data).model}`);
+                        this.addError(`Таблиця уже містить модель ${JSON.parse(error.response.config.data).model}`);
                     } else {
-                        this.errors.push(`Нова модель містить інформацію, що суперечить обмеженням`);
+                        this.addError(`Нова модель містить інформацію, що суперечить обмеженням`);
                     }
                 });
                 this.$bvModal.hide("modelModal");
             },
             updateModel(updateForm) {
                 DataService.updateRecord(this.resource, updateForm).then(() => {
-                    this.messages.push(`Модель №${JSON.parse(updateForm.get('model')).id} змінено успішно`);
+                    this.addMessage(`Модель №${JSON.parse(updateForm.get('model')).id} змінено успішно`);
                     this.refreshModels();
                 }).catch(error => {
                     console.log(error);
                     if (error.response.status === 409) {
-                        this.errors.push(`Таблиця уже містить модель ${JSON.parse(error.response.config.data).model}`);
+                        this.addError(`Таблиця уже містить модель ${JSON.parse(error.response.config.data).model}`);
                     } else {
-                        this.errors.push(`Змінювана модель містить інформацію, що суперечить обмеженням`);
+                        this.addError(`Змінювана модель містить інформацію, що суперечить обмеженням`);
                     }
                 });
                 this.$bvModal.hide("modelModal");
@@ -133,11 +131,11 @@
             },
             deleteModel(id) {
                 DataService.deleteRecord(this.resource, id).then(() => {
-                    this.messages.push(`Видалення запису №${id} виконано успішно`);
+                    this.addMessage(`Видалення запису №${id} виконано успішно`);
                     this.refreshModels();
                 }).catch(error => {
                     console.log(error);
-                    this.errors.push(`Видалення запису №${id} не виконано!`);
+                    this.addError(`Видалення запису №${id} не виконано!`);
                 });
                 this.$bvModal.hide("deleteModal");
             }
