@@ -54,7 +54,7 @@
                             </b-form-group>
                         </ValidationProvider>
 
-                        <ValidationProvider rules="required|image" name="з фото моделі">
+                        <ValidationProvider :rules="photoUploadRules" name="з фото моделі">
                             <b-form-group slot-scope="{ valid, errors }">
                                 <b-input-group prepend="Фото моделі">
                                     <b-form-file
@@ -137,10 +137,13 @@
                 this.previewImage = null;
             },
             handleSubmit() {
+                const form = new FormData();
+                form.append('model', JSON.stringify(this.formModel));
+                form.append('modelImage', this.modelImage);
                 if (this.formModel.id < 0)
-                    this.$emit('addModel', this.formModel, this.modelImage);
+                    this.$emit('addModel', form);
                 else
-                    this.$emit('updateModel', this.formModel, this.modelImage);
+                    this.$emit('updateModel', form);
             },
             onPhotoLoad(e) {
                 const image = e.target.files[0];
@@ -153,6 +156,9 @@
             },
             action() {
                 return this.processingId <= 0 ? 'Додати' : 'Змінити';
+            },
+            photoUploadRules() {
+                return this.processingId <= 0 ? 'required|image' : 'image';
             }
         }
     }

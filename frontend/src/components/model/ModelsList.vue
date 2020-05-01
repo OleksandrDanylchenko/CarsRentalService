@@ -6,9 +6,6 @@
                     <i class="fas fa-plus-circle"></i>&nbsp;Додати нову модель авто
                 </b-button>
             </b-col>
-            <b-col>
-                <!--                TODO Search-->
-            </b-col>
         </b-row>
         <div class="mt-4">
             <MessagesErrorsComponent :messages="messages" :errors="errors"
@@ -22,25 +19,27 @@
                         <h1>Доступні моделі авто:</h1>
                         <b-card-group columns>
                             <div v-for="model in models" :key="model.id">
-                                <b-card :img-src="require('@/assets/modelsPhotos/' + model.imageName)"
-                                        :img-alt="model.model + ' photo'"
-                                        img-top>
-                                    <b-card-title class="text-center mb-0">
-                                        <div class="h1">{{ model.brand }} {{ model.model }}</div>
-                                        <h3 class="mb-0">{{ model.year }}</h3>
-                                    </b-card-title>
-                                    <template v-slot:footer>
-                                        <div class="d-flex justify-content-center">
-                                            <b-button pill variant="outline-dark" @click="openModelModal(model.id)">
-                                                <i class="fa fa-edit"></i>
-                                            </b-button>
-                                            <b-button pill class="ml-3" variant="outline-danger"
-                                                      @click="openDeleteModal(model.id)">
-                                                <i class="fa fa-trash"></i>
-                                            </b-button>
-                                        </div>
-                                    </template>
-                                </b-card>
+                                <div v-if="model.imageName != null">
+                                    <b-card :img-src="require('@/assets/modelsPhotos/' + model.imageName)"
+                                            :img-alt="model.model + ' photo'" img-top
+                                            :header="'ID: ' + model.id">
+                                        <b-card-title class="text-center mb-0">
+                                            <div class="h1">{{ model.brand }} {{ model.model }}</div>
+                                            <h3 class="mb-0">{{ model.year }}</h3>
+                                        </b-card-title>
+                                        <template v-slot:footer>
+                                            <div class="d-flex justify-content-center">
+                                                <b-button pill variant="outline-dark" @click="openModelModal(model.id)">
+                                                    <i class="fa fa-edit"></i>
+                                                </b-button>
+                                                <b-button pill class="ml-3" variant="outline-danger"
+                                                          @click="openDeleteModal(model.id)">
+                                                    <i class="fa fa-trash"></i>
+                                                </b-button>
+                                            </div>
+                                        </template>
+                                    </b-card>
+                                </div>
                             </div>
                         </b-card-group>
                     </div>
@@ -96,8 +95,8 @@
                 this.processingId = id;
                 this.$bvModal.show("modelModal");
             },
-            addModel(newModel, newModelImage) {
-                ModelDataService.addModel(newModel, newModelImage).then(() => {
+            addModel(addForm) {
+                ModelDataService.addModel(addForm).then(() => {
                     this.messages.push(`Нову модель додано успішно`);
                     this.refreshModels();
                 }).catch(error => {
@@ -110,9 +109,9 @@
                 });
                 this.$bvModal.hide("modelModal");
             },
-            updateModel(updateModel, updateModelImage) {
-                ModelDataService.updateModel(updateModel, updateModelImage).then(() => {
-                    this.messages.push(`Модель №${updateModel.id} змінено успішно`);
+            updateModel(updateForm) {
+                ModelDataService.updateModel(updateForm).then(() => {
+                    this.messages.push(`Модель змінено успішно`);
                     this.refreshModels();
                 }).catch(error => {
                     if (error.response.status === 409) {

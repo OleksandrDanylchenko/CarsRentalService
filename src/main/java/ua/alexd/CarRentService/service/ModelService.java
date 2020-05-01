@@ -44,10 +44,16 @@ public class ModelService {
     public boolean updateModel(@NotNull Model updModel, MultipartFile updModelImage) {
         var modelFromDB = getModelById(String.valueOf(updModel.getId()));
         if (modelFromDB.isPresent()) {
-            BeanUtils.copyProperties(updModel, modelFromDB.get(), "id");
+            BeanUtils.copyProperties(updModel, modelFromDB.get(), "id", "imageName");
             if (updModelImage == null) // image was not modified -> save only text data
                 return saveModel(modelFromDB.get());
-            return saveModelImage(updModel, updModelImage) && saveModel(modelFromDB.get());
+            else
+                try {
+                    modelsImageService.deletePhoto(modelFromDB.get().getImageName());
+                    return saveModelImage(modelFromDB.get(), updModelImage) && saveModel(modelFromDB.get());
+                } catch (IOException ioException) {
+                    return false;
+                }
         }
         return false;
     }

@@ -8,7 +8,6 @@ import org.springframework.web.multipart.MultipartFile;
 import ua.alexd.CarRentService.domain.Model;
 import ua.alexd.CarRentService.service.ModelService;
 
-import javax.validation.Valid;
 import java.io.IOException;
 import java.util.List;
 
@@ -39,10 +38,10 @@ public class ModelResource {
     }
 
     @PostMapping
-    public ResponseEntity<Model> addModel(@RequestParam(value = "newModel") String newModelStr,
-                                          @RequestParam(value = "newModelImage") MultipartFile newModelImage) {
+    public ResponseEntity<Model> addModel(@RequestParam(value = "model") String newModelStr,
+                                          @RequestParam(value = "modelImage") MultipartFile newModelImage) {
         var objectMapper = new ObjectMapper();
-        Model newModel = null;
+        Model newModel;
         try {
             newModel = objectMapper.readValue(newModelStr, Model.class);
         } catch (IOException e) {
@@ -55,8 +54,16 @@ public class ModelResource {
     }
 
     @PutMapping
-    public ResponseEntity<Model> updateModel(@Valid @RequestBody Model updModel,
-                                             @RequestBody MultipartFile updModelImage) {
+    public ResponseEntity<Model> updateModel(@RequestParam(value = "model") String updModelStr,
+                                             @RequestParam(value = "modelImage", required = false) MultipartFile updModelImage) {
+        var objectMapper = new ObjectMapper();
+        Model updModel;
+        try {
+            updModel = objectMapper.readValue(updModelStr, Model.class);
+        } catch (IOException e) {
+            e.printStackTrace();
+            return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+        }
         return modelService.updateModel(updModel, updModelImage)
                 ? new ResponseEntity<>(updModel, HttpStatus.OK)
                 : new ResponseEntity<>(HttpStatus.CONFLICT);
