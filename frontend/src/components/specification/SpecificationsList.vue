@@ -86,7 +86,7 @@
                 }).catch(error => {
                     console.log(error);
                     if (error.response.status === 404) {
-                        this.addError(`Таблиця специфікацій не містить записів`);
+                        this.addError(`Таблиця конфігурацій не містить записів`);
                     } else {
                         this.addError(`Сталася непередбачувана помилка завантаження таблиці`);
                     }
@@ -101,11 +101,11 @@
             addSpecification(newSpecification) {
                 this.isBusy = true;
                 DataService.addRecord(this.resource, newSpecification).then(() => {
-                    this.addMessage(`Нову модель додано успішно`);
+                    this.addMessage(`Нову конфігурацію додано успішно`);
                     this.refreshSpecifications();
                 }).catch(error => {
                     console.log(error);
-                    this.addError(`Нова модель містить інформацію, що суперечить обмеженням`);
+                    this.addError(`Нова конфігурація містить інформацію, що суперечить обмеженням`);
                 });
                 this.isBusy = false;
                 this.$bvModal.hide("specificationModal");
@@ -117,7 +117,7 @@
                     this.refreshSpecifications();
                 }).catch(error => {
                     console.log(error);
-                    this.addError(`Змінювана модель містить інформацію, що суперечить обмеженням`);
+                    this.addError(`Змінювана конфігурація містить інформацію, що суперечить обмеженням`);
                 });
                 this.isBusy = false;
                 this.$bvModal.hide("specificationModal");
@@ -131,11 +131,11 @@
             deleteSpecification(id) {
                 this.isBusy = true;
                 DataService.deleteRecord(this.resource, id).then(() => {
-                    this.addMessage(`Видалення запису №${id} виконано успішно`);
+                    this.addMessage(`Видалення конфігурації №${id} виконано успішно`);
                     this.refreshSpecifications();
                 }).catch(error => {
                     console.log(error);
-                    this.addError(`Видалення запису №${id} не виконано!`);
+                    this.addError(`Видалення конфігурації №${id} не виконано!`);
                 });
                 this.isBusy = false;
                 this.$bvModal.hide("deleteModal");

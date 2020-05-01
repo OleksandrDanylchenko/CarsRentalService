@@ -83,7 +83,7 @@
                 }).catch(error => {
                     console.log(error);
                     if (error.response.status === 404) {
-                        this.addError(`Таблиця специфікацій не містить записів`);
+                        this.addError(`Таблиця центрів оренди не містить записів`);
                     } else {
                         this.addError(`Сталася непередбачувана помилка завантаження таблиці`);
                     }
@@ -98,11 +98,11 @@
             addCenter(newCenter) {
                 this.isBusy = true;
                 DataService.addRecord(this.resource, newCenter).then(() => {
-                    this.addMessage(`Нову модель додано успішно`);
+                    this.addMessage(`Новий центр оренди додано успішно`);
                     this.refreshCenters();
                 }).catch(error => {
                     console.log(error);
-                    this.addError(`Нова модель містить інформацію, що суперечить обмеженням`);
+                    this.addError(`Новий центр оренди містить інформацію, що суперечить обмеженням`);
                 });
                 this.isBusy = false;
                 this.$bvModal.hide("centerModal");
@@ -110,11 +110,11 @@
             updateCenter(updateCenter) {
                 this.isBusy = true;
                 DataService.updateRecord(this.resource, updateCenter).then(() => {
-                    this.addMessage(`Модель №${updateCenter.id} змінено успішно`);
+                    this.addMessage(`Центр оренди №${updateCenter.id} змінено успішно`);
                     this.refreshCenters();
                 }).catch(error => {
                     console.log(error);
-                    this.addError(`Змінювана модель містить інформацію, що суперечить обмеженням`);
+                    this.addError(`Змінюваний центр оренди містить інформацію, що суперечить обмеженням`);
                 });
                 this.isBusy = false;
                 this.$bvModal.hide("centerModal");
@@ -128,11 +128,11 @@
             deleteCenter(id) {
                 this.isBusy = true;
                 DataService.deleteRecord(this.resource, id).then(() => {
-                    this.addMessage(`Видалення запису №${id} виконано успішно`);
+                    this.addMessage(`Видалення центру оренди №${id} виконано успішно`);
                     this.refreshCenters();
                 }).catch(error => {
                     console.log(error);
-                    this.addError(`Видалення запису №${id} не виконано!`);
+                    this.addError(`Видалення центру оренди №${id} не виконано!`);
                 });
                 this.isBusy = false;
                 this.$bvModal.hide("deleteModal");

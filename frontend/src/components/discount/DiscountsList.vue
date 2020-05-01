@@ -83,7 +83,7 @@
                 }).catch(error => {
                     console.log(error);
                     if (error.response.status === 404) {
-                        this.addError(`Таблиця специфікацій не містить записів`);
+                        this.addError(`Таблиця знижок не містить записів`);
                     } else {
                         this.addError(`Сталася непередбачувана помилка завантаження таблиці`);
                     }
@@ -98,11 +98,11 @@
             addDiscount(newClient) {
                 this.isBusy = true;
                 DataService.addRecord(this.resource, newClient).then(() => {
-                    this.addMessage(`Нову модель додано успішно`);
+                    this.addMessage(`Нову знижку додано успішно`);
                     this.refreshDiscounts();
                 }).catch(error => {
                     console.log(error);
-                    this.addError(`Нова модель містить інформацію, що суперечить обмеженням`);
+                    this.addError(`Нова знижка містить інформацію, що суперечить обмеженням`);
                 });
                 this.isBusy = false;
                 this.$bvModal.hide("discountModal");
@@ -114,7 +114,7 @@
                     this.refreshDiscounts();
                 }).catch(error => {
                     console.log(error);
-                    this.addError(`Змінювана модель містить інформацію, що суперечить обмеженням`);
+                    this.addError(`Змінювана знижка містить інформацію, що суперечить обмеженням`);
                 });
                 this.isBusy = false;
                 this.$bvModal.hide("discountModal");
@@ -128,11 +128,11 @@
             deleteDiscount(id) {
                 this.isBusy = true;
                 DataService.deleteRecord(this.resource, id).then(() => {
-                    this.addMessage(`Видалення запису №${id} виконано успішно`);
+                    this.addMessage(`Видалення знижки №${id} виконано успішно`);
                     this.refreshDiscounts();
                 }).catch(error => {
                     console.log(error);
-                    this.addError(`Видалення запису №${id} не виконано!`);
+                    this.addError(`Видалення знижки №${id} не виконано!`);
                 });
                 this.isBusy = false;
                 this.$bvModal.hide("deleteModal");

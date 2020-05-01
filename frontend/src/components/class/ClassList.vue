@@ -99,11 +99,11 @@
             addClass(newClass) {
                 this.isBusy = true;
                 DataService.addRecord(this.resource, newClass).then(() => {
-                    this.addMessage(`Нову модель додано успішно`);
+                    this.addMessage(`Новий клас авто додано успішно`);
                     this.refreshClasses();
                 }).catch(error => {
                     console.log(error);
-                    this.addError(`Нова модель містить інформацію, що суперечить обмеженням`);
+                    this.addError(`Новий клас авто містить інформацію, що суперечить обмеженням`);
                 });
                 this.isBusy = false;
                 this.$bvModal.hide("classModal");
@@ -111,11 +111,11 @@
             updateClass(updateClass) {
                 this.isBusy = true;
                 DataService.updateRecord(this.resource, updateClass).then(() => {
-                    this.addMessage(`Модель №${updateClass.id} змінено успішно`);
+                    this.addMessage(`Клас №${updateClass.id} змінено успішно`);
                     this.refreshClasses();
                 }).catch(error => {
                     console.log(error);
-                    this.addError(`Змінювана модель містить інформацію, що суперечить обмеженням`);
+                    this.addError(`Змінюваний клас містить інформацію, що суперечить обмеженням`);
                 });
                 this.isBusy = false;
                 this.$bvModal.hide("classModal");
@@ -129,11 +129,11 @@
             deleteClass(id) {
                 this.isBusy = true;
                 DataService.deleteRecord(this.resource, id).then(() => {
-                    this.addMessage(`Видалення запису №${id} виконано успішно`);
+                    this.addMessage(`Видалення класу №${id} виконано успішно`);
                     this.refreshClasses();
                 }).catch(error => {
                     console.log(error);
-                    this.addError(`Видалення запису №${id} не виконано!`);
+                    this.addError(`Видалення класу №${id} не виконано!`);
                 });
                 this.isBusy = false;
                 this.$bvModal.hide("deleteModal");

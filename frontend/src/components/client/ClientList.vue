@@ -85,7 +85,7 @@
                 }).catch(error => {
                     console.log(error);
                     if (error.response.status === 404) {
-                        this.addError(`Таблиця специфікацій не містить записів`);
+                        this.addError(`Таблиця клієнтів не містить записів`);
                     } else {
                         this.addError(`Сталася непередбачувана помилка завантаження таблиці`);
                     }
@@ -100,11 +100,11 @@
             addClient(newClient) {
                 this.isBusy = true;
                 DataService.addRecord(this.resource, newClient).then(() => {
-                    this.addMessage(`Нову модель додано успішно`);
+                    this.addMessage(`Нового клієнта додано успішно`);
                     this.refreshClients();
                 }).catch(error => {
                     console.log(error);
-                    this.addError(`Нова модель містить інформацію, що суперечить обмеженням`);
+                    this.addError(`Новий клієнт містить інформацію, що суперечить обмеженням`);
                 });
                 this.isBusy = false;
                 this.$bvModal.hide("clientModal");
@@ -112,11 +112,11 @@
             updateClient(updateClient) {
                 this.isBusy = true;
                 DataService.updateRecord(this.resource, updateClient).then(() => {
-                    this.addMessage(`Модель №${updateClient.id} змінено успішно`);
+                    this.addMessage(`Клієнта №${updateClient.id} змінено успішно`);
                     this.refreshClients();
                 }).catch(error => {
                     console.log(error);
-                    this.addError(`Змінювана модель містить інформацію, що суперечить обмеженням`);
+                    this.addError(`Змінюваний клієнт містить інформацію, що суперечить обмеженням`);
                 });
                 this.isBusy = false;
                 this.$bvModal.hide("clientModal");
@@ -130,11 +130,11 @@
             deleteClient(id) {
                 this.isBusy = true;
                 DataService.deleteRecord(this.resource, id).then(() => {
-                    this.addMessage(`Видалення запису №${id} виконано успішно`);
+                    this.addMessage(`Видалення клієнта №${id} виконано успішно`);
                     this.refreshClients();
                 }).catch(error => {
                     console.log(error);
-                    this.addError(`Видалення запису №${id} не виконано!`);
+                    this.addError(`Видалення клієнта №${id} не виконано!`);
                 });
                 this.isBusy = false;
                 this.$bvModal.hide("deleteModal");
