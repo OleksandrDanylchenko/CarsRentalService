@@ -3,6 +3,9 @@ package ua.alexd.CarRentService.controller;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.validation.BeanPropertyBindingResult;
+import org.springframework.validation.Errors;
+import org.springframework.validation.SmartValidator;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 import ua.alexd.CarRentService.domain.Model;
@@ -16,9 +19,11 @@ import java.util.List;
 @RequestMapping("/models")
 public class ModelResource {
     private final ModelService modelService;
+    private final SmartValidator smartValidator;
 
-    public ModelResource(ModelService modelService) {
+    public ModelResource(ModelService modelService, SmartValidator smartValidator) {
         this.modelService = modelService;
+        this.smartValidator = smartValidator;
     }
 
     @GetMapping
@@ -44,7 +49,8 @@ public class ModelResource {
         Model newModel;
         try {
             newModel = objectMapper.readValue(newModelStr, Model.class);
-        } catch (IOException e) {
+            validateModel(newModel);
+        } catch (IOException | IllegalArgumentException e) {
             e.printStackTrace();
             return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
         }
@@ -60,6 +66,7 @@ public class ModelResource {
         Model updModel;
         try {
             updModel = objectMapper.readValue(updModelStr, Model.class);
+            validateModel(updModel);
         } catch (IOException e) {
             e.printStackTrace();
             return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
@@ -74,5 +81,12 @@ public class ModelResource {
         return modelService.deleteModel(id)
                 ? new ResponseEntity<>(HttpStatus.NO_CONTENT)
                 : new ResponseEntity<>(HttpStatus.NOT_FOUND);
+    }
+
+    private void validateModel(Model model) {
+        Errors errors = new BeanPropertyBindingResult(model, "validateModel");
+        smartValidator.validate(model, errors);
+        if (errors.hasErrors())
+            throw new IllegalArgumentException();
     }
 }

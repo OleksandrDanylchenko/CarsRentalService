@@ -62,6 +62,7 @@
                                             placeholder=""
                                             drop-placeholder="Перетягніть файл сюди..."
                                             accept=".jpg, .png, .gif, .bmp, .jpeg"
+                                            no-drop
                                             :state="errors[0] ? false : (valid ? true : null)"
                                             @change="onPhotoLoad"
                                     ></b-form-file>
@@ -90,7 +91,7 @@
 </template>
 
 <script>
-    import ModelDataService from "../../service/ModelDataService";
+    import DataService from "../../service/DataService";
 
     export default {
         props: ['processingId'],
@@ -110,13 +111,14 @@
                     width: 770,
                     height: 570,
                     class: 'mt-3'
-                }
+                },
+                resource: "models"
             }
         },
         methods: {
             loadValues() {
                 this.$nextTick(() => {
-                    ModelDataService.retrieveModel(this.processingId).then(response => {
+                    DataService.retrieveModel(this.resource, this.processingId).then(response => {
                         this.formModel.brand = response.data.brand;
                         this.formModel.model = response.data.model;
                         this.formModel.year = response.data.year;

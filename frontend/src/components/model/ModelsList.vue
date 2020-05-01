@@ -58,7 +58,7 @@
     import ModelModal from "./ModelModal"
     import DeleteModal from "../common/DeleteModal"
 
-    import ModelDataService from "../../service/ModelDataService";
+    import DataService from "../../service/DataService";
 
     export default {
         mixins: [MessagesErrorsDismissMixin],
@@ -72,6 +72,7 @@
             return {
                 models: [],
                 processingId: Number.MIN_VALUE,
+                resource: "models",
 
                 messages: [],
                 errors: []
@@ -79,7 +80,7 @@
         },
         methods: {
             refreshModels() {
-                ModelDataService.retrieveAllModels().then(response => {
+                DataService.retrieveAllModels(this.resource).then(response => {
                     this.models = response.data;
                 }).catch(error => {
                     if (error.response.status === 404) {
@@ -96,7 +97,7 @@
                 this.$bvModal.show("modelModal");
             },
             addModel(addForm) {
-                ModelDataService.addModel(addForm).then(() => {
+                DataService.addModel(this.resource, addForm).then(() => {
                     this.messages.push(`Нову модель додано успішно`);
                     this.refreshModels();
                 }).catch(error => {
@@ -110,8 +111,8 @@
                 this.$bvModal.hide("modelModal");
             },
             updateModel(updateForm) {
-                ModelDataService.updateModel(updateForm).then(() => {
-                    this.messages.push(`Модель змінено успішно`);
+                DataService.updateModel(this.resource, updateForm).then(() => {
+                    this.messages.push(`Модель №${JSON.parse(updateForm.get('model')).id} змінено успішно`);
                     this.refreshModels();
                 }).catch(error => {
                     if (error.response.status === 409) {
@@ -129,7 +130,7 @@
                 this.$bvModal.show("deleteModal");
             },
             deleteModel(id) {
-                ModelDataService.deleteModel(id).then(() => {
+                DataService.deleteModel(this.resource, id).then(() => {
                     this.messages.push(`Видалення запису №${id} виконано успішно`);
                     this.refreshModels();
                 }).catch(error => {
