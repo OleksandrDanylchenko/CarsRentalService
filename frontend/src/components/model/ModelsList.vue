@@ -16,7 +16,7 @@
                         У системі поки не представлено доступних моделей
                     </h1>
                     <div v-else>
-                        <h1>Доступні моделі авто:</h1>
+                        <h1 class="mb-3 display-4">Доступні моделі авто:</h1>
                         <b-card-group columns>
                             <div v-for="model in models" :key="model.id">
                                 <div v-if="model.imageName != null">
@@ -24,7 +24,7 @@
                                             :img-alt="model.model + ' photo'" img-top
                                             :header="'ID: ' + model.id">
                                         <b-card-title class="text-center mb-0">
-                                            <div class="h1">{{ model.brand }} {{ model.model }}</div>
+                                            <div class="h2">{{ model.brand }} {{ model.model }}</div>
                                             <h3 class="mb-0">{{ model.year }}</h3>
                                         </b-card-title>
                                         <template v-slot:footer>
@@ -46,7 +46,7 @@
                 </b-col>
             </b-row>
         </div>
-        <ModelModal :processingId="processingId" @addModel="addModel" @updateModel="updateModel"></ModelModal>
+        <ModelModal :processingId="processingId" @addModel="addModel" @updateModel="updateModel"/>
         <DeleteModal :processingId="processingId" @deleteRecord="deleteModel"/>
     </div>
 </template>
@@ -80,9 +80,10 @@
         },
         methods: {
             refreshModels() {
-                DataService.retrieveAllModels(this.resource).then(response => {
+                DataService.retrieveAllRecords(this.resource).then(response => {
                     this.models = response.data;
                 }).catch(error => {
+                    console.log(error);
                     if (error.response.status === 404) {
                         console.log(`Таблиця моделей не містить записів`);
                     } else {
@@ -97,7 +98,7 @@
                 this.$bvModal.show("modelModal");
             },
             addModel(addForm) {
-                DataService.addModel(this.resource, addForm).then(() => {
+                DataService.addRecord(this.resource, addForm).then(() => {
                     this.messages.push(`Нову модель додано успішно`);
                     this.refreshModels();
                 }).catch(error => {
@@ -111,10 +112,11 @@
                 this.$bvModal.hide("modelModal");
             },
             updateModel(updateForm) {
-                DataService.updateModel(this.resource, updateForm).then(() => {
+                DataService.updateRecord(this.resource, updateForm).then(() => {
                     this.messages.push(`Модель №${JSON.parse(updateForm.get('model')).id} змінено успішно`);
                     this.refreshModels();
                 }).catch(error => {
+                    console.log(error);
                     if (error.response.status === 409) {
                         this.errors.push(`Таблиця уже містить модель ${JSON.parse(error.response.config.data).model}`);
                     } else {
@@ -130,7 +132,7 @@
                 this.$bvModal.show("deleteModal");
             },
             deleteModel(id) {
-                DataService.deleteModel(this.resource, id).then(() => {
+                DataService.deleteRecord(this.resource, id).then(() => {
                     this.messages.push(`Видалення запису №${id} виконано успішно`);
                     this.refreshModels();
                 }).catch(error => {

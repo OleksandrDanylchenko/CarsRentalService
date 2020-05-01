@@ -1,6 +1,6 @@
 <template>
     <div>
-        <b-modal id="modelModal" no-close-on-backdrop size="lg"
+        <b-modal id="modelModal" no-close-on-backdrop
                  @show="loadValues" @hidden="resetForm">
             <template v-slot:modal-title>
                 <h3>{{ actionMessage }}</h3>
@@ -57,7 +57,7 @@
                         <ValidationProvider :rules="photoUploadRules" name="з фото моделі">
                             <b-form-group slot-scope="{ valid, errors }">
                                 <b-input-group prepend="Фото моделі">
-                                    <b-form-file
+                                    <b-form-file class="text-nowrap text-truncate"
                                             v-model="modelImage"
                                             placeholder=""
                                             drop-placeholder="Перетягніть файл сюди..."
@@ -65,7 +65,7 @@
                                             no-drop
                                             :state="errors[0] ? false : (valid ? true : null)"
                                             @change="onPhotoLoad"
-                                    ></b-form-file>
+                                    />
                                     <b-form-invalid-feedback>
                                         {{ errors[0] }}
                                     </b-form-invalid-feedback>
@@ -118,7 +118,7 @@
         methods: {
             loadValues() {
                 this.$nextTick(() => {
-                    DataService.retrieveModel(this.resource, this.processingId).then(response => {
+                    DataService.retrieveRecord(this.resource, this.processingId).then(response => {
                         this.formModel.brand = response.data.brand;
                         this.formModel.model = response.data.model;
                         this.formModel.year = response.data.year;
