@@ -6,6 +6,7 @@ import org.springframework.beans.BeanUtils;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.stereotype.Service;
 import ua.alexd.CarRentService.domain.Car;
+import ua.alexd.CarRentService.logic.car.ModelClassResolver;
 import ua.alexd.CarRentService.repository.CarRepository;
 
 import java.util.List;
@@ -14,9 +15,11 @@ import java.util.Optional;
 @Service
 public class CarService {
     private final CarRepository carRepository;
+    private final ModelClassResolver modelClassResolver;
 
-    public CarService(CarRepository carRepository) {
+    public CarService(CarRepository carRepository, ModelClassResolver modelClassResolver) {
         this.carRepository = carRepository;
+        this.modelClassResolver = modelClassResolver;
     }
 
     public List<Car> getAllCars() {
@@ -33,14 +36,14 @@ public class CarService {
     }
 
     public boolean addNewCar(Car newCar) {
-        return saveCar(newCar);
+        return setCarClass(newCar) && saveCar(newCar);
     }
 
     public boolean updateCar(@NotNull Car updCar) {
         var carFromDB = getCarById(String.valueOf(updCar.getId()));
         if (carFromDB.isPresent()) {
             BeanUtils.copyProperties(updCar, carFromDB.get(), "id");
-            return saveCar(carFromDB.get());
+            return setCarClass(carFromDB.get()) && saveCar(carFromDB.get());
         }
         return false;
     }
@@ -77,6 +80,15 @@ public class CarService {
         if (rentCar.isPresent() && !rentCar.get().isRentable()) {
             rentCar.get().setRentable(true);
             return updateCar(rentCar.get());
+        }
+        return false;
+    }
+
+    private boolean setCarClass(Car processingCar) {
+        var carClass = modelClassResolver.resolve(processingCar);
+        if (carClass.isPresent()) {
+            processingCar.setModelClass(carClass.get());
+            return true;
         }
         return false;
     }
