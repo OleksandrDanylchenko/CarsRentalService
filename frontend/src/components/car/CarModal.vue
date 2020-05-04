@@ -23,7 +23,7 @@
 
                         <ValidationProvider rules="required" name="з конфігурацією">
                             <b-form-group slot-scope="{ valid, errors }">
-                                <b-input-group prepend="Конфігурація авто">
+                                <b-input-group prepend="Номер конфігурації авто">
                                     <b-form-select v-model="formCar.specification.id" :options="availableSpecifications"
                                                    :state="errors[0] ? false : (valid ? true : null)"/>
                                     <b-form-invalid-feedback>
@@ -39,7 +39,7 @@
                                 <b-input-group prepend="Добовий тариф">
                                     <b-form-input
                                             type="number"
-                                            v-model="formCar.day_price"
+                                            v-model="formCar.dayPrice"
                                             :state="errors[0] ? false : (valid ? true : null)">
                                     </b-form-input>
                                     <b-form-invalid-feedback>
@@ -49,15 +49,27 @@
                             </b-form-group>
                         </ValidationProvider>
 
+                        <ValidationProvider rules="required" name="з центром оренди">
+                            <b-form-group slot-scope="{ valid, errors }">
+                                <b-input-group prepend="Центр оренди">
+                                    <b-form-select v-model="formCar.rentCenter.id" :options="availableCenters"
+                                                   :state="errors[0] ? false : (valid ? true : null)"/>
+                                    <b-form-invalid-feedback>
+                                        {{ errors[0] }}
+                                    </b-form-invalid-feedback>
+                                </b-input-group>
+                            </b-form-group>
+                        </ValidationProvider>
+
                         <ValidationProvider rules="required">
                             <b-form-group slot-scope="{ valid, errors }">
-                                <b-input-group prepend="Доступна для оренди" class="d-flex align-items-center">
-                                    <b-form-radio v-model="formCar.rentable" name="rentable-radio" value="true"
-                                                  class="ml-2">
+                                <b-input-group prepend="Доступний для оренди" class="d-flex align-items-center">
+                                    <b-form-radio v-model="formCar.rentable" name="rentable-radio"
+                                                  value="true" class="ml-2">
                                         Так
                                     </b-form-radio>
-                                    <b-form-radio v-model="formCar.rentable" name="rentable-radio" value="false"
-                                                  class="ml-2">
+                                    <b-form-radio v-model="formCar.rentable" name="rentable-radio"
+                                                  value="false" class="ml-2">
                                         Ні
                                     </b-form-radio>
                                     <b-form-invalid-feedback>
@@ -91,7 +103,7 @@
             return {
                 formCar: {
                     id: null,
-                    day_price: null,
+                    dayPrice: null,
                     rentable: null,
                     model: {
                         id: null,
@@ -106,16 +118,18 @@
                 },
                 availableModels: [],
                 availableSpecifications: [],
+                availableCenters: [],
                 resource: "cars",
                 modelsResource: "models",
-                specificationsResource: "specifications"
+                specificationsResource: "specifications",
+                centersResource: "rent_centers"
             }
         },
         methods: {
             loadValues() {
                 this.$nextTick(() => {
                     DataService.retrieveRecord(this.resource, this.processingId).then(response => {
-                        this.formCar.day_price = response.data.dayPrice;
+                        this.formCar.dayPrice = response.data.dayPrice;
                         this.formCar.rentable = response.data.rentable;
                         this.formCar.model.id = response.data.model.id;
                         this.formCar.specification.id = response.data.specification.id;
@@ -157,6 +171,19 @@
                         this.$emit('addError', `Модельне вікно спричинило помилку ${error}`);
                     this.$bvModal.hide("carModal");
                 });
+                DataService.retrieveAllRecords(this.centersResource).then(response => {
+                    response.data.forEach(record => {
+                        let centerOption = {value: record.id, text: record.address};
+                        this.availableCenters.push(centerOption);
+                    })
+                }).catch(error => {
+                    console.log(error);
+                    if (error.response.status === 404)
+                        this.$emit('addError', `Таблиця центрів оренди не містить записів, тому не можна створити авто.`);
+                    else
+                        this.$emit('addError', `Модельне вікно спричинило помилку ${error}`);
+                    this.$bvModal.hide("carModal");
+                });
             },
             resetForm() {
                 this.formCar = {
@@ -177,9 +204,9 @@
             },
             handleSubmit() {
                 if (this.formCar.id < 0)
-                    this.$emit('addSpecification', this.formCar);
+                    this.$emit('addCar', this.formCar);
                 else
-                    this.$emit('updateSpecification', this.formCar);
+                    this.$emit('updateCar', this.formCar);
             }
         },
         computed: {

@@ -217,7 +217,7 @@
                 }).catch(error => {
                     console.log(error);
                     if (error.response.status === 404) {
-                        this.addError(`Таблиця конфігурацій не містить записів`);
+                        this.addError(`Таблиця автомобілів не містить записів`);
                     } else {
                         this.addError(`Сталася непередбачувана помилка завантаження таблиці`);
                     }
@@ -232,11 +232,11 @@
             addCar(newCar) {
                 this.isBusy = true;
                 DataService.addRecord(this.resource, newCar).then(() => {
-                    this.addMessage(`Нову конфігурацію додано успішно`);
+                    this.addMessage(`Новий автомобіль додано успішно`);
                     this.refreshCars();
                 }).catch(error => {
                     console.log(error);
-                    this.addError(`Нова конфігурація містить інформацію, що суперечить обмеженням`);
+                    this.addError(`Новий автомобіль містить інформацію, що суперечить обмеженням`);
                 });
                 this.isBusy = false;
                 this.$bvModal.hide("carModal");
@@ -248,7 +248,7 @@
                     this.refreshCars();
                 }).catch(error => {
                     console.log(error);
-                    this.addError(`Змінювана конфігурація містить інформацію, що суперечить обмеженням`);
+                    this.addError(`Змінюваний автомобіль містить інформацію, що суперечить обмеженням`);
                 });
                 this.isBusy = false;
                 this.$bvModal.hide("carModal");
@@ -262,11 +262,11 @@
             deleteCar(id) {
                 this.isBusy = true;
                 DataService.deleteRecord(this.resource, id).then(() => {
-                    this.addMessage(`Видалення конфігурації №${id} виконано успішно`);
+                    this.addMessage(`Видалення автомобіля №${id} виконано успішно`);
                     this.refreshCars();
                 }).catch(error => {
                     console.log(error);
-                    this.addError(`Видалення конфігурації №${id} не виконано!`);
+                    this.addError(`Видалення автомобіля №${id} не виконано!`);
                 });
                 this.isBusy = false;
                 this.$bvModal.hide("deleteModal");
