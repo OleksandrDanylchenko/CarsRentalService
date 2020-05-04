@@ -6,8 +6,8 @@ import org.springframework.beans.BeanUtils;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.stereotype.Service;
 import ua.alexd.CarRentService.domain.Rent;
-import ua.alexd.CarRentService.logic.RentCalculator;
-import ua.alexd.CarRentService.logic.RentTriggers;
+import ua.alexd.CarRentService.logic.rent.RentCalculator;
+import ua.alexd.CarRentService.logic.rent.RentTriggers;
 import ua.alexd.CarRentService.repository.RentRepository;
 
 import java.util.List;

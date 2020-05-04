@@ -1,4 +1,4 @@
-package ua.alexd.CarRentService.logic;
+package ua.alexd.CarRentService.logic.rent;
 
 import org.jetbrains.annotations.Contract;
 import org.jetbrains.annotations.NotNull;

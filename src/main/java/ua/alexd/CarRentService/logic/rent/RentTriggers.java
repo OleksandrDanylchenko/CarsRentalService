@@ -1,4 +1,4 @@
-package ua.alexd.CarRentService.logic;
+package ua.alexd.CarRentService.logic.rent;
 
 import org.jetbrains.annotations.NotNull;
 import org.springframework.stereotype.Service;
