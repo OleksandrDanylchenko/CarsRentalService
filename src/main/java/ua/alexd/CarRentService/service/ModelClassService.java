@@ -33,12 +33,12 @@ public class ModelClassService {
     }
 
     public boolean addNewClass(@NotNull ModelClass newClass) {
-        return newClass.getMinPrice() < newClass.getMaxPrice() && saveClass(newClass);
+        return saveClass(newClass);
     }
 
     public boolean updateClass(@NotNull ModelClass updClass) {
         var classFromDB = getClassById(String.valueOf(updClass.getId()));
-        if (classFromDB.isPresent() && classFromDB.get().getMinPrice() < classFromDB.get().getMaxPrice()) {
+        if (classFromDB.isPresent()) {
             BeanUtils.copyProperties(updClass, classFromDB.get(), "id");
             return saveClass(classFromDB.get());
         }

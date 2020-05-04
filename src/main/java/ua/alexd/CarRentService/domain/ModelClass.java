@@ -23,18 +23,12 @@ public class ModelClass {
     @Column(unique = true)
     @NotNull(message = "Назва не може бути відсутньою")
     @NotEmpty(message = "Назва не може бути пустою")
-    @Size(min=1, max=150)
+    @Size(min = 1, max = 150)
     private String name;
 
     @Basic
-    @Column
+    @Column(unique = true)
     @Min(1)
-    @Max(40000)
-    private int minPrice;
-
-    @Basic
-    @Column
-    @Min(1)
-    @Max(40000)
-    private int maxPrice;
+    @Max(200000)
+    private int startPrice;
 }
