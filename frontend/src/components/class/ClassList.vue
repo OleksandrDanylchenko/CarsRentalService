@@ -60,9 +60,8 @@
             return {
                 fields: [
                     {key: 'id', label: 'ID', sortable: true, thClass: 'text-danger', tdClass: 'text-danger'},
-                    {key: 'minPrice', label: 'Мінімальна ціна', sortable: true},
-                    {key: 'maxPrice', label: 'Максимальна ціна', sortable: true},
                     {key: 'name', label: 'Назва класу авто', sortable: true},
+                    {key: 'startPrice', label: 'Початкова ціна', sortable: true},
                     {key: 'editModal', label: 'Змінити', thClass: 'text-center', tdClass: 'text-center'},
                     {key: 'deleteModal', label: 'Видалити', thClass: 'text-center', tdClass: 'text-center'},
                 ],

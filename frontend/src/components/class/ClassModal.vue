@@ -10,29 +10,13 @@
                 <ValidationObserver>
                     <b-form slot-scope="{ validate }" @submit.prevent="validate().then(handleSubmit)"
                             id="classForm">
-                        <ValidationProvider rules="required|integer|min_value:1|max_value:40000"
-                                            name="мінімальної ціни">
+                        <ValidationProvider rules="required|integer|min_value:1|max_value:200000"
+                                            name="початкової ціни">
                             <b-form-group slot-scope="{ valid, errors }">
-                                <b-input-group prepend="Мінімальна ціна">
+                                <b-input-group prepend="Початкова ціна">
                                     <b-form-input
                                             type="number"
-                                            v-model="formClass.minPrice"
-                                            :state="errors[0] ? false : (valid ? true : null)">
-                                    </b-form-input>
-                                    <b-form-invalid-feedback>
-                                        {{ errors[0] }}
-                                    </b-form-invalid-feedback>
-                                </b-input-group>
-                            </b-form-group>
-                        </ValidationProvider>
-
-                        <ValidationProvider rules="required|integer|min_value:1|max_value:40000"
-                                            name="максимальної ціни">
-                            <b-form-group slot-scope="{ valid, errors }">
-                                <b-input-group prepend="Максимальна ціна">
-                                    <b-form-input
-                                            type="number"
-                                            v-model="formClass.maxPrice"
+                                            v-model="formClass.startPrice"
                                             :state="errors[0] ? false : (valid ? true : null)">
                                     </b-form-input>
                                     <b-form-invalid-feedback>
@@ -81,8 +65,7 @@
             return {
                 formClass: {
                     id: null,
-                    minPrice: null,
-                    maxPrice: null,
+                    startPrice: null,
                     name: null
                 },
                 resource: "classes"
@@ -92,8 +75,7 @@
             loadValues() {
                 this.$nextTick(() => {
                     DataService.retrieveRecord(this.resource, this.processingId).then(response => {
-                        this.formClass.minPrice = response.data.minPrice;
-                        this.formClass.maxPrice = response.data.maxPrice;
+                        this.formClass.startPrice = response.data.startPrice;
                         this.formClass.name = response.data.name;
                     }).catch(error => {
                         console.log(error);
@@ -106,8 +88,7 @@
             resetForm() {
                 this.formClass = {
                     id: null,
-                    minPrice: null,
-                    maxPrice: null,
+                    start_price: null,
                     name: null,
                 }
             },
