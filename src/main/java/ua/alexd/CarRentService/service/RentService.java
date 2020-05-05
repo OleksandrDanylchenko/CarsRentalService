@@ -75,8 +75,8 @@ public class RentService {
     }
 
     private boolean setDaysDelta(@NotNull Rent processingRent) {
-        var rentStartDate = processingRent.getRentStart().toLocalDate();
-        var rentEndDate = processingRent.getRentEnd().toLocalDate();
+        var rentStartDate = processingRent.getRentStart();
+        var rentEndDate = processingRent.getRentEnd();
         var daysDelta = (int) DAYS.between(rentStartDate, rentEndDate);
         if (daysDelta > 1) {
             processingRent.setDaysDelta(daysDelta);

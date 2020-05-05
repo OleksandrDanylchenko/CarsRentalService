@@ -5,9 +5,7 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.*;
 
 import javax.persistence.*;
-import javax.validation.constraints.Future;
-import javax.validation.constraints.PastOrPresent;
-import java.time.LocalDateTime;
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -27,15 +25,13 @@ public class Rent {
 
     @Basic
     @Column
-    @PastOrPresent
-    @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
-    private LocalDateTime rentStart;
+    @JsonFormat(pattern = "yyyy-mm-dd")
+    private LocalDate rentStart;
 
     @Basic
     @Column
-    @Future
-    @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
-    private LocalDateTime rentEnd;
+    @JsonFormat(pattern = "yyyy-mm-dd")
+    private LocalDate rentEnd;
 
     @Basic
     @Column

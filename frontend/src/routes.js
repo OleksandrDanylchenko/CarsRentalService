@@ -47,6 +47,11 @@ const router = new Router({
             component: () => import("./components/car/CarsList"),
         },
         {
+            path: "/rents",
+            name: "Rents",
+            component: () => import("./components/rent/RentsList"),
+        },
+        {
             path: "/courses",
             name: "Courses",
             component: () => import("./components/ListCoursesComponent"),
