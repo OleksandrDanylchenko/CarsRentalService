@@ -51,5 +51,5 @@ public class Rent {
 
     @JsonIgnore
     @OneToMany(mappedBy = "rent")
-    private List<Complain> complains = new ArrayList<>();
+    private List<Complaint> complaints = new ArrayList<>();
 }

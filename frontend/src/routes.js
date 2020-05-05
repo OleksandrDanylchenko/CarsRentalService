@@ -52,15 +52,10 @@ const router = new Router({
             component: () => import("./components/rent/RentsList"),
         },
         {
-            path: "/courses",
-            name: "Courses",
-            component: () => import("./components/ListCoursesComponent"),
-        },
-        {
-            path: "/courses/:id",
-            name: "Course Details",
-            component: () => import("./components/CourseComponent"),
-        },
+            path: "/complaints",
+            name: "Complaints",
+            component: () => import("./components/complaint/ComplaintsList"),
+        }
     ]
 });
 

@@ -97,14 +97,10 @@
                     rentStart: null,
                     rentEnd: null,
                     client: {
-                        id: null,
-                        firstName: null,
-                        secondName: null
+                        id: null
                     },
                     car: {
-                        id: null,
-                        brand: null,
-                        model: null
+                        id: null
                     }
                 },
                 minimumDate: "2020-05-05",
@@ -169,14 +165,10 @@
                     rentStart: null,
                     rentEnd: null,
                     client: {
-                        id: null,
-                        firstName: null,
-                        secondName: null
+                        id: null
                     },
                     car: {
-                        id: null,
-                        brand: null,
-                        model: null
+                        id: null
                     }
                 }
             },

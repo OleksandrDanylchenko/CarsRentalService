@@ -15,7 +15,7 @@ import javax.validation.constraints.Size;
 @NoArgsConstructor
 @AllArgsConstructor
 @ToString
-public class Complain {
+public class Complaint {
     @Id
     @GeneratedValue
     @Column

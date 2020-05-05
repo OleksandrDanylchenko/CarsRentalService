@@ -25,7 +25,7 @@
                             {{ data.item.model.id }}
                         </template>
                         <template v-slot:cell(modelName)="data">
-                            {{ data.item.model.brand }} {{ data.item.model.model }}
+                            {{ data.item.model.brand + ' ' + data.item.model.model }}
                         </template>
                         <template v-slot:cell(classId)="data">
                             {{ data.item.modelClass.id }}

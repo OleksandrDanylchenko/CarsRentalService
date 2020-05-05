@@ -106,8 +106,7 @@
                     dayPrice: null,
                     rentable: null,
                     model: {
-                        id: null,
-                        model: null
+                        id: null
                     },
                     specification: {
                         id: null
@@ -191,8 +190,7 @@
                     day_price: null,
                     rentable: null,
                     model: {
-                        id: null,
-                        model: null
+                        id: null
                     },
                     specification: {
                         id: null
