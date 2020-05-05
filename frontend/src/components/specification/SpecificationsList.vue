@@ -113,7 +113,7 @@
             updateSpecification(updateSpecification) {
                 this.isBusy = true;
                 DataService.updateRecord(this.resource, updateSpecification).then(() => {
-                    this.addMessage(`Модель №${updateSpecification.id} змінено успішно`);
+                    this.addMessage(`Конфігурацію №${updateSpecification.id} змінено успішно`);
                     this.refreshSpecifications();
                 }).catch(error => {
                     console.log(error);

@@ -25,12 +25,12 @@ public class Rent {
 
     @Basic
     @Column
-    @JsonFormat(pattern = "yyyy-mm-dd")
+    @JsonFormat(pattern = "yyyy-MM-dd")
     private LocalDate rentStart;
 
     @Basic
     @Column
-    @JsonFormat(pattern = "yyyy-mm-dd")
+    @JsonFormat(pattern = "yyyy-MM-dd")
     private LocalDate rentEnd;
 
     @Basic

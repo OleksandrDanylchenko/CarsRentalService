@@ -25,7 +25,7 @@
                             {{ data.item.model.id }}
                         </template>
                         <template v-slot:cell(modelName)="data">
-                            {{ data.item.model.model }}
+                            {{ data.item.model.brand }} {{ data.item.model.model }}
                         </template>
                         <template v-slot:cell(classId)="data">
                             {{ data.item.modelClass.id }}
@@ -173,6 +173,7 @@
                         label: 'Адреса центру оренди',
                         sortable: true,
                         thClass: 'text-center',
+                        tdClass: 'text-center',
                         thStyle: 'vertical-align: middle;'
                     },
                     {

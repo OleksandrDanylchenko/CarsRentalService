@@ -147,7 +147,7 @@
             loadChoices() {
                 DataService.retrieveAllRecords(this.modelsResource).then(response => {
                     response.data.forEach(record => {
-                        let modelOption = {value: record.id, text: record.model};
+                        let modelOption = {value: record.id, text: record.brand + ' ' + record.model};
                         this.availableModels.push(modelOption);
                     })
                 }).catch(error => {

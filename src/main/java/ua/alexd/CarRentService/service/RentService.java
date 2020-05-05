@@ -78,7 +78,7 @@ public class RentService {
         var rentStartDate = processingRent.getRentStart();
         var rentEndDate = processingRent.getRentEnd();
         var daysDelta = (int) DAYS.between(rentStartDate, rentEndDate);
-        if (daysDelta > 1) {
+        if (daysDelta >= 1) {
             processingRent.setDaysDelta(daysDelta);
             return true;
         }

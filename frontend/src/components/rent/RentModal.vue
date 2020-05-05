@@ -34,14 +34,15 @@
                             </b-form-group>
                         </ValidationProvider>
 
-                        <ValidationProvider rules="required" name="з датою початку оренди">
+                        <ValidationProvider rules="required|date_format:yyyy-mm-dd|before:дати закінчення"
+                                            name="з датою початку оренди" vid="дати початку">
                             <b-form-group slot-scope="{ valid, errors }">
                                 <b-input-group prepend="Дата початку оренди">
                                     <b-form-input
-                                            type="text"
+                                            type="date"
                                             v-model="formRent.rentStart"
-                                            placeholder="📅"
-                                            onfocus="(this.type='date')"
+                                            :min="minimumDate"
+                                            :max="maximumDate"
                                             :state="errors[0] ? false : (valid ? true : null)">
                                     </b-form-input>
                                     <b-form-invalid-feedback>
@@ -51,14 +52,15 @@
                             </b-form-group>
                         </ValidationProvider>
 
-                        <ValidationProvider rules="required" name="з датою закінчення оренди">
+                        <ValidationProvider rules="required|date_format:yyyy-mm-dd|after:дати початку"
+                                            name="з датою закінчення оренди" vid="дати закінчення">
                             <b-form-group slot-scope="{ valid, errors }">
                                 <b-input-group prepend="Дата закінчення оренди">
                                     <b-form-input
-                                            type="text"
+                                            type="date"
                                             v-model="formRent.rentEnd"
-                                            placeholder="📅"
-                                            onfocus="(this.type='date')"
+                                            :min="minimumDate"
+                                            :max="maximumDate"
                                             :state="errors[0] ? false : (valid ? true : null)">
                                     </b-form-input>
                                     <b-form-invalid-feedback>
@@ -105,6 +107,8 @@
                         model: null
                     }
                 },
+                minimumDate: "2020-05-05",
+                maximumDate: "2022-05-05",
                 availableClients: [],
                 availableCars: [],
                 availableCenters: [],
