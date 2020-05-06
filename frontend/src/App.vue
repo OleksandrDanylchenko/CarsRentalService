@@ -5,7 +5,7 @@
               integrity="sha384-hWVjflwFxL6sNzntih27bfxkr27PmbbK/iSvJ+a4+0owXq79v+lsFkW54bOGbiDQ"
               crossorigin="anonymous">
         <b-container fluid class="px-5">
-            <b-navbar type="light" id="contactsBar">
+            <b-navbar class="pb-0" type="light" id="contactsBar">
                 <b-navbar-nav>
                     <b-nav-item class="mr-md-5 mr-sm-4" href="https://bit.ly/3dgM5zu" target="_blank">
                         <i class="fab fa-facebook-f fa-lg"/>
@@ -20,7 +20,7 @@
 
                 <b-navbar-nav class="ml-auto">
                     <b-nav-item-dropdown right no-caret>
-                        <template slot="button-content">
+                        <template v-slot:button-content>
                             <i class="fas fa-phone fa-lg"/>
                         </template>
                         <b-dropdown-item href="tel:+380967994839">+380967994839</b-dropdown-item>
@@ -29,7 +29,7 @@
                     </b-nav-item-dropdown>
 
                     <b-nav-item-dropdown class="ml-md-5 ml-sm-4" right no-caret>
-                        <template slot="button-content">
+                        <template v-slot:button-content>
                             <i class="fas fa-envelope fa-lg"/>
                         </template>
                         <b-dropdown-item href="mailto:olexander.danilchenko@gmail.com">
@@ -41,7 +41,7 @@
                     </b-nav-item-dropdown>
 
                     <b-nav-item-dropdown class="ml-md-5 ml-sm-4" right no-caret>
-                        <template slot="button-content">
+                        <template v-slot:button-content>
                             <i class="fas fa-map-marker-alt fa-lg"></i>
                         </template>
                         <b-dropdown-item v-for="center in rentCenters" :key="center.id"
@@ -52,9 +52,45 @@
                     </b-nav-item-dropdown>
                 </b-navbar-nav>
             </b-navbar>
-            <!--            <b-navbar variant="faded" type="light">-->
-            <!--                <b-navbar-brand href="http://localhost:8081/">Alex Cars Rental</b-navbar-brand>-->
-            <!--            </b-navbar>-->
+
+            <hr class="my-0"/>
+
+            <b-navbar class="pt-0" toggleable="md" type="light">
+                <b-navbar-brand @click="returnHome">
+                    <b-img src="https://bit.ly/2Ww22LJ" fluid alt="Alex Rentals" width="130px"/>
+                </b-navbar-brand>
+
+                <b-navbar-toggle target="nav-collapse"></b-navbar-toggle>
+
+                <b-collapse id="nav-collapse" is-nav>
+                    <b-navbar-nav class="ml-auto">
+                        <b-nav-item @click="returnHome">
+                            <i class="fas fa-home fa-3x"/>
+                        </b-nav-item>
+
+                        <b-nav-item-dropdown class="ml-xl-5 ml-lg-4 ml-md-3 ml-md-2 ml-0" right no-caret>
+                            <template v-slot:button-content>
+                                <i class="fas fa-car fa-3x"/>
+                            </template>
+                            <b-dropdown-item href="#">Список авто</b-dropdown-item>
+                            <b-dropdown-item href="#">Знайти авто</b-dropdown-item>
+                            <b-dropdown-item href="#">Випадкове авто</b-dropdown-item>
+                        </b-nav-item-dropdown>
+
+                        <b-nav-item-dropdown class="mml-xl-5 ml-lg-4 ml-md-3 ml-md-2 ml-0" right no-caret>
+                            <template v-slot:button-content>
+                                <i class="fas fa-question-circle fa-3x"/>
+                            </template>
+                            <b-dropdown-item href="#">Про нас</b-dropdown-item>
+                            <b-dropdown-item href="#">FAQ</b-dropdown-item>
+                        </b-nav-item-dropdown>
+
+                        <b-nav-item class="ml-xl-5 ml-lg-4 ml-md-3 ml-md-2 ml-0" @click="goContacts">
+                            <i class="fas fa-info-circle fa-3x"/>
+                        </b-nav-item>
+                    </b-navbar-nav>
+                </b-collapse>
+            </b-navbar>
 
             <router-view/>
         </b-container>
@@ -88,6 +124,12 @@
                     this.rentCenters.push("Список центрів оренди невдовзі оновиться. " +
                         "Для подальшої довідки зв'яжіться з нами через вказані номери телефонів чи електронну пошту");
                 });
+            },
+            returnHome() {
+                this.$router.push(`/`).then(r => console.log(r));
+            },
+            goContacts() {
+                this.$router.push(`/contacts`).then(r => console.log(r));
             }
         },
         created() {
