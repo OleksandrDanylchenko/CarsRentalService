@@ -212,7 +212,6 @@
             refreshCars() {
                 this.isBusy = true;
                 DataService.retrieveAllRecords(this.resource).then(response => {
-                    console.log(response.data);
                     this.cars = response.data;
                     this.isBusy = false;
                 }).catch(error => {

@@ -22,7 +22,7 @@
                                             :img-alt="model.model + ' photo'" img-top
                                             :header="'ID: ' + model.id">
                                         <b-card-title class="text-center mb-0">
-                                            <div class="h2">{{ model.brand }} {{ model.model }}</div>
+                                            <h2>{{ model.brand + ' ' + model.model }}</h2>
                                             <h3 class="mb-0">{{ model.year }}</h3>
                                             <h5 class="mb-0">{{ model.type }}</h5>
                                         </b-card-title>
