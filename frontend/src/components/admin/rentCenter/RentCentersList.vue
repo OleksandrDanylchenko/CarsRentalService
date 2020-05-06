@@ -2,8 +2,8 @@
     <div>
         <b-row>
             <b-col>
-                <b-button pill variant="outline-danger" @click="openClassModal(-1)">
-                    <i class="fas fa-plus-circle"></i>&nbsp;Додати нову конфігурацію
+                <b-button pill variant="outline-danger" @click="openRentCenterModal(-1)">
+                    <i class="fas fa-plus-circle"></i>&nbsp;Додати новий центр оренди
                 </b-button>
             </b-col>
         </b-row>
@@ -12,8 +12,8 @@
                                      @dismissMessages="dismissMessages" @dismissErrors="dismissErrors"/>
             <b-row>
                 <b-col>
-                    <h1 class="mb-3 display-4">Список класів авто:</h1>
-                    <b-table id="classesTable" hover :items="classes" :fields="fields"
+                    <h1 class="mb-3 display-4">Список центрів оренди:</h1>
+                    <b-table id="centersTable" hover :items="rentCenters" :fields="fields"
                              :busy.sync="isBusy" primary-key="id">
                         <template v-slot:table-busy>
                             <div class="text-center text-danger mt-2">
@@ -22,7 +22,7 @@
                             </div>
                         </template>
                         <template v-slot:cell(editModal)="data">
-                            <b-button pill variant="outline-dark" @click="openClassModal(data.item.id)">
+                            <b-button pill variant="outline-dark" @click="openRentCenterModal(data.item.id)">
                                 <i class="fa fa-edit"></i>
                             </b-button>
                         </template>
@@ -35,89 +35,89 @@
                 </b-col>
             </b-row>
         </div>
-        <ClassModal :processingId="processingId"
-                    @addClass="addClass" @updateClass="updateClass" @addError="addError"/>
-        <DeleteModal :processingId="processingId" @deleteRecord="deleteClass"/>
+        <RentCentersList :processingId="processingId" @addCenter="addCenter"
+                         @updateCenter="updateCenter" @addError="addError"/>
+        <DeleteModal :processingId="processingId" @deleteRecord="deleteCenter"/>
     </div>
 </template>
 
 <script>
     import MessagesErrorsComponent from "../common/MessagesErrorsComponent";
-    import {MessagesErrorsDismissMixin} from "../mixins/MessagesErrorsDismissMixin"
-    import ClassModal from "./ClassModal"
+    import {MessagesErrorsDismissMixin} from "../../mixins/MessagesErrorsDismissMixin"
+    import RentCentersList from "./RentCenterModal"
     import DeleteModal from "../common/DeleteModal"
-    import DataService from "../../service/DataService";
+    import DataService from "../../../service/DataService";
 
     export default {
         mixins: [MessagesErrorsDismissMixin],
-        name: "ClassesList",
+        name: "CentersList",
         components: {
             MessagesErrorsComponent,
-            ClassModal,
+            RentCentersList,
             DeleteModal
         },
         data() {
             return {
                 fields: [
                     {key: 'id', label: 'ID', sortable: true, thClass: 'text-danger', tdClass: 'text-danger'},
-                    {key: 'name', label: 'Назва класу авто', sortable: true},
-                    {key: 'startPrice', label: 'Початкова ціна', sortable: true},
+                    {key: 'address', label: 'Адреса', sortable: true},
+                    {key: 'phoneNumber', label: 'Номер телефона', sortable: true},
                     {key: 'editModal', label: 'Змінити', thClass: 'text-center', tdClass: 'text-center'},
-                    {key: 'deleteModal', label: 'Видалити', thClass: 'text-center', tdClass: 'text-center'},
+                    {key: 'deleteModal', label: 'Видалити', thClass: 'text-center', tdClass: 'text-center'}
                 ],
-                classes: [],
+                rentCenters: [],
                 isBusy: true,
                 processingId: Number.MIN_VALUE,
-                resource: 'classes',
+                resource: 'rent_centers',
 
                 messages: [],
                 errors: []
             }
         },
         methods: {
-            refreshClasses() {
+            refreshCenters() {
                 this.isBusy = true;
                 DataService.retrieveAllRecords(this.resource).then(response => {
-                    this.classes = response.data;
+                    this.rentCenters = response.data;
                     this.isBusy = false;
                 }).catch(error => {
                     console.log(error);
                     if (error.response.status === 404) {
-                        this.addError(`Таблиця класів не містить записів`);
+                        this.addError(`Таблиця центрів оренди не містить записів`);
                     } else {
                         this.addError(`Сталася непередбачувана помилка завантаження таблиці`);
                     }
                 });
             },
-            openClassModal(id) {
+            openRentCenterModal(id) {
                 this.dismissMessages();
                 this.dismissErrors();
                 this.processingId = id;
-                this.$bvModal.show("classModal");
+                this.$bvModal.show("centerModal");
             },
-            addClass(newClass) {
+            addCenter(newCenter) {
                 this.isBusy = true;
-                DataService.addRecord(this.resource, newClass).then(() => {
-                    this.addMessage(`Новий клас авто додано успішно`);
-                    this.refreshClasses();
+                DataService.addRecord(this.resource, newCenter).then(() => {
+                    this.addMessage(`Новий центр оренди додано успішно`);
+                    this.refreshCenters();
                 }).catch(error => {
                     console.log(error);
-                    this.addError(`Новий клас авто містить інформацію, що суперечить обмеженням`);
+                    this.addError(`Новий центр оренди містить інформацію, що суперечить обмеженням`);
                 });
                 this.isBusy = false;
-                this.$bvModal.hide("classModal");
+                this.$bvModal.hide("centerModal");
             },
-            updateClass(updateClass) {
+            updateCenter(updateCenter) {
                 this.isBusy = true;
-                DataService.updateRecord(this.resource, updateClass).then(() => {
-                    this.addMessage(`Клас №${updateClass.id} змінено успішно`);
-                    this.refreshClasses();
+                DataService.updateRecord(this.resource, updateCenter).then(() => {
+                    this.addMessage(`Центр оренди №${updateCenter.id} змінено успішно`);
+                    this.refreshCenters();
                 }).catch(error => {
                     console.log(error);
-                    this.addError(`Змінюваний клас містить інформацію, що суперечить обмеженням`);
+                    this.addError(`Змінюваний центр оренди містить інформацію, що суперечить обмеженням`);
                 });
                 this.isBusy = false;
-                this.$bvModal.hide("classModal");
+                this.$bvModal.hide("centerModal");
             },
             openDeleteModal(id) {
                 this.processingId = id;
@@ -125,25 +125,25 @@
                 this.dismissErrors();
                 this.$bvModal.show("deleteModal");
             },
-            deleteClass(id) {
+            deleteCenter(id) {
                 this.isBusy = true;
                 DataService.deleteRecord(this.resource, id).then(() => {
-                    this.addMessage(`Видалення класу №${id} виконано успішно`);
-                    this.refreshClasses();
+                    this.addMessage(`Видалення центру оренди №${id} виконано успішно`);
+                    this.refreshCenters();
                 }).catch(error => {
                     console.log(error);
-                    this.addError(`Видалення класу №${id} не виконано!`);
+                    this.addError(`Видалення центру оренди №${id} не виконано!`);
                 });
                 this.isBusy = false;
                 this.$bvModal.hide("deleteModal");
             }
         },
         created() {
-            this.refreshClasses();
+            this.refreshCenters();
         }
     }
 </script>
 
 <style lang="css">
-    @import "../../styles/main.css";
+    @import "../../../styles/main.css";
 </style>

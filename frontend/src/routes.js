@@ -9,52 +9,52 @@ const router = new Router({
         {
             path: "/",
             name: "Home",
-            component: () => import("./components/Landing"),
+            component: () => import("./components/site/Landing"),
         },
         {
             path: "/models",
             name: "Models",
-            component: () => import("./components/model/ModelsList"),
+            component: () => import("./components/admin/model/ModelsList"),
         },
         {
             path: "/specifications",
             name: "Specifications",
-            component: () => import("./components/specification/SpecificationsList"),
+            component: () => import("./components/admin/specification/SpecificationsList"),
         },
         {
             path: "/classes",
             name: "Classes",
-            component: () => import("./components/class/ClassList"),
+            component: () => import("./components/admin/class/ClassList"),
         },
         {
             path: "/rent_centers",
             name: "RentCenters",
-            component: () => import("./components/rentCenter/RentCentersList"),
+            component: () => import("./components/admin/rentCenter/RentCentersList"),
         },
         {
             path: "/clients",
             name: "Clients",
-            component: () => import("./components/client/ClientList"),
+            component: () => import("./components/admin/client/ClientList"),
         },
         {
             path: "/discounts",
             name: "Discounts",
-            component: () => import("./components/discount/DiscountsList"),
+            component: () => import("./components/admin/discount/DiscountsList"),
         },
         {
             path: "/cars",
             name: "Cars",
-            component: () => import("./components/car/CarsList"),
+            component: () => import("./components/admin/car/CarsList"),
         },
         {
             path: "/rents",
             name: "Rents",
-            component: () => import("./components/rent/RentsList"),
+            component: () => import("./components/admin/rent/RentsList"),
         },
         {
             path: "/complaints",
             name: "Complaints",
-            component: () => import("./components/complaint/ComplaintsList"),
+            component: () => import("./components/admin/complaint/ComplaintsList"),
         }
     ]
 });

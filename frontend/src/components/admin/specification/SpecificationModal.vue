@@ -101,7 +101,7 @@
 </template>
 
 <script>
-    import DataService from "../../service/DataService";
+    import DataService from "../../../service/DataService";
 
     export default {
         props: ['processingId'],

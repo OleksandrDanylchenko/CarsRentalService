@@ -2,8 +2,8 @@
     <div>
         <b-row>
             <b-col>
-                <b-button pill variant="outline-danger" @click="openRentCenterModal(-1)">
-                    <i class="fas fa-plus-circle"></i>&nbsp;Додати новий центр оренди
+                <b-button pill variant="outline-danger" @click="openClientModal(-1)">
+                    <i class="fas fa-plus-circle"></i>&nbsp;Додати нового клієнта
                 </b-button>
             </b-col>
         </b-row>
@@ -12,8 +12,8 @@
                                      @dismissMessages="dismissMessages" @dismissErrors="dismissErrors"/>
             <b-row>
                 <b-col>
-                    <h1 class="mb-3 display-4">Список центрів оренди:</h1>
-                    <b-table id="centersTable" hover :items="rentCenters" :fields="fields"
+                    <h1 class="mb-3 display-4">Список знижок:</h1>
+                    <b-table id="clientsTable" hover :items="discounts" :fields="fields"
                              :busy.sync="isBusy" primary-key="id">
                         <template v-slot:table-busy>
                             <div class="text-center text-danger mt-2">
@@ -22,7 +22,7 @@
                             </div>
                         </template>
                         <template v-slot:cell(editModal)="data">
-                            <b-button pill variant="outline-dark" @click="openRentCenterModal(data.item.id)">
+                            <b-button pill variant="outline-dark" @click="openClientModal(data.item.id)">
                                 <i class="fa fa-edit"></i>
                             </b-button>
                         </template>
@@ -35,89 +35,89 @@
                 </b-col>
             </b-row>
         </div>
-        <RentCentersList :processingId="processingId" @addCenter="addCenter"
-                         @updateCenter="updateCenter" @addError="addError"/>
-        <DeleteModal :processingId="processingId" @deleteRecord="deleteCenter"/>
+        <DiscountModal :processingId="processingId" @addDiscount="addDiscount"
+                       @updateDiscount="updateDiscount" @addError="addError"/>
+        <DeleteModal :processingId="processingId" @deleteRecord="deleteDiscount"/>
     </div>
 </template>
 
 <script>
     import MessagesErrorsComponent from "../common/MessagesErrorsComponent";
-    import {MessagesErrorsDismissMixin} from "../mixins/MessagesErrorsDismissMixin"
-    import RentCentersList from "./RentCenterModal"
+    import {MessagesErrorsDismissMixin} from "../../mixins/MessagesErrorsDismissMixin"
+    import DiscountModal from "./DiscountModal"
     import DeleteModal from "../common/DeleteModal"
-    import DataService from "../../service/DataService";
+    import DataService from "../../../service/DataService";
 
     export default {
         mixins: [MessagesErrorsDismissMixin],
-        name: "CentersList",
+        name: "ClientsList",
         components: {
             MessagesErrorsComponent,
-            RentCentersList,
+            DiscountModal,
             DeleteModal
         },
         data() {
             return {
                 fields: [
                     {key: 'id', label: 'ID', sortable: true, thClass: 'text-danger', tdClass: 'text-danger'},
-                    {key: 'address', label: 'Адреса', sortable: true},
-                    {key: 'phoneNumber', label: 'Номер телефона', sortable: true},
+                    {key: 'rentsAmount', label: 'Кількість поїздок', sortable: true},
+                    {key: 'discountPercents', label: 'Відсоток знижки', sortable: true},
                     {key: 'editModal', label: 'Змінити', thClass: 'text-center', tdClass: 'text-center'},
-                    {key: 'deleteModal', label: 'Видалити', thClass: 'text-center', tdClass: 'text-center'}
+                    {key: 'deleteModal', label: 'Видалити', thClass: 'text-center', tdClass: 'text-center'},
                 ],
-                rentCenters: [],
+                discounts: [],
                 isBusy: true,
                 processingId: Number.MIN_VALUE,
-                resource: 'rent_centers',
+                resource: 'discounts',
 
                 messages: [],
                 errors: []
             }
         },
         methods: {
-            refreshCenters() {
+            refreshDiscounts() {
                 this.isBusy = true;
                 DataService.retrieveAllRecords(this.resource).then(response => {
-                    this.rentCenters = response.data;
+                    this.discounts = response.data;
                     this.isBusy = false;
                 }).catch(error => {
                     console.log(error);
                     if (error.response.status === 404) {
-                        this.addError(`Таблиця центрів оренди не містить записів`);
+                        this.addError(`Таблиця знижок не містить записів`);
                     } else {
                         this.addError(`Сталася непередбачувана помилка завантаження таблиці`);
                     }
                 });
             },
-            openRentCenterModal(id) {
+            openClientModal(id) {
                 this.dismissMessages();
                 this.dismissErrors();
                 this.processingId = id;
-                this.$bvModal.show("centerModal");
+                this.$bvModal.show("discountModal");
             },
-            addCenter(newCenter) {
+            addDiscount(newClient) {
                 this.isBusy = true;
-                DataService.addRecord(this.resource, newCenter).then(() => {
-                    this.addMessage(`Новий центр оренди додано успішно`);
-                    this.refreshCenters();
+                DataService.addRecord(this.resource, newClient).then(() => {
+                    this.addMessage(`Нову знижку додано успішно`);
+                    this.refreshDiscounts();
                 }).catch(error => {
                     console.log(error);
-                    this.addError(`Новий центр оренди містить інформацію, що суперечить обмеженням`);
+                    this.addError(`Нова знижка містить інформацію, що суперечить обмеженням`);
                 });
                 this.isBusy = false;
-                this.$bvModal.hide("centerModal");
+                this.$bvModal.hide("discountModal");
             },
-            updateCenter(updateCenter) {
+            updateDiscount(updateClient) {
                 this.isBusy = true;
-                DataService.updateRecord(this.resource, updateCenter).then(() => {
-                    this.addMessage(`Центр оренди №${updateCenter.id} змінено успішно`);
-                    this.refreshCenters();
+                DataService.updateRecord(this.resource, updateClient).then(() => {
+                    this.addMessage(`Модель №${updateClient.id} змінено успішно`);
+                    this.refreshDiscounts();
                 }).catch(error => {
                     console.log(error);
-                    this.addError(`Змінюваний центр оренди містить інформацію, що суперечить обмеженням`);
+                    this.addError(`Змінювана знижка містить інформацію, що суперечить обмеженням`);
                 });
                 this.isBusy = false;
-                this.$bvModal.hide("centerModal");
+                this.$bvModal.hide("discountModal");
             },
             openDeleteModal(id) {
                 this.processingId = id;
@@ -125,25 +125,25 @@
                 this.dismissErrors();
                 this.$bvModal.show("deleteModal");
             },
-            deleteCenter(id) {
+            deleteDiscount(id) {
                 this.isBusy = true;
                 DataService.deleteRecord(this.resource, id).then(() => {
-                    this.addMessage(`Видалення центру оренди №${id} виконано успішно`);
-                    this.refreshCenters();
+                    this.addMessage(`Видалення знижки №${id} виконано успішно`);
+                    this.refreshDiscounts();
                 }).catch(error => {
                     console.log(error);
-                    this.addError(`Видалення центру оренди №${id} не виконано!`);
+                    this.addError(`Видалення знижки №${id} не виконано!`);
                 });
                 this.isBusy = false;
                 this.$bvModal.hide("deleteModal");
             }
         },
         created() {
-            this.refreshCenters();
+            this.refreshDiscounts();
         }
     }
 </script>
 
 <style lang="css">
-    @import "../../styles/main.css";
+    @import "../../../styles/main.css";
 </style>

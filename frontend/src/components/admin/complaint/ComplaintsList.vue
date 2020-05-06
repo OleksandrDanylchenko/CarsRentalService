@@ -2,8 +2,8 @@
     <div>
         <b-row>
             <b-col>
-                <b-button pill variant="outline-danger" @click="openSpecificationModal(-1)">
-                    <i class="fas fa-plus-circle"></i>&nbsp;Додати нову конфігурацію
+                <b-button pill variant="outline-danger" @click="openComplaintModal(-1)">
+                    <i class="fas fa-plus-circle"></i>&nbsp;Додати нову скаргу
                 </b-button>
             </b-col>
         </b-row>
@@ -12,8 +12,8 @@
                                      @dismissMessages="dismissMessages" @dismissErrors="dismissErrors"/>
             <b-row>
                 <b-col>
-                    <h1 class="mb-3 display-4">Список конфігурацій авто:</h1>
-                    <b-table id="specificationsTable" hover :items="specifications" :fields="fields"
+                    <h1 class="mb-3 display-4">Список скарг:</h1>
+                    <b-table id="complaintsTable" hover :items="complaints" :fields="fields"
                              :busy.sync="isBusy" primary-key="id">
                         <template v-slot:table-busy>
                             <div class="text-center text-danger mt-2">
@@ -21,8 +21,20 @@
                                 <strong>&nbsp;Завантаження таблиці...</strong>
                             </div>
                         </template>
+                        <template v-slot:cell(rentId)="data">
+                            {{ data.item.rent.id }}
+                        </template>
+                        <template v-slot:cell(rentClient)="data">
+                            {{ data.item.rent.client.firstName + ' ' + data.item.rent.client.secondName }}
+                        </template>
+                        <template v-slot:cell(rentCar)="data">
+                            {{ data.item.rent.car.model.brand + ' ' + data.item.rent.car.model.model }}
+                        </template>
+                        <template v-slot:cell(rentCost)="data">
+                            {{ data.item.rent.totalPrice }}
+                        </template>
                         <template v-slot:cell(editModal)="data">
-                            <b-button pill variant="outline-dark" @click="openSpecificationModal(data.item.id)">
+                            <b-button pill variant="outline-dark" @click="openComplaintModal(data.item.id)">
                                 <i class="fa fa-edit"></i>
                             </b-button>
                         </template>
@@ -35,92 +47,93 @@
                 </b-col>
             </b-row>
         </div>
-        <SpecificationModal :processingId="processingId" @addSpecification="addSpecification"
-                            @updateSpecification="updateSpecification" @addError="addError"/>
-        <DeleteModal :processingId="processingId" @deleteRecord="deleteSpecification"/>
+        <ComplainModal :processingId="processingId" @addComplaint="addComplaint"
+                       @updateComplaint="updateComplaint" @addError="addError"/>
+        <DeleteModal :processingId="processingId" @deleteRecord="deleteComplaint"/>
     </div>
 </template>
 
 <script>
     import MessagesErrorsComponent from "../common/MessagesErrorsComponent";
-    import {MessagesErrorsDismissMixin} from "../mixins/MessagesErrorsDismissMixin"
-    import SpecificationModal from "./SpecificationModal"
+    import {MessagesErrorsDismissMixin} from "../../mixins/MessagesErrorsDismissMixin"
+    import ComplainModal from "./ComplaintModal";
     import DeleteModal from "../common/DeleteModal"
-    import DataService from "../../service/DataService";
+    import DataService from "../../../service/DataService";
 
     export default {
         mixins: [MessagesErrorsDismissMixin],
-        name: "SpecificationsList",
+        name: "ComplaintsList",
         components: {
             MessagesErrorsComponent,
-            SpecificationModal,
+            ComplainModal,
             DeleteModal
         },
         data() {
             return {
                 fields: [
                     {key: 'id', label: 'ID', sortable: true, thClass: 'text-danger', tdClass: 'text-danger'},
-                    {key: 'engineCapacity', label: 'Об\'єм двигуна (л.)', sortable: true},
-                    {key: 'horsepowers', label: 'Кінскі сили', sortable: true},
-                    {key: 'fuelType', label: 'Тип пального', sortable: true},
-                    {key: 'fuelConsumption', label: 'Споживання пального (л./100км.)', sortable: true},
-                    {key: 'transmissionType', label: 'Тип трансмісії', sortable: true},
+                    {key: 'theme', label: 'Тема', sortable: true},
+                    {key: 'text', label: 'Тип трансмісії', sortable: true},
+                    {key: 'rentId', label: 'Код оренди', sortable: true},
+                    {key: 'rentClient', label: 'Клієнт', sortable: true},
+                    {key: 'rentCar', label: 'Авто', sortable: true},
+                    {key: 'rentCost', label: 'Загальна ціна', sortable: true},
                     {key: 'editModal', label: 'Змінити', thClass: 'text-center', tdClass: 'text-center'},
                     {key: 'deleteModal', label: 'Видалити', thClass: 'text-center', tdClass: 'text-center'},
                 ],
-                specifications: [],
+                complaints: [],
                 isBusy: true,
                 processingId: Number.MIN_VALUE,
-                resource: 'specifications',
+                resource: 'complaints',
 
                 messages: [],
                 errors: []
             }
         },
         methods: {
-            refreshSpecifications() {
+            refreshComplaints() {
                 this.isBusy = true;
                 DataService.retrieveAllRecords(this.resource).then(response => {
-                    this.specifications = response.data;
+                    this.complaints = response.data;
                     this.isBusy = false;
                 }).catch(error => {
                     console.log(error);
                     if (error.response.status === 404) {
-                        this.addError(`Таблиця конфігурацій не містить записів`);
+                        this.addError(`Таблиця скарг не містить записів`);
                     } else {
                         this.addError(`Сталася непередбачувана помилка завантаження таблиці`);
                     }
                 });
             },
-            openSpecificationModal(id) {
+            openComplaintModal(id) {
                 this.dismissMessages();
                 this.dismissErrors();
                 this.processingId = id;
-                this.$bvModal.show("specificationModal");
+                this.$bvModal.show("complaintModal");
             },
-            addSpecification(newSpecification) {
+            addComplaint(newComplaint) {
                 this.isBusy = true;
-                DataService.addRecord(this.resource, newSpecification).then(() => {
-                    this.addMessage(`Нову конфігурацію додано успішно`);
-                    this.refreshSpecifications();
+                DataService.addRecord(this.resource, newComplaint).then(() => {
+                    this.addMessage(`Нову скаргу додано успішно`);
+                    this.refreshComplaints();
                 }).catch(error => {
                     console.log(error);
-                    this.addError(`Нова конфігурація містить інформацію, що суперечить обмеженням`);
+                    this.addError(`Нова скарга містить інформацію, що суперечить обмеженням`);
                 });
                 this.isBusy = false;
-                this.$bvModal.hide("specificationModal");
+                this.$bvModal.hide("complaintModal");
             },
-            updateSpecification(updateSpecification) {
+            updateComplaint(updateComplaint) {
                 this.isBusy = true;
-                DataService.updateRecord(this.resource, updateSpecification).then(() => {
-                    this.addMessage(`Конфігурацію №${updateSpecification.id} змінено успішно`);
-                    this.refreshSpecifications();
+                DataService.updateRecord(this.resource, updateComplaint).then(() => {
+                    this.addMessage(`Скаргу №${updateComplaint.id} змінено успішно`);
+                    this.refreshComplaints();
                 }).catch(error => {
                     console.log(error);
-                    this.addError(`Змінювана конфігурація містить інформацію, що суперечить обмеженням`);
+                    this.addError(`Змінювана скарга містить інформацію, що суперечить обмеженням`);
                 });
                 this.isBusy = false;
-                this.$bvModal.hide("specificationModal");
+                this.$bvModal.hide("complaintModal");
             },
             openDeleteModal(id) {
                 this.processingId = id;
@@ -128,25 +141,25 @@
                 this.dismissErrors();
                 this.$bvModal.show("deleteModal");
             },
-            deleteSpecification(id) {
+            deleteComplaint(id) {
                 this.isBusy = true;
                 DataService.deleteRecord(this.resource, id).then(() => {
-                    this.addMessage(`Видалення конфігурації №${id} виконано успішно`);
-                    this.refreshSpecifications();
+                    this.addMessage(`Видалення скарги №${id} виконано успішно`);
+                    this.refreshComplaints();
                 }).catch(error => {
                     console.log(error);
-                    this.addError(`Видалення конфігурації №${id} не виконано!`);
+                    this.addError(`Видалення скарги №${id} не виконано!`);
                 });
                 this.isBusy = false;
                 this.$bvModal.hide("deleteModal");
             }
         },
         created() {
-            this.refreshSpecifications();
+            this.refreshComplaints();
         }
     }
 </script>
 
 <style lang="css">
-    @import "../../styles/main.css";
+    @import "../../../styles/main.css";
 </style>

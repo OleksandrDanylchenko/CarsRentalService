@@ -52,12 +52,12 @@
 
 <script>
     import MessagesErrorsComponent from "../common/MessagesErrorsComponent";
-    import {MessagesErrorsDismissMixin} from "../mixins/MessagesErrorsDismissMixin"
+    import {MessagesErrorsDismissMixin} from "../../mixins/MessagesErrorsDismissMixin"
 
     import ModelModal from "./ModelModal"
     import DeleteModal from "../common/DeleteModal"
 
-    import DataService from "../../service/DataService";
+    import DataService from "../../../service/DataService";
 
     export default {
         mixins: [MessagesErrorsDismissMixin],
@@ -148,5 +148,5 @@
 </script>
 
 <style lang="css">
-    @import "../../styles/main.css";
+    @import "../../../styles/main.css";
 </style>
