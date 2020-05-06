@@ -147,7 +147,10 @@
                 });
                 DataService.retrieveAllRecords(this.carsResource).then(response => {
                     response.data.forEach(record => {
-                        let carOption = {value: record.id, text: record.model.brand + ' ' + record.model.model};
+                        let carOption = {
+                            value: record.id,
+                            text: '№' + record.id + ' ' + record.model.brand + ' ' + record.model.model
+                        };
                         this.availableCars.push(carOption);
                     })
                 }).catch(error => {
