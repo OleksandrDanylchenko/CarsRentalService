@@ -59,30 +59,32 @@
 
             <b-collapse id="nav-collapse" is-nav>
                 <b-navbar-nav class="ml-auto">
-                    <b-nav-item @click="returnHome">
-                        <i class="fas fa-home fa-3x"/>
-                    </b-nav-item>
+                    <div class="d-flex justify-content-between align-items-center mt-sm-0 mt-3">
+                        <b-nav-item @click="returnHome">
+                            <i class="fas fa-home fa-3x"/>
+                        </b-nav-item>
 
-                    <b-nav-item-dropdown class="ml-xl-5 ml-lg-4 ml-md-3 ml-md-2 ml-0" right no-caret>
-                        <template v-slot:button-content>
-                            <i class="fas fa-car fa-3x"/>
-                        </template>
-                        <b-dropdown-item href="#">Список авто</b-dropdown-item>
-                        <b-dropdown-item href="#">Знайти авто</b-dropdown-item>
-                        <b-dropdown-item href="#">Випадкове авто</b-dropdown-item>
-                    </b-nav-item-dropdown>
+                        <b-nav-item-dropdown class="ml-xl-5 ml-lg-4 ml-md-3 ml-md-2 ml-0" right no-caret>
+                            <template v-slot:button-content>
+                                <i class="fas fa-car fa-3x"/>
+                            </template>
+                            <b-dropdown-item href="#">Список авто</b-dropdown-item>
+                            <b-dropdown-item href="#">Знайти авто</b-dropdown-item>
+                            <b-dropdown-item href="#">Випадкове авто</b-dropdown-item>
+                        </b-nav-item-dropdown>
 
-                    <b-nav-item-dropdown class="ml-xl-5 ml-lg-4 ml-md-3 ml-md-2 ml-0" right no-caret>
-                        <template v-slot:button-content>
-                            <i class="fas fa-question-circle fa-3x"/>
-                        </template>
-                        <b-dropdown-item href="#">Про нас</b-dropdown-item>
-                        <b-dropdown-item href="#">FAQ</b-dropdown-item>
-                    </b-nav-item-dropdown>
+                        <b-nav-item-dropdown class="ml-xl-5 ml-lg-4 ml-md-3 ml-md-2 ml-0" right no-caret>
+                            <template v-slot:button-content>
+                                <i class="fas fa-question-circle fa-3x"/>
+                            </template>
+                            <b-dropdown-item href="#">Про нас</b-dropdown-item>
+                            <b-dropdown-item href="#">FAQ</b-dropdown-item>
+                        </b-nav-item-dropdown>
 
-                    <b-nav-item class="ml-xl-5 ml-lg-4 ml-md-3 ml-md-2 ml-0" @click="goContacts">
-                        <i class="fas fa-info-circle fa-3x"/>
-                    </b-nav-item>
+                        <b-nav-item class="ml-xl-5 ml-lg-4 ml-md-3 ml-md-2 ml-0" @click="goContacts">
+                            <i class="fas fa-info-circle fa-3x"/>
+                        </b-nav-item>
+                    </div>
                 </b-navbar-nav>
             </b-collapse>
         </b-navbar>
