@@ -72,13 +72,13 @@
 
     <b-navbar class="pt-0 mb-2" toggleable="md" type="dark">
       <b-navbar-brand>
-        <router-link to="/" class="text-decoration-none mr-5">
+        <b-link to="/" class="text-decoration-none mr-5">
           <b-img
             src="https://bit.ly/2Ww22LJ"
             alt="Alex Rentals"
             width="115px"
           />
-        </router-link>
+        </b-link>
       </b-navbar-brand>
 
       <b-navbar-toggle target="nav-collapse"></b-navbar-toggle>
@@ -88,8 +88,14 @@
           <div
             class="d-flex justify-content-between align-items-center mt-sm-0 mt-3"
           >
-            <b-nav-item @click="returnHome">
-              <i class="fas fa-home fa-3x" />
+            <b-nav-item>
+              <b-link
+                to="/"
+                class="text-decoration-none"
+                style="color: inherit;"
+              >
+                <i class="fas fa-home fa-3x" />
+              </b-link>
             </b-nav-item>
 
             <b-nav-item-dropdown
@@ -100,9 +106,11 @@
               <template v-slot:button-content>
                 <i class="fas fa-car fa-3x" />
               </template>
-              <b-dropdown-item href="#">Список авто</b-dropdown-item>
-              <b-dropdown-item href="#">Знайти авто</b-dropdown-item>
-              <b-dropdown-item href="#">Випадкове авто</b-dropdown-item>
+              <div class="d-flex align-items-center flex-column">
+                <b-dropdown-item href="#">Список авто</b-dropdown-item>
+                <b-dropdown-item href="#">Знайти авто</b-dropdown-item>
+                <b-dropdown-item href="#">Випадкове авто</b-dropdown-item>
+              </div>
             </b-nav-item-dropdown>
 
             <b-nav-item-dropdown
@@ -113,8 +121,10 @@
               <template v-slot:button-content>
                 <i class="fas fa-question-circle fa-3x" />
               </template>
-              <b-dropdown-item href="#">Про нас</b-dropdown-item>
-              <b-dropdown-item href="#">FAQ</b-dropdown-item>
+              <div class="d-flex align-items-center flex-column">
+                <b-dropdown-item href="#">Про нас</b-dropdown-item>
+                <b-dropdown-item href="#">FAQ</b-dropdown-item>
+              </div>
             </b-nav-item-dropdown>
 
             <b-nav-item

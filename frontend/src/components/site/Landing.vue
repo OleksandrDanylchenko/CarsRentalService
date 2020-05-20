@@ -1,7 +1,9 @@
 <template>
   <div>
-    <ClientNavbar />
-    <p class="display-4 text-center fadeInUp" v-wow>Популярний вибір:</p>
+    <ClientNavbar class="fadeInDown" v-wow data-wow-delay="1s" />
+    <p class="display-4 text-center fadeInUp" v-wow data-wow-delay="1s">
+      Популярний вибір:
+    </p>
     <b-card-group deck>
       <div class="d-flex justify-content-center flex-wrap">
         <div v-for="car in popularCars" :key="car.id">
@@ -10,7 +12,8 @@
               :img-src="require('@/assets/modelsPhotos/' + car.model.imageName)"
               :img-alt="car.model.model + ' photo'"
               img-top
-              class="fadeInUp mb-3"
+              class="mb-3 fadeInUp"
+              data-wow-delay="1s"
               v-wow
             >
               <b-card-title>
@@ -39,14 +42,19 @@
 
     <div class="row">
       <div class="col">
-        <div class="display-4 text-center fadeInUp" v-wow>
+        <div class="display-4 text-center fadeInUp" v-wow data-wow-delay="1s">
           Доступні для оренди типи авто:
         </div>
       </div>
     </div>
     <div class="row">
       <div class="col">
-        <b-list-group horizontal="lg" class="fadeInUp" v-wow>
+        <b-list-group
+          horizontal="lg"
+          class="fadeInUp"
+          v-wow
+          data-wow-delay="1s"
+        >
           <b-list-group-item
             href="#"
             class="d-flex flex-column align-items-center"
@@ -120,7 +128,7 @@
         </b-list-group>
       </div>
     </div>
-    <Footer />
+    <Footer class="fadeInUp" v-wow data-wow-delay="1s" />
   </div>
 </template>
 
