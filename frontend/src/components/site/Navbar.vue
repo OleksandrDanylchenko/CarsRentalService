@@ -1,6 +1,6 @@
 <template>
   <div>
-    <b-navbar class="pb-0" type="light" id="contactsBar">
+    <b-navbar class="pb-0" type="dark" id="contactsBar">
       <b-navbar-nav>
         <b-nav-item
           class="mr-md-5 mr-sm-4"
@@ -70,7 +70,7 @@
 
     <hr class="my-0" />
 
-    <b-navbar class="pt-0 mb-4" toggleable="md" type="light">
+    <b-navbar class="pt-0 mb-4" toggleable="md" type="dark">
       <b-navbar-brand @click="returnHome">
         <b-img
           src="https://bit.ly/2Ww22LJ"

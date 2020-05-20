@@ -1,38 +1,42 @@
 <template>
   <div>
-    <div>
-      <p class="display-4 text-center fadeInUp" v-wow>Популярний вибір:</p>
-      <b-card-group columns>
+    <p class="display-4 text-center fadeInUp" v-wow>Популярний вибір:</p>
+    <b-card-group deck>
+      <div class="d-flex justify-content-center flex-wrap">
         <div v-for="car in popularCars" :key="car.id">
           <div v-if="car.model.imageName != null">
             <b-card
               :img-src="require('@/assets/modelsPhotos/' + car.model.imageName)"
               :img-alt="car.model.model + ' photo'"
               img-top
-              class="fadeInUp"
+              class="fadeInUp mb-3"
               v-wow
             >
-              <b-card-title class="mb-0">
+              <b-card-title>
+                <h3>{{ car.model.brand + " " + car.model.model }}</h3>
+              </b-card-title>
+              <b-card-text>
                 <div class="d-flex justify-content-between align-items-center">
                   <div>
-                    <h2>{{ car.model.brand + " " + car.model.model }}</h2>
                     <h4>{{ car.model.year }}</h4>
-                    <h5>{{ car.model.type }}</h5>
+                    <h4>{{ car.model.type }}</h4>
                   </div>
                   <b-button variant="danger">
-                    <div class="text-left" v-resize-text>Від</div>
+                    <div class="text-left">Від</div>
                     <div class="d-flex align-items-baseline text-left">
                       <h4>₴{{ car.dayPrice }}</h4>
                       <div class="my-0">/день</div>
                     </div>
                   </b-button>
                 </div>
-              </b-card-title>
+              </b-card-text>
             </b-card>
           </div>
         </div>
-      </b-card-group>
+      </div>
+    </b-card-group>
 
+    <div>
 
     </div>
   </div>
@@ -47,6 +51,7 @@
     return {
       popularCars: [],
       carsResource: "cars",
+      cardGroupKey: 0,
     };
   },
   methods: {
@@ -55,7 +60,7 @@
         .then((response) => {
           this.popularCars = this._.uniqBy(response.data, "model.model").slice(
             0,
-            3
+            6
           );
         })
         .catch((error) => {
@@ -73,21 +78,19 @@
 @import "../../styles/main.css";
 @import "../../styles/animate.css";
 
-@media (min-width: 1px) {
-  .card-columns {
-    column-count: 1;
-  }
+.card {
+  max-width: 500px;
 }
 
-@media (min-width: 1000px) {
-  .card-columns {
-    column-count: 2;
-  }
-}
-
-@media (min-width: 1505px) {
-  .card-columns {
-    column-count: 3;
-  }
+.features-list > * > li::before {
+  content: "";
+  display: inline-block;
+  width: 30px;
+  height: 30px;
+  vertical-align: middle;
+  background-image: url(https://svgshare.com/i/LKE.svg);
+  background-repeat: no-repeat;
+  background-size: 100%;
+  margin-right: 15px;
 }
 </style>
