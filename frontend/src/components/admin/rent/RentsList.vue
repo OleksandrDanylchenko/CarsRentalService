@@ -30,17 +30,23 @@
             primary-key="id"
           >
             <template v-slot:cell(carId)="data">
-              {{ data.item.car.id }}
+              {{ data.item.car ? data.item.car.id : "∅" }}
             </template>
             <template v-slot:cell(carModel)="data">
-              {{ data.item.car.model.brand + " " + data.item.car.model.model }}
+              {{
+                data.item.car
+                  ? data.item.car.model.brand + " " + data.item.car.model.model
+                  : "∅"
+              }}
             </template>
             <template v-slot:cell(clientId)="data">
-              {{ data.item.client.id }}
+              {{ data.item.client ? data.item.client.id : "∅" }}
             </template>
             <template v-slot:cell(clientName)="data">
               {{
-                data.item.client.firstName + " " + data.item.client.secondName
+                data.item.client
+                  ? data.item.client.firstName + " " + data.item.client.secondName
+                  : "∅"
               }}
             </template>
             <template v-slot:table-busy>
