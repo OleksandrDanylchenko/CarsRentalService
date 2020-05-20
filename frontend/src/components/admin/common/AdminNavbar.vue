@@ -2,7 +2,7 @@
   <b-navbar toggleable="xl" type="dark" variant="dark" id="adminNavbar">
     <b-navbar-brand>
       <router-link to="/" class="text-decoration-none mr-5">
-        <b-img src="https://bit.ly/2Ww22LJ" alt="Alex Rentals" width="115px" />
+        <b-img src="https://bit.ly/2Ww22LJ" alt="Alex Rentals" width="110px" />
       </router-link>
     </b-navbar-brand>
 

@@ -1,5 +1,6 @@
 <template>
   <div>
+    <AdminNavbar />
     <div class="mt-4">
       <MessagesErrorsComponent
         :messages="messages"
@@ -97,6 +98,7 @@
   import ComplainModal from './ComplaintModal'
   import DeleteModal from '../common/DeleteModal'
   import DataService from '../../../service/DataService'
+  import AdminNavbar from '../common/AdminNavbar'
 
   export default {
   mixins: [MessagesErrorsDismissMixin],
@@ -105,6 +107,7 @@
     MessagesErrorsComponent,
     ComplainModal,
     DeleteModal,
+    AdminNavbar,
   },
   data() {
     return {

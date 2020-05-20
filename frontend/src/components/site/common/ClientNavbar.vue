@@ -71,13 +71,14 @@
     <hr class="my-0" />
 
     <b-navbar class="pt-0 mb-2" toggleable="md" type="dark">
-      <b-navbar-brand @click="returnHome">
-        <b-img
-          src="https://bit.ly/2Ww22LJ"
-          fluid
-          alt="Alex Rentals"
-          width="130px"
-        />
+      <b-navbar-brand>
+        <router-link to="/" class="text-decoration-none mr-5">
+          <b-img
+            src="https://bit.ly/2Ww22LJ"
+            alt="Alex Rentals"
+            width="115px"
+          />
+        </router-link>
       </b-navbar-brand>
 
       <b-navbar-toggle target="nav-collapse"></b-navbar-toggle>
@@ -160,9 +161,6 @@
               "Для подальшої довідки зв'яжіться з нами через вказані номери телефонів чи електронну пошту"
           );
         });
-    },
-    returnHome() {
-      this.$router.push(`/`).then((r) => console.log(r));
     },
     goContacts() {
       this.$router.push(`/contacts`).then((r) => console.log(r));

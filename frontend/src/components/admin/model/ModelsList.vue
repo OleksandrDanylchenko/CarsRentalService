@@ -1,5 +1,6 @@
 <template>
   <div>
+    <AdminNavbar />
     <div class="mt-4">
       <MessagesErrorsComponent
         :messages="messages"
@@ -80,11 +81,10 @@
 <script>
   import MessagesErrorsComponent from '../common/MessagesErrorsComponent'
   import { MessagesErrorsDismissMixin } from '../../mixins/MessagesErrorsDismissMixin'
-
   import ModelModal from './ModelModal'
   import DeleteModal from '../common/DeleteModal'
-
   import DataService from '../../../service/DataService'
+  import AdminNavbar from '../common/AdminNavbar'
 
   export default {
   mixins: [MessagesErrorsDismissMixin],
@@ -93,6 +93,7 @@
     MessagesErrorsComponent,
     ModelModal,
     DeleteModal,
+    AdminNavbar,
   },
   data() {
     return {
