@@ -7,24 +7,16 @@
       crossorigin="anonymous"
     />
     <b-container fluid class="px-5">
-      <Navbar @returnHome="returnHome" @goContacts="goContacts" />
       <router-view />
-      <Footer />
     </b-container>
   </div>
 </template>
 
 <script>
   import DataService from './service/DataService'
-  import Navbar from './components/site/Navbar'
-  import Footer from './components/site/Footer'
 
   export default {
   name: "App",
-  components: {
-    Navbar,
-    Footer,
-  },
   data() {
     return {
       rentCenters: [],
@@ -51,12 +43,6 @@
               "Для подальшої довідки зв'яжіться з нами через вказані номери телефонів чи електронну пошту"
           );
         });
-    },
-    returnHome() {
-      this.$router.push(`/`).then((r) => console.log(r));
-    },
-    goContacts() {
-      this.$router.push(`/contacts`).then((r) => console.log(r));
     },
   },
   created() {

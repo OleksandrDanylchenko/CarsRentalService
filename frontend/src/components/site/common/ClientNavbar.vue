@@ -130,7 +130,7 @@
 </template>
 
 <script>
-  import DataService from '../../service/DataService'
+  import DataService from '../../../service/DataService'
 
   export default {
   name: "Navbar",
@@ -162,10 +162,10 @@
         });
     },
     returnHome() {
-      this.$emit("returnHome");
+      this.$router.push(`/`).then((r) => console.log(r));
     },
     goContacts() {
-      this.$emit("goContacts");
+      this.$router.push(`/contacts`).then((r) => console.log(r));
     },
   },
   created() {

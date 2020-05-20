@@ -1,5 +1,6 @@
 <template>
   <div>
+    <ClientNavbar />
     <p class="display-4 text-center fadeInUp" v-wow>Популярний вибір:</p>
     <b-card-group deck>
       <div class="d-flex justify-content-center flex-wrap">
@@ -119,14 +120,21 @@
         </b-list-group>
       </div>
     </div>
+    <Footer />
   </div>
 </template>
 
 <script>
   import DataService from '../../service/DataService'
+  import ClientNavbar from './common/ClientNavbar'
+  import Footer from './common/Footer'
 
   export default {
   name: "Landing",
+  components: {
+    ClientNavbar,
+    Footer,
+  },
   data() {
     return {
       popularCars: [],
