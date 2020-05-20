@@ -162,10 +162,10 @@
         });
     },
     returnHome() {
-      this.$router.push(`/`).then((r) => console.log(r));
+      this.$emit("returnHome");
     },
     goContacts() {
-      this.$router.push(`/contacts`).then((r) => console.log(r));
+      this.$emit("goContacts");
     },
   },
   created() {
