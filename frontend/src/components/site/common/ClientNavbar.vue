@@ -106,10 +106,16 @@
               <template v-slot:button-content>
                 <i class="fas fa-car fa-3x" />
               </template>
-              <div class="d-flex align-items-center flex-column">
-                <b-dropdown-item href="#">Список авто</b-dropdown-item>
-                <b-dropdown-item href="#">Знайти авто</b-dropdown-item>
-                <b-dropdown-item href="#">Випадкове авто</b-dropdown-item>
+              <div class="d-flex align-items-center">
+                <b-dropdown-item to="/carSelect">
+                  Список авто
+                </b-dropdown-item>
+                <b-dropdown-item to="/carSelect">
+                  Знайти авто
+                </b-dropdown-item>
+                <b-dropdown-item to="/carSelect">
+                  Випадкове авто
+                </b-dropdown-item>
               </div>
             </b-nav-item-dropdown>
 
@@ -121,7 +127,7 @@
               <template v-slot:button-content>
                 <i class="fas fa-question-circle fa-3x" />
               </template>
-              <div class="d-flex align-items-center flex-column">
+              <div class="d-flex align-items-center">
                 <b-dropdown-item href="#">Про нас</b-dropdown-item>
                 <b-dropdown-item href="#">FAQ</b-dropdown-item>
               </div>

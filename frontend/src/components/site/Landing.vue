@@ -1,7 +1,7 @@
 <template>
   <div>
-    <ClientNavbar class="fadeInDown" v-wow data-wow-delay="1s" />
-    <p class="display-4 text-center fadeInUp" v-wow data-wow-delay="1s">
+    <ClientNavbar class="fadeInDown" v-wow data-wow-delay="0.2s" />
+    <p class="display-4 text-center fadeInUp" v-wow data-wow-delay="0.2s">
       Популярний вибір:
     </p>
     <b-card-group deck>
@@ -13,7 +13,7 @@
               :img-alt="car.model.model + ' photo'"
               img-top
               class="mb-3 fadeInUp"
-              data-wow-delay="1s"
+              data-wow-delay="0.2s"
               v-wow
             >
               <b-card-title>
@@ -28,7 +28,7 @@
                   <b-button variant="danger">
                     <div class="text-left">Від</div>
                     <div class="d-flex align-items-baseline text-left">
-                      <h4>₴{{ car.dayPrice }}</h4>
+                      <h4 class="m-0">₴{{ car.dayPrice }}</h4>
                       <div class="my-0">/день</div>
                     </div>
                   </b-button>
@@ -42,7 +42,7 @@
 
     <div class="row">
       <div class="col">
-        <div class="display-4 text-center fadeInUp" v-wow data-wow-delay="1s">
+        <div class="display-4 text-center fadeInUp" v-wow data-wow-delay="0.2s">
           Доступні для оренди типи авто:
         </div>
       </div>
@@ -53,7 +53,7 @@
           horizontal="lg"
           class="fadeInUp"
           v-wow
-          data-wow-delay="1s"
+          data-wow-delay="0.2s"
         >
           <b-list-group-item
             href="#"
@@ -128,7 +128,7 @@
         </b-list-group>
       </div>
     </div>
-    <Footer class="fadeInUp" v-wow data-wow-delay="1s" />
+    <Footer class="fadeInUp" v-wow data-wow-delay="0.2s" />
   </div>
 </template>
 

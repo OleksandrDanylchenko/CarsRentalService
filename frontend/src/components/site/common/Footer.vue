@@ -16,6 +16,7 @@
           <b-link
             href="https://github.com/OlexanderD/CarsRentalService"
             class="text-danger text-decoration-none"
+            target="_blank"
           >
             <div class="d-flex align-items-center">
               <i class="fab fa-github fa-3x mr-3" /><span>OlexanderD</span>
