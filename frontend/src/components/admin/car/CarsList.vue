@@ -52,7 +52,7 @@
             </template>
             <template v-slot:cell(specFields)="data">
               <b-button
-                variant="outline-dark"
+                variant="outline-primary"
                 v-b-toggle="'specs' + data.item.id"
                 >Деталі</b-button
               >
@@ -90,7 +90,7 @@
             <template v-slot:cell(editModal)="data">
               <b-button
                 pill
-                variant="outline-dark"
+                variant="outline-primary"
                 @click="openCarModal(data.item.id)"
               >
                 <i class="fa fa-edit"></i>

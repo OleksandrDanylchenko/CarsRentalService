@@ -44,7 +44,7 @@
                       <div class="d-flex justify-content-center">
                         <b-button
                           pill
-                          variant="outline-dark"
+                          variant="outline-primary"
                           @click="openModelModal(model.id)"
                         >
                           <i class="fa fa-edit"></i>

@@ -114,7 +114,7 @@
       </template>
 
       <template v-slot:modal-footer="{ cancel }">
-        <b-button variant="dark" @click="cancel()">
+        <b-button variant="primary" @click="cancel()">
           Скасувати
         </b-button>
         <b-button type="submit" form="carForm" variant="danger">

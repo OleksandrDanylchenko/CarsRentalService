@@ -62,7 +62,7 @@
             <template v-slot:cell(editModal)="data">
               <b-button
                 pill
-                variant="outline-dark"
+                variant="outline-primary"
                 @click="openRentModal(data.item.id)"
               >
                 <i class="fa fa-edit"></i>
