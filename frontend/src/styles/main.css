@@ -1,7 +1,12 @@
+@font-face {
+  font-family: ALS Sector Webfont;
+  src: url("../../public/font/als_sector_regular-webfont.woff") format("woff");
+}
+
 body {
-    font-family: "ALS Sector", Lato, sans-serif;
+  font-family: "ALS Sector Webfont", "ALS Sector", Lato, sans-serif;
 }
 
 dl {
-    margin-bottom: 0;
+  margin-bottom: 0;
 }

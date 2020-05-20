@@ -70,7 +70,7 @@
 
     <hr class="my-0" />
 
-    <b-navbar class="pt-0 mb-4" toggleable="md" type="dark">
+    <b-navbar class="pt-0 mb-2" toggleable="md" type="dark">
       <b-navbar-brand @click="returnHome">
         <b-img
           src="https://bit.ly/2Ww22LJ"
