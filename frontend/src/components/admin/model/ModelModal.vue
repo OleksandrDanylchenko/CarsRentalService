@@ -92,12 +92,11 @@
                   <b-form-file
                     class="text-nowrap text-truncate"
                     v-model="modelImage"
-                    placeholder=""
-                    drop-placeholder="Перетягніть файл сюди..."
+                    :placeholder="modelImage"
                     accept=".jpg, .png, .gif, .bmp, .jpeg"
                     no-drop
                     :state="errors[0] ? false : valid ? true : null"
-                    @change="onPhotoLoad"
+                    @change="handlePhotoLoad"
                   />
                   <b-form-invalid-feedback>
                     {{ errors[0] }}
@@ -174,6 +173,10 @@
             this.formModel.model = response.data.model;
             this.formModel.year = response.data.year;
             this.formModel.type = response.data.type;
+            this.modelImage = response.data.imageName.slice(
+              response.data.imageName.indexOf("__") + 2,
+              response.data.imageName.length
+            );
           })
           .catch((error) => {
             console.log(error);
@@ -204,7 +207,7 @@
       if (this.formModel.id < 0) this.$emit("addModel", form);
       else this.$emit("updateModel", form);
     },
-    onPhotoLoad(e) {
+    handlePhotoLoad(e) {
       const image = e.target.files[0];
       this.previewImage = URL.createObjectURL(image);
     },

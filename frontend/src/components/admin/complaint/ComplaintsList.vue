@@ -1,12 +1,5 @@
 <template>
   <div>
-    <b-row>
-      <b-col>
-        <b-button pill variant="outline-danger" @click="openComplaintModal(-1)">
-          <i class="fas fa-plus-circle"></i>&nbsp;Додати нову скаргу
-        </b-button>
-      </b-col>
-    </b-row>
     <div class="mt-4">
       <MessagesErrorsComponent
         :messages="messages"
@@ -16,7 +9,18 @@
       />
       <b-row>
         <b-col>
-          <h1 class="mb-3 display-4">Список скарг:</h1>
+          <b-row>
+            <b-col class="d-flex align-items-center justify-content-between">
+              <h1 class="mb-3 display-4">Список скарг:</h1>
+              <b-button
+                pill
+                variant="outline-danger"
+                @click="openComplaintModal(-1)"
+              >
+                <i class="fas fa-plus-circle"></i>&nbsp;Додати нову скаргу
+              </b-button>
+            </b-col>
+          </b-row>
           <b-table
             id="complaintsTable"
             hover
