@@ -428,13 +428,13 @@
             }
             if (
               this.priceFilter["min"] !== null &&
-              car.dayPrice < this.priceFilter["min"]
+              parseFloat(car.dayPrice) < parseFloat(this.priceFilter["min"])
             ) {
               return false;
             }
             return !(
               this.priceFilter["max"] !== null &&
-              car.dayPrice > this.priceFilter["max"]
+              parseFloat(car.dayPrice) > parseFloat(this.priceFilter["max"])
             );
           })
           .filter((car) => {
@@ -444,13 +444,15 @@
               } else if (modelMinMaxFields.includes(key)) {
                 if (
                   modelQuery[key]["min"] !== null &&
-                  car.model[key] < modelQuery[key]["min"]
+                  parseFloat(car.model[key]) <
+                    parseFloat(modelQuery[key]["min"])
                 ) {
                   return false;
                 }
                 if (
                   modelQuery[key]["max"] !== null &&
-                  car.model[key] > modelQuery[key]["max"]
+                  parseFloat(car.model[key]) >
+                    parseFloat(modelQuery[key]["max"])
                 ) {
                   return false;
                 }
