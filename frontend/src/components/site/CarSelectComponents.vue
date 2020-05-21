@@ -169,14 +169,14 @@
           </b-card-text>
         </b-card>
       </div>
-      <div class="col-auto">
+      <div class="col-10">
         <div v-for="car in filteredCars" :key="car.id">
           <div v-if="car.model.imageName != null && car.rentable">
             <b-card
               :img-src="require('@/assets/modelsPhotos/' + car.model.imageName)"
               :img-alt="car.model.model + ' photo'"
               img-left
-              img-width="550px"
+              img-width="40%"
               class="mb-3 fadeInUp mw-100"
               data-wow-delay="0.2s"
               v-wow
@@ -197,7 +197,7 @@
                 <b-card-text>
                   <h4 class="">Характеристики:</h4>
                   <div class="row">
-                    <div class="col-2">
+                    <div class="col-lg-3 col-2">
                       <div class="d-flex align-items-end mb-3">
                         <img
                           src="../../assets/specsIcons/engine.svg"
@@ -219,7 +219,7 @@
                         </h5>
                       </div>
                     </div>
-                    <div class="col-4 pr-0">
+                    <div class="col-lg-4 col-md-3 col-2 pr-0">
                       <div class="d-flex align-items-end mb-3">
                         <img
                           src="../../assets/specsIcons/fuel_type.svg"
@@ -239,7 +239,7 @@
                         </h5>
                       </div>
                     </div>
-                    <div class="col-4 d-flex align-items-end pl-0">
+                    <div class="col-lg-3 col-2 d-flex align-items-end pl-0">
                       <div class="d-flex align-items-end mb-3">
                         <img
                           src="../../assets/specsIcons/transmission.svg"
@@ -255,7 +255,7 @@
                       class="col-2 d-flex justify-content-end align-items-center"
                     >
                       <b-button variant="danger">
-                        <div class="d-flex align-items-baseline text-left p-2">
+                        <div class="d-flex align-items-baseline text-left p-lg-1 p-0">
                           <h4 class="m-0">₴{{ car.dayPrice }}</h4>
                           <div class="my-0">/день</div>
                         </div>
@@ -367,7 +367,7 @@
         const modelOption = {
           value: car.model.model,
           text: _.truncate(car.model.model, {
-            length: 20,
+            length: 16,
           }),
         };
         if (this.models.every((type) => type.value !== modelOption.value)) {
@@ -381,7 +381,7 @@
         const typeOption = {
           value: car.model.type,
           text: _.truncate(car.model.type, {
-            length: 20,
+            length: 16,
           }),
         };
         if (this.types.every((type) => type.value !== typeOption.value)) {

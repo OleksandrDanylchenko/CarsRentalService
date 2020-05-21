@@ -116,14 +116,14 @@
                 <i class="fas fa-question-circle fa-3x" />
               </template>
               <div class="d-flex align-items-center">
-                <b-dropdown-item href="#">Про нас</b-dropdown-item>
-                <b-dropdown-item href="#">FAQ</b-dropdown-item>
+                <b-dropdown-item to="/maintenance">Про нас</b-dropdown-item>
+                <b-dropdown-item  to="/maintenance">FAQ</b-dropdown-item>
               </div>
             </b-nav-item-dropdown>
 
             <b-nav-item
               class="ml-xl-5 ml-lg-4 ml-md-3 ml-md-2 ml-0"
-              @click="goContacts"
+              to="/maintenance"
             >
               <i class="fas fa-info-circle fa-3x" />
             </b-nav-item>
@@ -165,10 +165,7 @@
               "Для подальшої довідки зв'яжіться з нами через вказані номери телефонів чи електронну пошту"
           );
         });
-    },
-    goContacts() {
-      this.$router.push(`/contacts`).then((r) => console.log(r));
-    },
+    }
   },
   created() {
     this.loadRentCenters();
