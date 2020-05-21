@@ -25,13 +25,13 @@
                     <h4>{{ car.model.year }}</h4>
                     <h4>{{ car.model.type }}</h4>
                   </div>
-                  <b-button variant="danger">
+                  <b-link to="/carSelect" class="btn btn-danger">
                     <div class="text-left">Від</div>
                     <div class="d-flex align-items-baseline text-left">
                       <h4 class="m-0">₴{{ car.dayPrice }}</h4>
                       <div class="my-0">/день</div>
                     </div>
-                  </b-button>
+                  </b-link>
                 </div>
               </b-card-text>
             </b-card>
