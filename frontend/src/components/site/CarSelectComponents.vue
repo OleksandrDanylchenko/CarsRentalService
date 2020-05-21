@@ -10,10 +10,23 @@
           <b-card-text>
             <b-form-group class="fadeInUp" v-wow data-wow-delay="0.2s">
               <template v-slot:label>
+                <h4>Бренд:</h4>
+              </template>
+              <b-form-checkbox-group
+                v-model="modelFilter.brand"
+                :options="brands"
+                size="lg"
+                stacked
+                @change="filterCars"
+              />
+            </b-form-group>
+
+            <b-form-group class="fadeInUp" v-wow data-wow-delay="0.2s">
+              <template v-slot:label>
                 <h4>Тип пального:</h4>
               </template>
               <b-form-checkbox-group
-                v-model="filter.fuelType"
+                v-model="specFilter.fuelType"
                 :options="fuelTypes"
                 size="lg"
                 stacked
@@ -144,12 +157,19 @@
       cars: [],
       filteredCars: [],
 
+      brands: [],
       fuelTypes: [],
       transmissionTypes: [],
 
-      filter: {
+      modelFilter: {
+        brand: [],
+        model: [],
+        year: [],
+        type: [],
+      },
+      specFilter: {
         fuelType: [],
-        filterTransmissionTypes: [],
+        transmissionTypes: [],
       },
     };
   },
@@ -157,7 +177,10 @@
     loadCars() {
       DataService.retrieveAllRecords(this.carsResource)
         .then((response) => {
-          this.filteredCars = this.cars = response.data;
+          this.filteredCars = this.cars = response.data.filter(
+            (car) => car.rentable
+          );
+          this.parseBrands();
           this.parseFuelTypes();
           this.parseTransmissionTypes();
         })
@@ -165,60 +188,86 @@
           console.log(error);
         });
     },
+    parseBrands() {
+      this.cars.forEach((car) => {
+        const brandOption = {
+          value: car.model.brand,
+          text: car.model.brand,
+        };
+        if (this.brands.every((type) => type.value !== brandOption.value)) {
+          this.brands.push(brandOption);
+        }
+      });
+      this.brands = this.alphabetSort(this.brands);
+    },
     parseFuelTypes() {
-      this.cars
-        .filter((car) => car.rentable)
-        .forEach((car) => {
-          const typeOption = {
-            value: car.specification.fuelType,
-            text: car.specification.fuelType,
-          };
-          if (this.fuelTypes.every((type) => type.value !== typeOption.value)) {
-            this.fuelTypes.push(typeOption);
-          }
-        });
+      this.cars.forEach((car) => {
+        const typeOption = {
+          value: car.specification.fuelType,
+          text: car.specification.fuelType,
+        };
+        if (this.fuelTypes.every((type) => type.value !== typeOption.value)) {
+          this.fuelTypes.push(typeOption);
+        }
+      });
+      this.fuelTypes = this.alphabetSort(this.fuelTypes);
     },
     parseTransmissionTypes() {
-      this.cars
-        .filter((car) => car.rentable)
-        .forEach((car) => {
-          const transmissionOption = {
-            value: car.specification.transmissionType,
-            text: car.specification.transmissionType,
-          };
-          if (
-            this.transmissionTypes.every(
-              (type) => type.value !== transmissionOption.value
-            )
-          ) {
-            this.transmissionTypes.push(transmissionOption);
-          }
-        });
-    },
-    buildFilter() {
-      let query = {};
-      for (let keys in this.filter) {
-        if (Array.isArray(this.filter[keys]) && this.filter[keys].length > 0) {
-          query[keys] = this.filter[keys];
+      this.cars.forEach((car) => {
+        const transmissionOption = {
+          value: car.specification.transmissionType,
+          text: car.specification.transmissionType,
+        };
+        if (
+          this.transmissionTypes.every(
+            (type) => type.value !== transmissionOption.value
+          )
+        ) {
+          this.transmissionTypes.push(transmissionOption);
         }
-      }
-      return query;
+      });
+      this.transmissionTypes = this.alphabetSort(this.transmissionTypes);
+    },
+    alphabetSort(array) {
+      return array.sort((a, b) => a.text.localeCompare(b.text));
     },
     filterCars() {
       this.$nextTick(() => {
-        let query = this.buildFilter();
-        this.filteredCars = this.cars.filter((car) => {
-          for (let key in query) {
-            if (
-              car.specification[key] === undefined ||
-              !query[key].includes(car.specification[key])
-            ) {
-              return false;
+        let modelQuery = this.buildFilter(this.modelFilter);
+        let specQuery = this.buildFilter(this.specFilter);
+        this.filteredCars = this.cars
+          .filter((car) => {
+            for (let key in modelQuery) {
+              if (
+                car.model[key] === undefined ||
+                !modelQuery[key].includes(car.model[key])
+              ) {
+                return false;
+              }
             }
-          }
-          return true;
-        });
+            return true;
+          })
+          .filter((car) => {
+            for (let key in specQuery) {
+              if (
+                car.specification[key] === undefined ||
+                !specQuery[key].includes(car.specification[key])
+              ) {
+                return false;
+              }
+            }
+            return true;
+          });
       }, 0);
+    },
+    buildFilter(filter) {
+      let query = {};
+      for (let keys in filter) {
+        if (Array.isArray(filter[keys]) && filter[keys].length > 0) {
+          query[keys] = filter[keys];
+        }
+      }
+      return query;
     },
   },
   created() {
