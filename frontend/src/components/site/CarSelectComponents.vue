@@ -251,6 +251,14 @@
         type: [],
       },
       specFilter: {
+        engineCapacity: {
+          min: null,
+          max: null,
+        },
+        horsepowers: {
+          min: null,
+          max: null,
+        },
         fuelType: [],
         transmissionTypes: [],
       },
@@ -346,7 +354,8 @@
     },
     filterCars() {
       this.$nextTick(() => {
-        const keysWithMinMax = ["year"];
+        const modelMinMaxFields = ["year"];
+        const specMinMaxFields = ["engineCapacity", "horsepowers"];
 
         let modelQuery = this.buildFilter(this.modelFilter);
         let specQuery = this.buildFilter(this.specFilter);
@@ -355,7 +364,7 @@
             for (let key in modelQuery) {
               if (car.model[key] === undefined) {
                 return false;
-              } else if (keysWithMinMax.includes(key)) {
+              } else if (modelMinMaxFields.includes(key)) {
                 if (
                   modelQuery[key]["min"] !== null &&
                   car.model[key] < modelQuery[key]["min"]
@@ -376,10 +385,22 @@
           })
           .filter((car) => {
             for (let key in specQuery) {
-              if (
-                car.specification[key] === undefined ||
-                !specQuery[key].includes(car.specification[key])
-              ) {
+              if (car.specification[key] === undefined) {
+                return false;
+              } else if (specMinMaxFields.includes(key)) {
+                if (
+                  specQuery[key]["min"] !== null &&
+                  car.specification[key] < specQuery[key]["min"]
+                ) {
+                  return false;
+                }
+                if (
+                  specQuery[key]["max"] !== null &&
+                  car.specification[key] > specQuery[key]["max"]
+                ) {
+                  return false;
+                }
+              } else if (!specQuery[key].includes(car.specification[key])) {
                 return false;
               }
             }
