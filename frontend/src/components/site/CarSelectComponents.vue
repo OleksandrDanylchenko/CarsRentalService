@@ -418,13 +418,15 @@
               } else if (specMinMaxFields.includes(key)) {
                 if (
                   specQuery[key]["min"] !== null &&
-                  car.specification[key] < specQuery[key]["min"]
+                  parseFloat(car.specification[key]) <
+                    parseFloat(specQuery[key]["min"])
                 ) {
                   return false;
                 }
                 if (
                   specQuery[key]["max"] !== null &&
-                  car.specification[key] > specQuery[key]["max"]
+                  parseFloat(car.specification[key]) >
+                    parseFloat(specQuery[key]["max"])
                 ) {
                   return false;
                 }
