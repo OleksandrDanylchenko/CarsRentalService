@@ -21,6 +21,19 @@
               <div slot="no-options">Бренд відсутній</div>
             </v-select>
 
+            <h4>Модель:</h4>
+            <v-select
+              multiple
+              v-model="modelFilter.model"
+              :options="models"
+              label="text"
+              :reduce="(model) => model.value"
+              @input="filterCars"
+              class="style-chooser mb-3"
+            >
+              <div slot="no-options">Модель відсутній</div>
+            </v-select>
+
             <!--            <b-form-group class="fadeInUp" v-wow data-wow-delay="0.2s">-->
             <!--              <template v-slot:label>-->
             <!--                <h4>Модель:</h4>-->
@@ -318,7 +331,7 @@
 }
 
 .style-chooser .vs__dropdown-option--highlight {
-  background:  #e74c3c;
+  background: #e74c3c;
 }
 
 .style-chooser .vs__dropdown-menu {
@@ -326,6 +339,7 @@
   border: solid #e74c3c 0.1px;
   font-size: 1.1em;
   color: #23221c;
+  text-align: center;
 }
 
 .style-chooser .vs__selected {
