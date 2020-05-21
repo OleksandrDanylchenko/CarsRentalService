@@ -6,12 +6,25 @@
     </p>
     <div class="row">
       <div class="col-3">
-        <b-card>
-          <b-card-text> </b-card-text>
+        <b-card class="fadeInUp" v-wow data-wow-delay="0.2s">
+          <b-card-text>
+            <b-form-group class="fadeInUp" v-wow data-wow-delay="0.2s">
+              <template v-slot:label>
+                <h4>Тип пального:</h4>
+              </template>
+              <b-form-checkbox-group
+                v-model="filter.fuelType"
+                :options="fuelTypes"
+                size="lg"
+                stacked
+                @change="filterCars"
+              />
+            </b-form-group>
+          </b-card-text>
         </b-card>
       </div>
       <div class="col-auto">
-        <div v-for="car in cars" :key="car.id">
+        <div v-for="car in filteredCars" :key="car.id">
           <div v-if="car.model.imageName != null && car.rentable">
             <b-card
               :img-src="require('@/assets/modelsPhotos/' + car.model.imageName)"
@@ -118,9 +131,8 @@
   import DataService from '../../service/DataService'
   import ClientNavbar from './common/ClientNavbar'
   import Footer from './common/Footer'
-  // import _ from "lodash";
 
-export default {
+  export default {
   name: "CarSelectComponents",
   components: {
     ClientNavbar,
@@ -128,18 +140,24 @@ export default {
   },
   data() {
     return {
+      carsResource: "cars",
       cars: [],
       filteredCars: [],
+
       fuelTypes: [],
       transmissionTypes: [],
-      carsResource: "cars",
+
+      filter: {
+        fuelType: [],
+        filterTransmissionTypes: [],
+      },
     };
   },
   methods: {
     loadCars() {
       DataService.retrieveAllRecords(this.carsResource)
         .then((response) => {
-          this.cars = response.data;
+          this.filteredCars = this.cars = response.data;
           this.parseFuelTypes();
           this.parseTransmissionTypes();
         })
@@ -176,6 +194,31 @@ export default {
             this.transmissionTypes.push(transmissionOption);
           }
         });
+    },
+    buildFilter() {
+      let query = {};
+      for (let keys in this.filter) {
+        if (Array.isArray(this.filter[keys]) && this.filter[keys].length > 0) {
+          query[keys] = this.filter[keys];
+        }
+      }
+      return query;
+    },
+    filterCars() {
+      this.$nextTick(() => {
+        let query = this.buildFilter();
+        this.filteredCars = this.cars.filter((car) => {
+          for (let key in query) {
+            if (
+              car.specification[key] === undefined ||
+              !query[key].includes(car.specification[key])
+            ) {
+              return false;
+            }
+          }
+          return true;
+        });
+      }, 0);
     },
   },
   created() {
