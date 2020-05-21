@@ -5,22 +5,34 @@
       Пошук авто:
     </p>
     <div class="row">
-      <div class="col-3">
+      <div class="col-2">
         <b-card class="fadeInUp" v-wow data-wow-delay="0.2s">
           <b-card-text>
-            <b-form-group class="fadeInUp" v-wow data-wow-delay="0.2s">
-              <template v-slot:label>
-                <h4>Бренд:</h4>
-              </template>
-              <b-form-checkbox-group
-                v-model="modelFilter.brand"
-                :options="brands"
-                size="lg"
-                stacked
-                @change="filterCars"
-              />
-            </b-form-group>
+            <h4>Бренд:</h4>
+            <v-select
+              multiple
+              v-model="modelFilter.brand"
+              :options="brands"
+              label="text"
+              :reduce="(model) => model.value"
+              @input="filterCars"
+              class="style-chooser mb-3"
+            >
+              <div slot="no-options">Бренд відсутній</div>
+            </v-select>
 
+            <!--            <b-form-group class="fadeInUp" v-wow data-wow-delay="0.2s">-->
+            <!--              <template v-slot:label>-->
+            <!--                <h4>Модель:</h4>-->
+            <!--              </template>-->
+            <!--              <b-form-checkbox-group-->
+            <!--                v-model="modelFilter.brand"-->
+            <!--                :options="brands"-->
+            <!--                size="lg"-->
+            <!--                stacked-->
+            <!--                @change="filterCars"-->
+            <!--              />-->
+            <!--            </b-form-group>-->
             <b-form-group class="fadeInUp" v-wow data-wow-delay="0.2s">
               <template v-slot:label>
                 <h4>Тип пального:</h4>
@@ -158,6 +170,7 @@
       filteredCars: [],
 
       brands: [],
+      models: [],
       fuelTypes: [],
       transmissionTypes: [],
 
@@ -181,6 +194,7 @@
             (car) => car.rentable
           );
           this.parseBrands();
+          this.parseModels();
           this.parseFuelTypes();
           this.parseTransmissionTypes();
         })
@@ -199,6 +213,18 @@
         }
       });
       this.brands = this.alphabetSort(this.brands);
+    },
+    parseModels() {
+      this.cars.forEach((car) => {
+        const modelOption = {
+          value: car.model.model,
+          text: car.model.model,
+        };
+        if (this.models.every((type) => type.value !== modelOption.value)) {
+          this.models.push(modelOption);
+        }
+      });
+      this.models = this.alphabetSort(this.models);
     },
     parseFuelTypes() {
       this.cars.forEach((car) => {
@@ -279,4 +305,36 @@
 <style lang="css">
 @import "../../styles/main.css";
 @import "../../styles/animate.css";
+
+.style-chooser .vs__search::placeholder,
+.style-chooser .vs__dropdown-toggle {
+  background: #3c3d3d;
+  border: solid #e74c3c 0.1px;
+}
+
+.style-chooser .vs__search {
+  color: white;
+  font-size: 1.1em;
+}
+
+.style-chooser .vs__dropdown-option--highlight {
+  background:  #e74c3c;
+}
+
+.style-chooser .vs__dropdown-menu {
+  background: #a7a7a7;
+  border: solid #e74c3c 0.1px;
+  font-size: 1.1em;
+  color: #23221c;
+}
+
+.style-chooser .vs__selected {
+  background: #a7a7a7;
+  color: #23221c;
+}
+
+.style-chooser .vs__clear,
+.style-chooser .vs__open-indicator {
+  fill: #e74c3c;
+}
 </style>

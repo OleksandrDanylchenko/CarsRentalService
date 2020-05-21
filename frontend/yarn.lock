@@ -7976,10 +7976,20 @@ vue-loader@^15.9.1:
     vue-hot-reload-api "^2.3.0"
     vue-style-loader "^4.1.0"
 
+vue-lodash@^2.1.2:
+  version "2.1.2"
+  resolved "https://registry.yarnpkg.com/vue-lodash/-/vue-lodash-2.1.2.tgz#1ec2b1471ee289518e8d285250a25516adee6c51"
+  integrity sha512-6QsNC7/XjrK4xKxFhh6Ppvcrfm0uAeR/lFsySsMgfEFUWkvRztcAIS3MsqAI4bBnAaLo9ou+8tUfJ8d+yrljQg==
+
 vue-router@^3.1.6:
   version "3.1.6"
   resolved "https://registry.yarnpkg.com/vue-router/-/vue-router-3.1.6.tgz#45f5a3a3843e31702c061dd829393554e4328f89"
   integrity sha512-GYhn2ynaZlysZMkFE5oCHRUTqE8BWs/a9YbKpNLi0i7xD6KG1EzDqpHQmv1F5gXjr8kL5iIVS8EOtRaVUEXTqA==
+
+vue-select@^3.10.3:
+  version "3.10.3"
+  resolved "https://registry.yarnpkg.com/vue-select/-/vue-select-3.10.3.tgz#60659dc07ec4c96ec270fb12558eab7b938f5004"
+  integrity sha512-SgLmiSwnJwT2erxjq42AA1iTzu1uqhA5MPuF4UDtGot5YSgJLKy71H0LO0hHaBpIjb7d/nJHiufYKcrSakaupw==
 
 vue-style-loader@^4.1.0, vue-style-loader@^4.1.2:
   version "4.1.2"

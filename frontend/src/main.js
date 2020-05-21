@@ -8,13 +8,15 @@ import 'bootstrap/dist/css/bootstrap.css'
 import 'bootstrap-vue/dist/bootstrap-vue.css'
 import uk from 'vee-validate/dist/locale/uk'
 import VeeValidate, {
-    ValidationObserver,
-    ValidationProvider,
-    Validator,
+  ValidationObserver,
+  ValidationProvider,
+  Validator,
 } from 'vee-validate'
 import vWow from 'v-wow'
 import VueLodash from 'vue-lodash'
 import lodash from 'lodash'
+import vSelect from 'vue-select'
+import 'vue-select/dist/vue-select.css'
 
 Vue.use(BootstrapVue);
 
@@ -26,6 +28,8 @@ Validator.localize("uk", uk);
 Vue.use(vWow);
 
 Vue.use(VueLodash, { name: "iodash", lodash: lodash });
+
+Vue.component("v-select", vSelect);
 
 Vue.config.productionTip = true;
 
