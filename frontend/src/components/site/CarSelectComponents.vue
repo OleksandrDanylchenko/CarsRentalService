@@ -31,21 +31,22 @@
               @input="filterCars"
               class="style-chooser mb-3"
             >
-              <div slot="no-options">Модель відсутній</div>
+              <div slot="no-options">Модель відсутня</div>
             </v-select>
 
-            <!--            <b-form-group class="fadeInUp" v-wow data-wow-delay="0.2s">-->
-            <!--              <template v-slot:label>-->
-            <!--                <h4>Модель:</h4>-->
-            <!--              </template>-->
-            <!--              <b-form-checkbox-group-->
-            <!--                v-model="modelFilter.brand"-->
-            <!--                :options="brands"-->
-            <!--                size="lg"-->
-            <!--                stacked-->
-            <!--                @change="filterCars"-->
-            <!--              />-->
-            <!--            </b-form-group>-->
+            <h4>Тип:</h4>
+            <v-select
+              multiple
+              v-model="modelFilter.type"
+              :options="types"
+              label="text"
+              :reduce="(model) => model.value"
+              @input="filterCars"
+              class="style-chooser mb-3"
+            >
+              <div slot="no-options">Тип відсутній</div>
+            </v-select>
+
             <b-form-group class="fadeInUp" v-wow data-wow-delay="0.2s">
               <template v-slot:label>
                 <h4>Тип пального:</h4>
@@ -169,6 +170,7 @@
   import DataService from '../../service/DataService'
   import ClientNavbar from './common/ClientNavbar'
   import Footer from './common/Footer'
+  import _ from 'lodash'
 
   export default {
   name: "CarSelectComponents",
@@ -184,6 +186,7 @@
 
       brands: [],
       models: [],
+      types: [],
       fuelTypes: [],
       transmissionTypes: [],
 
@@ -208,6 +211,7 @@
           );
           this.parseBrands();
           this.parseModels();
+          this.parseTypes();
           this.parseFuelTypes();
           this.parseTransmissionTypes();
         })
@@ -231,13 +235,30 @@
       this.cars.forEach((car) => {
         const modelOption = {
           value: car.model.model,
-          text: car.model.model,
+          text: _.truncate(car.model.model, {
+            length: 20,
+          }),
         };
         if (this.models.every((type) => type.value !== modelOption.value)) {
           this.models.push(modelOption);
         }
       });
       this.models = this.alphabetSort(this.models);
+    },
+    parseTypes() {
+      this.cars.forEach((car) => {
+        const typeOption = {
+          value: car.model.type,
+          text: _.truncate(car.model.type, {
+            length: 20,
+          }),
+        };
+        console.log(typeOption);
+        if (this.types.every((type) => type.value !== typeOption.value)) {
+          this.types.push(typeOption);
+        }
+      });
+      this.types = this.alphabetSort(this.types);
     },
     parseFuelTypes() {
       this.cars.forEach((car) => {
