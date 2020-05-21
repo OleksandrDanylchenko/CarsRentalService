@@ -98,26 +98,14 @@
               </b-link>
             </b-nav-item>
 
-            <b-nav-item-dropdown
-              class="ml-xl-5 ml-lg-4 ml-md-3 ml-md-2 ml-0"
-              right
-              no-caret
-            >
-              <template v-slot:button-content>
+            <b-nav-item>
+              <b-link
+                to="/carSelect"
+                class="ml-xl-5 ml-lg-4 ml-md-3 ml-md-2 ml-0 text-reset"
+              >
                 <i class="fas fa-car fa-3x" />
-              </template>
-              <div class="d-flex align-items-center">
-                <b-dropdown-item to="/carSelect">
-                  Список авто
-                </b-dropdown-item>
-                <b-dropdown-item to="/carSelect">
-                  Знайти авто
-                </b-dropdown-item>
-                <b-dropdown-item to="/carSelect">
-                  Випадкове авто
-                </b-dropdown-item>
-              </div>
-            </b-nav-item-dropdown>
+              </b-link>
+            </b-nav-item>
 
             <b-nav-item-dropdown
               class="ml-xl-5 ml-lg-4 ml-md-3 ml-md-2 ml-0"
