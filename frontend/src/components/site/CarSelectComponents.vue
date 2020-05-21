@@ -34,7 +34,39 @@
               <div slot="no-options">Модель відсутня</div>
             </v-select>
 
-            <h4>Тип:</h4>
+            <h4 class="fadeInUp" v-wow data-wow-delay="0.2s">Модельний рік:</h4>
+            <b-input-group
+              class="fadeInUp rounded border border-danger mb-3"
+              v-wow
+              data-wow-delay="0.2s"
+            >
+              <b-form-select
+                v-model="modelFilter.year.min"
+                :options="years"
+                class="filterDropDown"
+                @change="filterCars"
+              >
+                <template v-slot:first>
+                  <b-form-select-option :value="null">
+                    Від
+                  </b-form-select-option>
+                </template>
+              </b-form-select>
+              <b-form-select
+                v-model="modelFilter.year.max"
+                :options="years"
+                class="filterDropDown"
+                @change="filterCars"
+              >
+                <template v-slot:first>
+                  <b-form-select-option :value="null">
+                    До
+                  </b-form-select-option>
+                </template>
+              </b-form-select>
+            </b-input-group>
+
+            <h4 class="fadeInUp" v-wow data-wow-delay="0.2s">Тип авто:</h4>
             <v-select
               multiple
               v-model="modelFilter.type"
@@ -42,23 +74,42 @@
               label="text"
               :reduce="(model) => model.value"
               @input="filterCars"
-              class="style-chooser mb-3"
+              class="style-chooser mb-3 fadeInUp"
+              v-wow
+              data-wow-delay="0.2s"
             >
-              <div slot="no-options">Тип відсутній</div>
+              <div slot="no-options">Тип авто відсутній</div>
             </v-select>
 
-            <b-form-group class="fadeInUp" v-wow data-wow-delay="0.2s">
-              <template v-slot:label>
-                <h4>Тип пального:</h4>
-              </template>
-              <b-form-checkbox-group
-                v-model="specFilter.fuelType"
-                :options="fuelTypes"
-                size="lg"
-                stacked
-                @change="filterCars"
-              />
-            </b-form-group>
+            <h4 class="fadeInUp" v-wow data-wow-delay="0.2s">Тип пального:</h4>
+            <v-select
+              multiple
+              v-model="specFilter.fuelType"
+              :options="fuelTypes"
+              label="text"
+              :reduce="(spec) => spec.value"
+              @input="filterCars"
+              class="style-chooser mb-3 fadeInUp"
+              v-wow
+              data-wow-delay="0.2s"
+            >
+              <div slot="no-options">Тип пального відсутній</div>
+            </v-select>
+
+            <h4 class="fadeInUp" v-wow data-wow-delay="0.2s">Тип КПП:</h4>
+            <v-select
+              multiple
+              v-model="specFilter.transmissionType"
+              :options="transmissionTypes"
+              label="text"
+              :reduce="(spec) => spec.value"
+              @input="filterCars"
+              class="style-chooser mb-3 fadeInUp"
+              v-wow
+              data-wow-delay="0.2s"
+            >
+              <div slot="no-options">Тип КПП відсутній</div>
+            </v-select>
           </b-card-text>
         </b-card>
       </div>
@@ -193,7 +244,10 @@
       modelFilter: {
         brand: [],
         model: [],
-        year: [],
+        year: {
+          min: null,
+          max: null,
+        },
         type: [],
       },
       specFilter: {
@@ -253,7 +307,6 @@
             length: 20,
           }),
         };
-        console.log(typeOption);
         if (this.types.every((type) => type.value !== typeOption.value)) {
           this.types.push(typeOption);
         }
@@ -293,15 +346,29 @@
     },
     filterCars() {
       this.$nextTick(() => {
+        const keysWithMinMax = ["year"];
+
         let modelQuery = this.buildFilter(this.modelFilter);
         let specQuery = this.buildFilter(this.specFilter);
         this.filteredCars = this.cars
           .filter((car) => {
             for (let key in modelQuery) {
-              if (
-                car.model[key] === undefined ||
-                !modelQuery[key].includes(car.model[key])
-              ) {
+              if (car.model[key] === undefined) {
+                return false;
+              } else if (keysWithMinMax.includes(key)) {
+                if (
+                  modelQuery[key]["min"] !== null &&
+                  car.model[key] < modelQuery[key]["min"]
+                ) {
+                  return false;
+                }
+                if (
+                  modelQuery[key]["max"] !== null &&
+                  car.model[key] > modelQuery[key]["max"]
+                ) {
+                  return false;
+                }
+              } else if (!modelQuery[key].includes(car.model[key])) {
                 return false;
               }
             }
@@ -323,11 +390,23 @@
     buildFilter(filter) {
       let query = {};
       for (let keys in filter) {
-        if (Array.isArray(filter[keys]) && filter[keys].length > 0) {
+        if (
+          filter[keys].constructor === Object ||
+          (filter[keys].constructor === Array && filter[keys].length > 0)
+        ) {
           query[keys] = filter[keys];
         }
       }
       return query;
+    },
+  },
+  computed: {
+    years() {
+      const year = new Date().getFullYear();
+      return Array.from(
+        { length: year - 2000 },
+        (value, index) => 2001 + index
+      ).reverse();
     },
   },
   created() {
@@ -371,5 +450,10 @@
 .style-chooser .vs__clear,
 .style-chooser .vs__open-indicator {
   fill: #e74c3c;
+}
+
+.filterDropDown {
+  background: #3c3d3d;
+  color: white;
 }
 </style>

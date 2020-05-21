@@ -2,7 +2,11 @@
   <b-navbar toggleable="xl" type="dark" variant="dark" id="adminNavbar">
     <b-navbar-brand>
       <b-link to="/" class="text-decoration-none mr-5">
-        <b-img src="https://bit.ly/2Ww22LJ" alt="Alex Rentals" width="110px" />
+        <b-img
+          src="https://i.ibb.co/8K8jcMr/alex-logo-2.png"
+          alt="Alex Rentals"
+          width="110px"
+        />
       </b-link>
     </b-navbar-brand>
 
