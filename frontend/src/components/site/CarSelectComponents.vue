@@ -111,29 +111,29 @@
 
             <h4 class="fadeInUp" v-wow data-wow-delay="0.2s">Кінські сили:</h4>
             <b-input-group
-                    class="fadeInUp rounded border border-danger mb-3"
-                    v-wow
-                    data-wow-delay="0.2s"
+              class="fadeInUp rounded border border-danger mb-3"
+              v-wow
+              data-wow-delay="0.2s"
             >
               <b-form-input
-                      type="number"
-                      min="50"
-                      max="2000"
-                      step="20"
-                      class="filterInputField"
-                      v-model="specFilter.horsepowers.min"
-                      placeholder="Від"
-                      @change="filterCars"
+                type="number"
+                min="50"
+                max="2000"
+                step="20"
+                class="filterInputField"
+                v-model="specFilter.horsepowers.min"
+                placeholder="Від"
+                @change="filterCars"
               />
               <b-form-input
-                      type="number"
-                      min="50"
-                      max="2000"
-                      step="20"
-                      class="filterInputField"
-                      v-model="specFilter.horsepowers.max"
-                      placeholder="До"
-                      @change="filterCars"
+                type="number"
+                min="50"
+                max="2000"
+                step="20"
+                class="filterInputField"
+                v-model="specFilter.horsepowers.max"
+                placeholder="До"
+                @change="filterCars"
               />
             </b-input-group>
 
@@ -297,6 +297,10 @@
       fuelTypes: [],
       transmissionTypes: [],
 
+      priceFilter: {
+        min: null,
+        max: null,
+      },
       modelFilter: {
         brand: [],
         model: [],
@@ -415,7 +419,24 @@
 
         let modelQuery = this.buildFilter(this.modelFilter);
         let specQuery = this.buildFilter(this.specFilter);
+
         this.filteredCars = this.cars
+          .filter((car) => {
+            console.log(car.dayPrice);
+            if (car.dayPrice === undefined) {
+              return false;
+            }
+            if (
+              this.priceFilter["min"] !== null &&
+              car.dayPrice < this.priceFilter["min"]
+            ) {
+              return false;
+            }
+            return !(
+              this.priceFilter["max"] !== null &&
+              car.dayPrice > this.priceFilter["max"]
+            );
+          })
           .filter((car) => {
             for (let key in modelQuery) {
               if (car.model[key] === undefined) {
