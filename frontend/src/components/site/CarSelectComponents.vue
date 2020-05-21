@@ -43,7 +43,7 @@
               <b-form-select
                 v-model="modelFilter.year.min"
                 :options="years"
-                class="filterDropDown"
+                class="filterInputField"
                 @change="filterCars"
               >
                 <template v-slot:first>
@@ -55,7 +55,7 @@
               <b-form-select
                 v-model="modelFilter.year.max"
                 :options="years"
-                class="filterDropDown"
+                class="filterInputField"
                 @change="filterCars"
               >
                 <template v-slot:first>
@@ -80,6 +80,34 @@
             >
               <div slot="no-options">Тип авто відсутній</div>
             </v-select>
+
+            <h4 class="fadeInUp" v-wow data-wow-delay="0.2s">Об'єм двигуна:</h4>
+            <b-input-group
+              class="fadeInUp rounded border border-danger mb-3"
+              v-wow
+              data-wow-delay="0.2s"
+            >
+              <b-form-input
+                type="number"
+                min="1"
+                max="6"
+                step="0.1"
+                class="filterInputField"
+                v-model="specFilter.engineCapacity.min"
+                placeholder="Від"
+                @change="filterCars"
+              />
+              <b-form-input
+                type="number"
+                min="1"
+                max="6"
+                step="0.1"
+                class="filterInputField"
+                v-model="specFilter.engineCapacity.max"
+                placeholder="До"
+                @change="filterCars"
+              />
+            </b-input-group>
 
             <h4 class="fadeInUp" v-wow data-wow-delay="0.2s">Тип пального:</h4>
             <v-select
@@ -473,8 +501,21 @@
   fill: #e74c3c;
 }
 
-.filterDropDown {
+.filterInputField {
   background: #3c3d3d;
+  color: white;
+}
+
+html .form-control::-webkit-input-placeholder {
+  color: white;
+}
+html .form-control:-moz-placeholder {
+  color: white;
+}
+html .form-control::-moz-placeholder {
+  color: white;
+}
+html .form-control:-ms-input-placeholder {
   color: white;
 }
 </style>
