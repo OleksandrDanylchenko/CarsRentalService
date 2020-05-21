@@ -17,6 +17,11 @@ const router = new Router({
       component: () => import("./components/site/CarSelectComponents"),
     },
     {
+      path: "/maintenance",
+      name: "Maintenance",
+      component: () => import("./components/site/common/MaintenancePage"),
+    },
+    {
       path: "/models",
       name: "Models",
       component: () => import("./components/admin/model/ModelsList"),
@@ -63,6 +68,13 @@ const router = new Router({
       component: () => import("./components/admin/complaint/ComplaintsList"),
     },
   ],
+  scrollBehavior () {
+    return new Promise((resolve) => {
+      setTimeout(() => {
+        resolve({ x: 0, y: 0 })
+      }, 150)
+    })
+  }
 });
 
 export default router;
