@@ -336,10 +336,19 @@
           this.parseTypes();
           this.parseFuelTypes();
           this.parseTransmissionTypes();
+
+          this.filterByOuterInput();
         })
         .catch((error) => {
           console.log(error);
         });
+    },
+    filterByOuterInput() {
+      let passedTypename = this.$route.query.typeName;
+      if (passedTypename !== undefined && passedTypename !== null) {
+        this.modelFilter.type.push(passedTypename);
+        this.filterCars();
+      }
     },
     parseBrands() {
       this.cars.forEach((car) => {
@@ -422,7 +431,6 @@
 
         this.filteredCars = this.cars
           .filter((car) => {
-            console.log(car.dayPrice);
             if (car.dayPrice === undefined) {
               return false;
             }

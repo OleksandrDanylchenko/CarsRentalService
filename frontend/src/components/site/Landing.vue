@@ -56,7 +56,7 @@
           data-wow-delay="0.2s"
         >
           <b-list-group-item
-            href="#"
+            :to="{ path: '/carSelect', query: { typeName: 'Седан' } }"
             class="d-flex flex-column align-items-center"
           >
             <img src="../../assets/typesIcons/sedan.png" alt="" width="100px" />
@@ -68,7 +68,7 @@
             </div>
           </b-list-group-item>
           <b-list-group-item
-            href="#"
+            :to="{ path: '/carSelect', query: { typeName: 'Купе' } }"
             class="d-flex flex-column align-items-center"
           >
             <img src="../../assets/typesIcons/coupe.png" alt="" width="100px" />
@@ -80,7 +80,7 @@
             </div>
           </b-list-group-item>
           <b-list-group-item
-            href="#"
+            :to="{ path: '/carSelect', query: { typeName: 'Хетчбек' } }"
             class="d-flex flex-column align-items-center"
           >
             <img
@@ -96,7 +96,7 @@
             </div>
           </b-list-group-item>
           <b-list-group-item
-            href="#"
+            :to="{ path: '/carSelect', query: { typeName: 'Пікап' } }"
             class="d-flex flex-column align-items-center"
           >
             <img
@@ -112,7 +112,10 @@
             </div>
           </b-list-group-item>
           <b-list-group-item
-            href="#"
+            :to="{
+              path: '/carSelect',
+              query: { typeName: 'Позашляховик/Кроссовер' },
+            }"
             class="d-flex flex-column align-items-center"
           >
             <img src="../../assets/typesIcons/suv.png" alt="" width="100px" />
