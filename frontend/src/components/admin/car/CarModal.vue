@@ -185,7 +185,7 @@
           response.data.forEach((record) => {
             let modelOption = {
               value: record.id,
-              text: record.brand + " " + record.model,
+              text: record.brand + " " + record.model + " (" + record.type + ")",
             };
             this.availableModels.push(modelOption);
           });
