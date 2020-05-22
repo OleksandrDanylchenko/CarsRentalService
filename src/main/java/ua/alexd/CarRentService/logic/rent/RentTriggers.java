@@ -23,7 +23,9 @@ public class RentTriggers {
 
     public boolean releaseCar(@NotNull Rent rent) {
         var rentCar = rent.getCar();
-        return carService.releaseCar(rentCar);
+        if (rentCar != null)
+            return carService.releaseCar(rentCar);
+        return true;
     }
 
     public boolean changeCar(@NotNull Rent previousRent, @NotNull Rent updateRent) {
