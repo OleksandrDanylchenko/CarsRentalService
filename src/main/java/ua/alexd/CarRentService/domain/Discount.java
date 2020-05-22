@@ -1,8 +1,17 @@
 package ua.alexd.CarRentService.domain;
 
-import lombok.*;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
+import lombok.ToString;
 
-import javax.persistence.*;
+import javax.persistence.Basic;
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.Id;
+import javax.persistence.Table;
 import javax.validation.constraints.Min;
 
 @Entity
@@ -16,16 +25,13 @@ import javax.validation.constraints.Min;
 public class Discount {
     @Id
     @GeneratedValue
-    @Column
     private long id;
 
     @Basic
-    @Column
     @Min(1)
     private int rentsAmount;
 
     @Basic
-    @Column
     @Min(1)
     private int discountPercents;
 }

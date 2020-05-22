@@ -254,7 +254,7 @@
                     <div
                       class="col-2 d-flex justify-content-end align-items-center"
                     >
-                      <b-button variant="danger">
+                      <b-button variant="danger" to="/maintenance">
                         <div class="d-flex align-items-baseline text-left p-lg-1 p-0">
                           <h4 class="m-0">₴{{ car.dayPrice }}</h4>
                           <div class="my-0">/день</div>

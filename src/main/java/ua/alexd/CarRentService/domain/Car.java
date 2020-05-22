@@ -1,8 +1,19 @@
 package ua.alexd.CarRentService.domain;
 
-import lombok.*;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
+import lombok.ToString;
 
-import javax.persistence.*;
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
+import javax.persistence.OneToOne;
+import javax.persistence.Table;
 import javax.validation.constraints.Max;
 import javax.validation.constraints.Min;
 
@@ -17,7 +28,6 @@ import javax.validation.constraints.Min;
 public class Car {
     @Id
     @GeneratedValue
-    @Column
     private long id;
 
     @OneToOne
@@ -36,13 +46,9 @@ public class Car {
     @JoinColumn(name = "center_id")
     private RentCenter rentCenter;
 
-    @Basic
-    @Column
     @Min(1)
     @Max(40000)
     private int dayPrice;
 
-    @Basic
-    @Column
     private boolean rentable;
 }

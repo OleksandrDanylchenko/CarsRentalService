@@ -1,9 +1,22 @@
 package ua.alexd.CarRentService.domain;
 
-import lombok.*;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
+import lombok.ToString;
 
-import javax.persistence.*;
-import javax.validation.constraints.*;
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.Id;
+import javax.persistence.Table;
+import javax.validation.constraints.Max;
+import javax.validation.constraints.Min;
+import javax.validation.constraints.NotEmpty;
+import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Size;
 
 @Entity
 @Table(name = "classes")
@@ -16,17 +29,14 @@ import javax.validation.constraints.*;
 public class ModelClass {
     @Id
     @GeneratedValue
-    @Column
     private long id;
 
-    @Basic
     @Column(unique = true)
     @NotNull(message = "Назва не може бути відсутньою")
     @NotEmpty(message = "Назва не може бути пустою")
     @Size(min = 1, max = 150)
     private String name;
 
-    @Basic
     @Column(unique = true)
     @Min(1)
     @Max(200000)

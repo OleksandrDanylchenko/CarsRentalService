@@ -31,7 +31,7 @@ Vue.use(VueLodash, { name: "iodash", lodash: lodash });
 
 Vue.component("v-select", vSelect);
 
-Vue.config.productionTip = true;
+Vue.config.productionTip = false;
 
 new Vue({
   el: "#app",
