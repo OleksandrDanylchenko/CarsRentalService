@@ -8,6 +8,7 @@
 - Front-end: **Vue.js 4.3.1**<br/>(_Axios, Vue Router, Vuex, Babel, Bootstrap-Vue, VeeValidate, vWow, VueLodash, VueSelect_)
 - СКБД: **Microsoft SQL Server 2019**
 - Додаткові бібліотеки: _Jetbrains Annotations, Apache Commons Lang3, Lombok, Spring Boot Devtools_
+Bootstrap тема - https://bootswatch.com/darkly/
 
 ---
 
