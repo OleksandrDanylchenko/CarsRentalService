@@ -222,7 +222,8 @@
       return this.processingId <= 0 ? "Додати" : "Змінити";
     },
     photoUploadRules() {
-      return this.processingId <= 0 ? "required|image" : "image";
+      console.log(this.processingId);
+      return this.processingId <= 0 ? "required|image" : "";
     },
   },
 };
